@@ -42,7 +42,7 @@ let handler = async (m, { conn, text, isOwner }) => {
   chats.expired = global.db.data.groupRents[groupId].startTime + global.db.data.groupRents[groupId].duration;
   global.db.data.chats[groupId] = chats;
 
-  let pp = 'https://telegra.ph/file/32e696946433c03588726.mp4';
+  let pp = 'https://files.catbox.moe/vf2310.mp4';
   await conn.sendMessage(groupMetadata, { video: { url: pp }, gifPlayback: true, caption: '¡Ya llegué! El bot estará disponible por el tiempo acordado.', mentions: [m.sender] }, { quoted: estilo })
 };
 handler.tags = ['grupos']
