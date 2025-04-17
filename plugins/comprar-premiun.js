@@ -10,7 +10,7 @@ let handler = async (m, { conn, text }) => {
   if (!units[unit.toLowerCase()]) return conn.reply(m.chat, `Unidad de tiempo no válida. Usa minutos, horas o días.`, m);
 
   let cost = amount * (units[unit.toLowerCase()] / 200);
-  if (user.coin < cost) return conn.reply(m.chat, `No tienes suficientes ${moneda}. Necesitas ${cost} ${moneda} para comprar esta membresía.`, m);
+  if (user.coin < cost) return conn.reply(m.chat, `No tienes suficientes ${estrellas}. Necesitas ${cost} ${estrellas} para comprar esta membresía.`, m);
 
   user.coin -= cost;
   user.premium = true;
