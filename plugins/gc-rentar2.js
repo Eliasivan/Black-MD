@@ -36,7 +36,7 @@ let handler = async (m, { conn, text, isOwner }) => {
   userRents.tokens = 0;
   userRents.groups.push(groupId);
 
-  conn.reply(m.chat, `> _📝 Me uní correctamente al grupo_ *${groupId}* por ${global.db.data.groupRents[groupId].tokenCount} día(s).`);
+  conn.reply(m.chat, `📝 Me uní correctamente al grupo_ *${groupId}* por ${global.db.data.groupRents[groupId].tokenCount} día(s).`);
 
   let chats = global.db.data.chats[groupId] || {};
   chats.expired = global.db.data.groupRents[groupId].startTime + global.db.data.groupRents[groupId].duration;
