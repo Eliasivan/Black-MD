@@ -22,7 +22,7 @@ const handler = async (m, {conn, command, args}) => {
     global.db.data.userRents = userRents;
 
     conn.reply(m.chat, `
-┌─『 𝑅𝑒𝑛𝑡𝑎𝑟 𝑎 𝑀𝑒𝑔𝑢𝑚𝑖𝑛 』*
+┌─『 Rentar a GokuBlac 』*
 │╭──────────────┄
 ││ *Compra Nominal* : + ${count} Token
 ││ *Gastado* : -${xppercookies * count} Cookies 🍪
