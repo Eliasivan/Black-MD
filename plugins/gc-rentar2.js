@@ -2,7 +2,7 @@ import db from '../lib/database.js';
 let linkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})( [0-9]{1,3})?/i;
 
 let handler = async (m, { conn, text, isOwner }) => {
-  if (!text) return m.reply(`> _📝 Ingresa el link del grupo para rentar el bot._`);
+  if (!text) return m.reply(`📝 Ingresa el link del grupo para rentar el bot._`);
 
   let [_, code] = text.match(linkRegex) || [];
   if (!code) return m.reply('🚩 Enlace inválido.');
@@ -43,7 +43,7 @@ let handler = async (m, { conn, text, isOwner }) => {
   global.db.data.chats[groupId] = chats;
 
   let pp = 'https://telegra.ph/file/32e696946433c03588726.mp4';
-  await conn.sendMessage(groupMetadata, { video: { url: pp }, gifPlayback: true, caption: '> ¡Ya llegué! El bot estará disponible por el tiempo acordado.', mentions: [m.sender] }, { quoted: estilo })
+  await conn.sendMessage(groupMetadata, { video: { url: pp }, gifPlayback: true, caption: '¡Ya llegué! El bot estará disponible por el tiempo acordado.', mentions: [m.sender] }, { quoted: estilo })
 };
 handler.tags = ['grupos']
 handler.help = ['rentar2 *<link>*']
