@@ -192,7 +192,8 @@ console.log(chalk.bold.yellow(`\n✅ ESCANEA EL CÓDIGO QR EXPIRA EN 45 SEGUNDOS
 }
 if (connection == 'open') {
 console.log(boxen(chalk.bold(' ¡CONECTADO CON WHATSAPP! '), { borderStyle: 'round', borderColor: 'green', title: 
-conn.fakeReply('59169739411@s.whatsapp.net', '🌌', '0@s.whatsapp.net', '💥 Soy GokuBlackBot\nRecientemente Me he Conectado', '0@s.whatsapp.net')chalk.green.bold('● CONEXIÓN ●'), titleAlignment: '', float: '' }))}
+conn.fakeReply('59169739411@s.whatsapp.net', '🌌', '0@s.whatsapp.net', '💥 Soy GokuBlackBot\nRecientemente Me he Conectado', '0@s.whatsapp.net')
+/*chalk.green.bold('● CONEXIÓN ●'), titleAlignment: '', float: '' }))}*/
 let reason = new Boom(lastDisconnect?.error)?.output?.statusCode
 if (connection === 'close') {
 if (reason === DisconnectReason.badSession) {
