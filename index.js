@@ -15,20 +15,7 @@ const require = createRequire(__dirname);
 const { name, description, author, version } = require(join(__dirname, './package.json'));
 const { say } = cfonts;
 const rl = createInterface(process.stdin, process.stdout);
-
-console.log(chalk.blue(`
-                              
-                              
-            ⢀⣠⣤⣤⣤⣤⣤⣤⣤⣤⣄⣀      
-         ⢀⣴⠟⠋⠁        ⠈⠙⠻⣦⣄   
-        ⣴⠟⠁              ⠈⠻⣷⣄ 
-      ⢠⣾⠋                  ⠈⢿⣷
-     ⣴⠟⠁                    ⠈⢿
-    ⣾⠋                       ⠘
-    ⠁                         
-   ⢀⣠⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣄
-`));
-
+console.log(chalk.blue(`Gracias por el apoyo 💞`));
 say('Goku\nBlack\nBot\nMD', { font: 'block', align: 'center', colors: ['blue'] });
 say(`Multi Device`, { font: 'chrome', align: 'center', colors: ['blue'] });
 say(`Developed By • Ivan`, { font: 'console', align: 'center', colors: ['blue'] });
