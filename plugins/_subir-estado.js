@@ -7,47 +7,20 @@ const colors = [
 ];
 
 let handler = async (m, { conn, text }) => {
-  if (!m.quoted && !text) throw '*_Ingrese un texto o reponda a algun archivo multimedia_*';
+  if (!m.quoted && !text) throw '> Ingrese un texto o reponda a algun archivo multimedia';
 
   try {
-    if (m.quoted && m.quoted.mtype !== 'conversation' && !text) {
-      await conn.sendMessage('status@broadcast', { forward: m.quoted.fakeObj });
-    } else if (m.quoted && m.quoted.mtype === 'conversation' && !text) {
-      await conn.sendMessage('status@broadcast', {
-        text: m.quoted.text,
-        contextInfo: {
-          mentionedJid: [],
-          forwardingScore: 999,
-          isForwarded: true
-        },
-        backgroundArgb: pickRandom(colors),
-        textArgb: 0xffffffff
-      }, { quoted: m });
-    } else if (!m.quoted && text) {
+    if (!m.quoted && text) {
       await conn.sendMessage('status@broadcast', {
         text,
-        contextInfo: {
-          mentionedJid: [],
-          forwardingScore: 999,
-          isForwarded: true
-        },
         backgroundArgb: pickRandom(colors),
         textArgb: 0xffffffff
-      }, { quoted: m });
-    } else if (m.quoted && text) {
-      await conn.sendMessage('status@broadcast', {
-        text,
-        contextInfo: {
-          mentionedJid: [],
-          forwardingScore: 999,
-          isForwarded: true
-        },
-        backgroundArgb: pickRandom(colors),
-        textArgb: 0xffffffff
-      }, { quoted: m });
+      });
+    } else if (m.quoted) {
+      await conn.forwardMessage('status@broadcast', m.quoted.fakeObj);
     }
 
-    m.reply('*✅ Estado subido con exito, agenda en tu lista de contactos el número del Bot y pide al propietario del Bot que te agregue a sus contactos para que puedas ver los estados*');
+    m.reply('*✅ Estado subido con exito*');
   } catch (error) {
     m.reply('*❌ Error al subir estado*');
   }
