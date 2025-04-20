@@ -16,9 +16,9 @@ let handler = async (m) => {
   }
 };
 
-handler.help = ['resetjadibots'];
+handler.help = ['borrarjadibots'];
 handler.tags = ['owner'];
-handler.command = ['resetjadibots'];
+handler.command = ['borrarjadibots'];
 handler.rowner = true;
 
 export default handler;
