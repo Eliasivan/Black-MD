@@ -29,7 +29,7 @@ console.log(chalk.blue(`
    ⢀⣠⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣄
 `));
 
-say('Goku-Black-Bot-MD', { font: 'block', align: 'center', colors: ['blue'] });
+say('Goku\nBlack\nBot\nMD', { font: 'block', align: 'center', colors: ['blue'] });
 say(`Multi Device`, { font: 'chrome', align: 'center', colors: ['blue'] });
 say(`Developed By • Ivan`, { font: 'console', align: 'center', colors: ['blue'] });
 
