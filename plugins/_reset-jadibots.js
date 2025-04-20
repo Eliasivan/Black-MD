@@ -1,11 +1,11 @@
 /* Codigo creado por Ivan y modificado por Rayo-ofc para que no se reinicie más el host xd */
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 let handler = async (m) => {
   try {
-    const carpeta = path.join(__dirname, 'jadibots');
-    fs.rmdirSync(carpeta, { recursive: true });
+    const carpeta = path.join(process.cwd(), 'jadibots');
+    fs.rmSync(carpeta, { recursive: true, force: true });
     m.reply('La carpeta "jadibots" ha sido eliminada con éxito');
   } catch (error) {
     if (error.code === 'ENOENT') {
@@ -17,8 +17,7 @@ let handler = async (m) => {
 };
 
 handler.help = ['borrarjadibots'];
-handler.tags = ['owner'];
+handler.tags = ['administrador'];
 handler.command = ['borrarjadibots'];
-handler.rowner = true;
 
 export default handler;
