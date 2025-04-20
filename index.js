@@ -7,6 +7,7 @@ import cfonts from 'cfonts';
 import { createInterface } from 'readline';
 import yargs from 'yargs';
 import chalk from 'chalk';
+import { makeWASocket, useMultiFileAuthState } from '@adiwajshing/baileys';
 
 console.log(chalk.blue('\n✰ Iniciando GokuBlack ✰'));
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -14,6 +15,12 @@ const require = createRequire(__dirname);
 const { name, description, author, version } = require(join(__dirname, './package.json'));
 const { say } = cfonts;
 const rl = createInterface(process.stdin, process.stdout);
+
+const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys');
+const conn = makeWASocket({
+  auth: state,
+  printQRInTerminal: true,
+});
 
 console.log(chalk.blue(`Gracias por el apoyo 💞`));
 say('Goku\nBlack\nBot\nMD', { font: 'block', align: 'center', colors: ['blue'] });
@@ -67,4 +74,10 @@ process.on('warning', (warning) => {
 });
 
 start('Ivan.js');
-conn.fakeReply('59169739411@s.whatsapp.net', '😄', '0@s.whatsapp.net', '😸 Ya estoy prendido, mi propietario', '0@s.whatsapp.net');
+setTimeout(() => {
+  try {
+    conn.fakeReply('59169739411@s.whatsapp.net', '😄', '0@s.whatsapp.net', '😸 Ya estoy prendido, mi propietario', '0@s.whatsapp.net');
+  } catch (e) {
+    console.log('Error al enviar mensaje:', e);
+  }
+}, 5000);
