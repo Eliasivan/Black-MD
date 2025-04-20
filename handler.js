@@ -736,7 +736,7 @@ const msg = {
 rowner: '「👑」 *Esta función solo puede ser usada por mi creador*\n\n> Ivan', 
 owner: '「👑」 *Esta función solo puede ser usada por mi desarrollador.*\n\n> (⁠￣⁠ヘ⁠￣⁠;⁠)', 
 mods: '「🤴🏻」 *Esta función solo puede ser usada por mis desarrolladores.*', 
-premium: '「🍧」 *Esta función solo es para usuarios Premium.', 
+premium: '「🍧」 *Esta función solo es para usuarios Premiun.*', 
 group: '『✨』 *𝙴𝚜𝚝𝚊 𝚏𝚞𝚗𝚌𝚒𝚘𝚗 𝚜𝚘𝚕𝚘 𝚙𝚞𝚎𝚍𝚎 𝚜𝚎𝚛 𝚞𝚜𝚊𝚍𝚊 𝚎𝚗 𝚐𝚛𝚞𝚙𝚘𝚜.*', 
 private: '「🍭」 *Esta función solo puede ser usada en chat privado.*', 
 admin: '「👑」 *Este comando solo puede ser usado por admins.*', 
