@@ -1,7 +1,6 @@
 //No funciona xd
 import fetch from 'node-fetch';
 
-const apiKey = 'TU_API_KEY';
 const apiUrl = 'https://api.dorratz.com/v2/pix-ai';
 
 const pixAiSearch = async (prompt) => {
