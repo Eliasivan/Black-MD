@@ -1,5 +1,5 @@
 let handler = async (m, { conn, text }) => {
-  if (!text) return m.reply('`Ingrese el mensaje que deseas enviar`');
+  if (!text) return m.reply('`Ingrese el mensaje que deseas enviar`', rcanal);
 
   try {
     const channelId = '120363351515256850@newsletter';
