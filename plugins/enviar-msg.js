@@ -1,5 +1,5 @@
 let handler = async (m, { conn, text }) => {
-  if (!text || !text.includes('|')) return m.reply('/n`💥 Ingrese el número y el texto separados por |/n`');
+  if (!text || !text.includes('|')) return m.reply('\n`💥 Ingrese el número y el texto separados por |\n`');
 
   let [numero, mensaje] = text.split('|').map(t => t.trim());
   numero = numero.replace(/[^0-9]/g, '');
