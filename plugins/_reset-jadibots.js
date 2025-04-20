@@ -6,12 +6,12 @@ let handler = async (m) => {
   try {
     const carpeta = path.join(process.cwd(), 'jadibots');
     fs.rmSync(carpeta, { recursive: true, force: true });
-    m.reply('La carpeta "jadibots" ha sido eliminada con éxito');
+    m.reply('La carpeta "jadibots" ha sido eliminada con éxito ✅');
   } catch (error) {
     if (error.code === 'ENOENT') {
-      m.reply('La carpeta "jadibots" no existe');
+      m.reply('La carpeta "jadibots" no existe 🛑');
     } else {
-      m.reply(`Error al eliminar la carpeta: ${error.message}`);
+      m.reply(`Error al eliminar la carpeta: ${error.message} 🛑`);
     }
   }
 };
@@ -19,5 +19,6 @@ let handler = async (m) => {
 handler.help = ['borrarjadibots'];
 handler.tags = ['administrador'];
 handler.command = ['borrarjadibots'];
+handler.rowner = true;
 
 export default handler;
