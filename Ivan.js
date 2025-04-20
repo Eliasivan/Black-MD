@@ -191,7 +191,15 @@ if (opcion == '1' || methodCodeQR) {
 console.log(chalk.bold.yellow(`\n✅ ESCANEA EL CÓDIGO QR EXPIRA EN 45 SEGUNDOS`))}
 }
 if (connection == 'open') {
-console.log(boxen(chalk.bold(' ¡CONECTADO CON WHATSAPP! '), { borderStyle: 'round', borderColor: 'green', title: chalk.green.bold('● CONEXIÓN ●'), titleAlignment: '', float: '' }))}
+  console.log(boxen(chalk.bold(' ¡CONECTADO CON WHATSAPP! '), { borderStyle: 'round', borderColor: 'green', title: chalk.green.bold('● CONEXIÓN ●'), titleAlignment: '', float: '' }));
+  
+  // Envía el mensaje de "Ya estoy encendido, mi amo" al propietario
+  if (global.owner && global.owner[0]) {
+    const mensaje = "Ya estoy encendido, mi amo";
+    const numeroOwner = global.owner[0] + "59169739411@s.whatsapp.net"; // Asegúrate del formato correcto
+    conn.sendMessage(numeroOwner, { text: mensaje });
+  }
+}
 let reason = new Boom(lastDisconnect?.error)?.output?.statusCode
 if (connection === 'close') {
 if (reason === DisconnectReason.badSession) {
