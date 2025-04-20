@@ -7,21 +7,14 @@ import cfonts from 'cfonts';
 import { createInterface } from 'readline';
 import yargs from 'yargs';
 import chalk from 'chalk';
-import { makeWASocket, useMultiFileAuthState } from '@adiwajshing/baileys';
 
 console.log(chalk.blue('\n✰ Iniciando GokuBlack ✰'));
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(__dirname);
 const { name, description, author, version } = require(join(__dirname, './package.json'));
 const { say } = cfonts;
 const rl = createInterface(process.stdin, process.stdout);
-
-const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys');
-const conn = makeWASocket({
-  auth: state,
-  printQRInTerminal: true,
-});
-
 console.log(chalk.blue(`Gracias por el apoyo 💞`));
 say('Goku\nBlack\nBot\nMD', { font: 'block', align: 'center', colors: ['blue'] });
 say(`Multi Device`, { font: 'chrome', align: 'center', colors: ['blue'] });
@@ -34,9 +27,9 @@ function start(file) {
   isRunning = true;
   let args = [join(__dirname, file), ...process.argv.slice(2)];
   say([process.argv[0], ...args].join(' '), { font: 'console', align: 'center', colors: ['blue'] });
-  setupMaster({ exec: args[0], args: args.slice(1) });
+  setupMaster({ exec: args[0], args: args.slice(1), });
   let p = fork();
-  p.on('message', (data) => {
+  p.on('message', data => {
     switch (data) {
       case 'reset':
         p.process.kill();
@@ -61,7 +54,7 @@ function start(file) {
   let opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse());
   if (!opts['test'])
     if (!rl.listenerCount())
-      rl.on('line', (line) => {
+      rl.on('line', line => {
         p.emit('message', line.trim());
       });
 }
@@ -74,10 +67,3 @@ process.on('warning', (warning) => {
 });
 
 start('Ivan.js');
-setTimeout(() => {
-  try {
-    conn.fakeReply('59169739411@s.whatsapp.net', '😄', '0@s.whatsapp.net', '😸 Ya estoy prendido, mi propietario', '0@s.whatsapp.net');
-  } catch (e) {
-    console.log('Error al enviar mensaje:', e);
-  }
-}, 5000);
