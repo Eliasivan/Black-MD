@@ -9,7 +9,7 @@ var handler = async (m, { conn, usedPrefix, command }) => {
     const files = fs.readdirSync(pluginsDir).filter(file => file.endsWith('.js'));
     let response = `📂 *Revisión de Syntax Errors:*\n\n`;
     let hasErrors = false;
-    let fixedErrors = false;
+    let deletedFiles = 0;
     for (const file of files) {
       try {
         await import(path.resolve(pluginsDir, file));
@@ -18,24 +18,20 @@ var handler = async (m, { conn, usedPrefix, command }) => {
         response += `🚩 *Error en:* ${file}\nParece que hay un error: ${error.message}\n\n`;
         console.error(`Error en ${file}: ${error.message}`);
         try {
-          const fileContent = fs.readFileSync(path.resolve(pluginsDir, file), 'utf8');
-          const fixedContent = fileContent.replace(/([^=])\s*([{}])/g, '$1$2').replace(/;\s*$/, ''); // intenta arreglar algunos errores comunes de sintaxis
-          fs.writeFileSync(path.resolve(pluginsDir, file), fixedContent);
-          response += `✅ *Arreglado:* ${file}\n\n`;
-          fixedErrors = true;
-        } catch (fixError) {
-          response += `🚩 *No se pudo arreglar:* ${file}\n${fixError.message}\n\n`;
-          console.error(`No se pudo arreglar ${file}: ${fixError.message}`);
+          fs.unlinkSync(path.resolve(pluginsDir, file));
+          response += `🗑️ *Eliminado:* ${file}\n\n`;
+          deletedFiles++;
+        } catch (deleteError) {
+          response += `🚩 *No se pudo eliminar:* ${file}\n${deleteError.message}\n\n`;
+          console.error(`No se pudo eliminar ${file}: ${deleteError.message}`);
         }
       }
     }
-    if (hasErrors && fixedErrors) {
-      response += '✅ *Todos los errores han sido arreglados.*\n\n';
-      response += '✅ *Ya no hay errores en ningún archivo de plugins.*';
-    } else if (!hasErrors) {
-      response += '✅ ¡Todo está en orden! No se detectaron errores de sintaxis.';
+    if (hasErrors) {
+      response += `🗑️ *Se eliminaron ${deletedFiles} archivos con errores.*\n\n`;
+      response += '✅ *Ya no hay errores en los archivos de plugins restantes.*';
     } else {
-      response += '🚩 *No se pudieron arreglar todos los errores.*';
+      response += '✅ ¡Todo está en orden! No se detectaron errores de sintaxis.';
     }
     await conn.reply(m.chat, response, m);
     await m.react('✅');
