@@ -1,15 +1,17 @@
+import en from './Lenguaje/en.js';
+import es from './Lenguaje/es.js';
+
 const handlerIdioma = async (m, { conn, text }) => {
+  let mensajes;
   if (text === 'en') {
-    // Importar archivo de idioma inglés
-    import { mensajes } from './Lenguaje/en.js';
-    await conn.reply(m.chat, mensajes.seleccionIdioma);
+    mensajes = en.mensajes;
   } else if (text === 'es') {
-    // Importar archivo de idioma español
-    import { mensajes } from './Lenguaje/es.js';
-    await conn.reply(m.chat, mensajes.seleccionIdioma);
+    mensajes = es.mensajes;
   } else {
     await conn.reply(m.chat, 'Idioma no soportado');
+    return;
   }
+  await conn.reply(m.chat, mensajes.seleccionIdioma);
 };
 
 handlerIdioma.help = ['idioma'];
