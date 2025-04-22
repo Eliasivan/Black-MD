@@ -1,19 +1,16 @@
 import db from '../lib/database.js';
+
 let linkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})( [0-9]{1,3})?/i;
 
 let handler = async (m, { conn, text, isOwner }) => {
   if (!text) return m.reply(`📝 Ingresa el link del grupo para rentar el bot._`);
-
   let [_, code] = text.match(linkRegex) || [];
   if (!code) return m.reply('🚩 Enlace inválido.');
-
   global.db.data.groupRents = global.db.data.groupRents || {};
   let userRents = global.db.data.userRents[m.sender];
-
-  if (!userRents || userRents.tokens <= 0) {
-    return m.reply('❎ No tienes tokens disponibles para rentar el bot. Compra más tokens con /rentar.');
+  if (!userRents || userRents.stars <= 0) {
+    return m.reply('❎ No tienes estrellas disponibles para rentar el bot. Compra más estrellas con /rentar.');
   }
-
   let groupMetadata;
   try {
     groupMetadata = await conn.groupAcceptInvite(code);
@@ -23,28 +20,17 @@ let handler = async (m, { conn, text, isOwner }) => {
     }
     return m.reply(`❗ Error al unirse al grupo: ${e.message}`);
   }
-
   let groupId = groupMetadata.id;
-
-  global.db.data.groupRents[groupId] = {
-    user: m.sender,
-    tokenCount: userRents.tokens,
-    startTime: Date.now(),
-    duration: userRents.tokens * 24 * 60 * 60 * 1000
-  };
-
-  userRents.tokens = 0;
+  global.db.data.groupRents[groupId] = { user: m.sender, starCount: userRents.stars, startTime: Date.now(), duration: userRents.stars * 24 * 60 * 60 * 1000 };
+  userRents.stars = 0;
   userRents.groups.push(groupId);
-
-  conn.reply(m.chat, `📝 Me uní correctamente al grupo_ *${groupId}* por ${global.db.data.groupRents[groupId].tokenCount} día(s).`);
-
+  conn.reply(m.chat, `📝 Me uní correctamente al grupo *${groupId}* por ${global.db.data.groupRents[groupId].starCount} día(s).`);
   let chats = global.db.data.chats[groupId] || {};
   chats.expired = global.db.data.groupRents[groupId].startTime + global.db.data.groupRents[groupId].duration;
   global.db.data.chats[groupId] = chats;
-
-  let pp = 'https://files.catbox.moe/vf2310.mp4';
-  await conn.sendMessage(groupMetadata, { video: { url: pp }, gifPlayback: true, caption: '¡Ya llegué! El bot estará disponible por el tiempo acordado.', mentions: [m.sender] }, { quoted: estilo })
+  await conn.sendMessage(groupMetadata, { text: `Ya llegué ⭐️. El bot estará disponible por ${global.db.data.groupRents[groupId].starCount} día(s).` }, { quoted: m });
 };
+
 handler.tags = ['grupos']
 handler.help = ['rentar2 *<link>*']
 handler.command = ['rentar2']
