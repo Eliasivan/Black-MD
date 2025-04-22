@@ -1,4 +1,4 @@
-/* Codigo creado por ofcking y mejorado por Eliasivan */
+/* Codigo creado por ofcking y mejorado   por Eliasivan */
 
 import fs from 'fs';
 import path from 'path';
