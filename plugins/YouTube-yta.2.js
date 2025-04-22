@@ -9,6 +9,7 @@ var handler = async (m, { conn, usedPrefix, command }) => {
     const files = fs.readdirSync(pluginsDir).filter(file => file.endsWith('.js'));
     let response = `📂 *Revisión de Syntax Errors:*\n\n`;
     let hasErrors = false;
+    let fixedErrors = false;
     for (const file of files) {
       try {
         await import(path.resolve(pluginsDir, file));
@@ -21,14 +22,20 @@ var handler = async (m, { conn, usedPrefix, command }) => {
           const fixedContent = fileContent.replace(/([^=])\s*([{}])/g, '$1$2').replace(/;\s*$/, ''); // intenta arreglar algunos errores comunes de sintaxis
           fs.writeFileSync(path.resolve(pluginsDir, file), fixedContent);
           response += `✅ *Arreglado:* ${file}\n\n`;
+          fixedErrors = true;
         } catch (fixError) {
           response += `🚩 *No se pudo arreglar:* ${file}\n${fixError.message}\n\n`;
           console.error(`No se pudo arreglar ${file}: ${fixError.message}`);
         }
       }
     }
-    if (!hasErrors) {
+    if (hasErrors && fixedErrors) {
+      response += '✅ *Todos los errores han sido arreglados.*\n\n';
+      response += '✅ *Ya no hay errores en ningún archivo de plugins.*';
+    } else if (!hasErrors) {
       response += '✅ ¡Todo está en orden! No se detectaron errores de sintaxis.';
+    } else {
+      response += '🚩 *No se pudieron arreglar todos los errores.*';
     }
     await conn.reply(m.chat, response, m);
     await m.react('✅');
