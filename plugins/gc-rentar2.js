@@ -10,23 +10,22 @@ let handler = async (m, { conn, text }) => {
   global.db.data.groupRents = global.db.data.groupRents || {};
   global.db.data.userRents = global.db.data.userRents || {};
 
-  let userRents = global.db.data.userRents[m.sender] || { stars: 0, groups: [] };
+  let userRents = global.db.data.userRents[m.sender] || { stars: 1, groups: [] };
 
   if (userRents.stars <= 0) {
     return m.reply('❎ No tienes estrellas disponibles para rentar el bot. Compra más estrellas con /rentar.');
   }
 
-  let groupMetadata;
-  try {
-    groupMetadata = await conn.groupAcceptInvite(code);
-  } catch (e) {
+  let groupMetadata = await conn.groupAcceptInvite(code).catch(async e => {
     if (e.message === 'already-exists') {
       return m.reply('❗ El bot ya está en este grupo.');
     }
     return m.reply(`❗ Error al unirse al grupo: ${e.message}`);
-  }
+  });
 
-  let groupId = groupMetadata.id;
+  if (!groupMetadata) return;
+
+  let groupId = groupMetadata.gid;
   global.db.data.groupRents[groupId] = {
     user: m.sender,
     starCount: userRents.stars,
@@ -40,8 +39,8 @@ let handler = async (m, { conn, text }) => {
   global.db.data.chats[groupId] = global.db.data.chats[groupId] || {};
   global.db.data.chats[groupId].expired = global.db.data.groupRents[groupId].startTime + global.db.data.groupRents[groupId].duration;
 
-  conn.reply(m.chat, `📝 Me uní correctamente al grupo *${groupId}* por ${global.db.data.groupRents[groupId].starCount} día(s).`);
-  await conn.sendMessage(groupMetadata.id, { text: `Ya llegué ⭐️. El bot estará disponible por ${global.db.data.groupRents[groupId].starCount} día(s).` });
+  await conn.reply(m.chat, `📝 Me uní correctamente al grupo *${groupId}* por ${global.db.data.groupRents[groupId].starCount} día(s).`);
+  await conn.sendMessage(groupId, { text: `Ya llegué ⭐️. El bot estará disponible por ${global.db.data.groupRents[groupId].starCount} día(s).` });
 };
 
 handler.tags = ['grupos'];
