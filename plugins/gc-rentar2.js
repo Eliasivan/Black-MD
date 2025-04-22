@@ -40,7 +40,7 @@ let handler = async (m, { conn, text }) => {
   global.db.data.chats[groupId].expired = global.db.data.groupRents[groupId].startTime + global.db.data.groupRents[groupId].duration;
 
   await conn.reply(m.chat, `📝 Me uní correctamente al grupo *${groupId}* por ${global.db.data.groupRents[groupId].starCount} día(s).`);
-  await conn.sendMessage(groupId, { text: `Ya llegué ⭐️. El bot estará disponible por ${global.db.data.groupRents[groupId].starCount} día(s).` });
+  await conn.sendMessage(groupId, { text: `Ya llegué ⭐️. El bot estará disponible por ${global.db.data.groupRents[groupId].starCount} día(s).` }, { });
 };
 
 handler.tags = ['grupos'];
