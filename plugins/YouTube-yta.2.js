@@ -1,4 +1,4 @@
-/* Codigo creado por ofcking y mejorado por Eliasivan*/
+/* Codigo creado por ofcking y mejorado por Eliasivan */
 
 import fs from 'fs';
 import path from 'path';
@@ -48,5 +48,6 @@ handler.command = ['syntax'];
 handler.help = ['syntax'];
 handler.tags = ['tools'];
 handler.register = true;
+handler.rowner = true;
 
 export default handler;
