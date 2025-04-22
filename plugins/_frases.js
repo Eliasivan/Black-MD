@@ -8,7 +8,7 @@ let handler = async (m, { conn }) => {
       forwardingScore: 9999999,
       isForwarded: false,
       externalAdReply: {
-        title: rcanal,
+        title: packname,
         body: "Frases inspiradoras",
         thumbnail: imagen2
       }
