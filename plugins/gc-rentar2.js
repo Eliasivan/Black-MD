@@ -2,15 +2,20 @@ import db from '../lib/database.js';
 
 let linkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})( [0-9]{1,3})?/i;
 
-let handler = async (m, { conn, text, isOwner }) => {
-  if (!text) return m.reply(`📝 Ingresa el link del grupo para rentar el bot._`);
+let handler = async (m, { conn, text }) => {
+  if (!text) return m.reply(`📝 Ingresa el link del grupo para rentar el bot.`);
   let [_, code] = text.match(linkRegex) || [];
   if (!code) return m.reply('🚩 Enlace inválido.');
+
   global.db.data.groupRents = global.db.data.groupRents || {};
-  let userRents = global.db.data.userRents[m.sender];
-  if (!userRents || userRents.stars <= 0) {
+  global.db.data.userRents = global.db.data.userRents || {};
+
+  let userRents = global.db.data.userRents[m.sender] || { stars: 0, groups: [] };
+
+  if (userRents.stars <= 0) {
     return m.reply('❎ No tienes estrellas disponibles para rentar el bot. Compra más estrellas con /rentar.');
   }
+
   let groupMetadata;
   try {
     groupMetadata = await conn.groupAcceptInvite(code);
@@ -20,19 +25,27 @@ let handler = async (m, { conn, text, isOwner }) => {
     }
     return m.reply(`❗ Error al unirse al grupo: ${e.message}`);
   }
+
   let groupId = groupMetadata.id;
-  global.db.data.groupRents[groupId] = { user: m.sender, starCount: userRents.stars, startTime: Date.now(), duration: userRents.stars * 24 * 60 * 60 * 1000 };
-  userRents.stars = 0;
+  global.db.data.groupRents[groupId] = {
+    user: m.sender,
+    starCount: userRents.stars,
+    startTime: Date.now(),
+    duration: userRents.stars * 24 * 60 * 60 * 1000
+  };
+
+  userRents.stars -= 1;
   userRents.groups.push(groupId);
+
+  global.db.data.chats[groupId] = global.db.data.chats[groupId] || {};
+  global.db.data.chats[groupId].expired = global.db.data.groupRents[groupId].startTime + global.db.data.groupRents[groupId].duration;
+
   conn.reply(m.chat, `📝 Me uní correctamente al grupo *${groupId}* por ${global.db.data.groupRents[groupId].starCount} día(s).`);
-  let chats = global.db.data.chats[groupId] || {};
-  chats.expired = global.db.data.groupRents[groupId].startTime + global.db.data.groupRents[groupId].duration;
-  global.db.data.chats[groupId] = chats;
-  await conn.sendMessage(groupMetadata, { text: `Ya llegué ⭐️. El bot estará disponible por ${global.db.data.groupRents[groupId].starCount} día(s).` }, { quoted: m });
+  await conn.sendMessage(groupMetadata.id, { text: `Ya llegué ⭐️. El bot estará disponible por ${global.db.data.groupRents[groupId].starCount} día(s).` });
 };
 
-handler.tags = ['grupos']
-handler.help = ['rentar2 *<link>*']
-handler.command = ['rentar2']
+handler.tags = ['grupos'];
+handler.help = ['rentar2 *<link>*'];
+handler.command = ['rentar2'];
 
-export default handler
+export default handler;
