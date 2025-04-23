@@ -72,7 +72,7 @@ global.stickeramor = [amor, amor2, amor3, amor4, amor5]
 global.photoSity = [imagen8, imagen1, imagen4, imagen6]
 
 global.libreria = 'Baileys'
-global.baileys = 'V 6.7.8'
+global.baileys = 'V 6.7.16'
 global.languaje = 'Español'
 global.nameqr = 'GokuBlack-Bot'
 global.sessions = 'Blacksesion'
