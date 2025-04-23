@@ -10,13 +10,13 @@ const pinterest = async (m, { conn, text }) => {
     const response = await axios.get(url);
     const data = response.data;
 
-    if (data.result && data.result.length > 0) {
-      const results = data.result;
-      const mensaje = `Resultados de búsqueda en Pinterest para "${text}":\n\n`;
-      results.forEach((result, index) => {
-        mensaje += `${index + 1}. ${result.title}\n${result.url || result.images[0].url}\n\n`;
+    if (data && data.length > 0) {
+      const images = [];
+      data.forEach((image) => {
+        images.push(image);
       });
-      conn.reply(m.chat, mensaje);
+      const randomImage = images[Math.floor(Math.random() * images.length)];
+      conn.sendFile(m.chat, randomImage, 'pinterest.jpg', `Resultado de búsqueda en Pinterest para "${text}"`);
     } else {
       conn.reply(m.chat, 'No se encontraron resultados');
     }
