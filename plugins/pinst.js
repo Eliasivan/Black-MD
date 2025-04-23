@@ -1,73 +1,44 @@
 import axios from 'axios';
 
-const igstory = async (m, { conn, args, usedPrefix, command, Func, Api }) => {
-    try {
-        // Verificar si los argumentos están presentes
-        if (!args || !args[0]) {
-            return conn.reply(
-                m.chat,
-                Func.example(
-                    usedPrefix,
-                    command,
-                    'https://instagram.com/stories/username/123456789?igshid=example'
-                ),
-                m
-            );
-        }
-
-        // Reaccionar con un emoji para indicar que el proceso ha comenzado
-        await m.react('⏳');
-
-        // Registrar el tiempo de inicio del proceso
-        const startTime = new Date();
-
-        // Llamar a la API para obtener las historias de Instagram
-        const response = await Api.get('api/igs', {
-            q: args[0], // Enviar el argumento (link o username) a la API
-        });
-
-        // Verificar si la API devolvió un error
-        if (!response.status) {
-            return conn.reply(
-                m.chat,
-                `❌ Error: ${response.message || 'Hubo un problema con la solicitud.'}`,
-                m
-            );
-        }
-
-        // Procesar y enviar cada archivo (video o imagen) obtenido de la API
-        for (const [index, item] of response.data.entries()) {
-            const fileType = item.type === 'video' ? 'mp4' : 'jpg'; // Determinar el tipo de archivo
-            const fileName = Func.filename(fileType); // Generar un nombre de archivo único
-
-            // Enviar el archivo al chat
-            await conn.sendFile(
-                m.chat,
-                item.url,
-                fileName,
-                `✨ *Tiempo de proceso:* ${new Date() - startTime} ms\n📄 *Archivo*: ${index + 1}/${response.data.length}`,
-                m
-            );
-
-            // Introducir un retraso para evitar problemas con la API o saturar el chat
-            await Func.delay(1500);
-        }
-
-        // Reaccionar con un emoji cuando el proceso termine
-        await m.react('✅');
-    } catch (error) {
-        // Manejar errores y mostrarlos al usuario
-        conn.reply(
-            m.chat,
-            `❌ Ocurrió un error al procesar tu solicitud:\n${Func.jsonFormat(error.message || error)}`,
-            m
-        );
+const igstory = async (m, { conn, args, usedPrefix, command }) => {
+  try {
+    if (!args || !args[0]) {
+      return conn.reply(m.chat, `Ejemplo de uso: ${usedPrefix}${command} https://instagram.com/stories/username/123456789?igshid=example`, m);
     }
+
+    await m.react('⏳');
+    const startTime = new Date();
+
+    const response = await axios.get(`https://api.example.com/api/igs?q=${args[0]}`);
+
+    if (response.status !== 200) {
+      return conn.reply(m.chat, `❌ Error: Hubo un problema con la solicitud.`, m);
+    }
+
+    const data = response.data;
+
+    if (data && data.length > 0) {
+      for (const [index, item] of data.entries()) {
+        const fileType = item.type === 'video' ? 'mp4' : 'jpg';
+        const fileName = `${index + 1}.${fileType}`;
+
+        await conn.sendFile(m.chat, item.url, fileName, `✨ *Tiempo de proceso:* ${new Date() - startTime} ms\n📄 *Archivo*: ${index + 1}/${data.length}`, m);
+
+        await new Promise(resolve => setTimeout(resolve, 1500));
+      }
+    } else {
+      conn.reply(m.chat, `No se encontraron resultados`, m);
+    }
+
+    await m.react('✅');
+  } catch (error) {
+    conn.reply(m.chat, `❌ Ocurrió un error al procesar tu solicitud:\n${error.message}`, m);
+  }
 };
 
-igstory.help = ['igstory']; // Ayuda para el comando
-igstory.tags = ['downloader']; // Categoría del comando
-igstory.command = ['igs', 'igstory']; // Alias del comando
-igstory.limit = true; // Establecer límite para el uso del comando
+igstory.help = ['igstory'];
+igstory.tags = ['downloader'];
+igstory.command = ['igs', 'igstory'];
+igstory.limit = true;
 
 export default igstory;
