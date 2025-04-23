@@ -11,12 +11,9 @@ const pinterest = async (m, { conn, text }) => {
     const data = response.data;
 
     if (data && data.length > 0) {
-      const images = [];
-      data.forEach((image) => {
-        images.push(image);
-      });
-      const randomImage = images[Math.floor(Math.random() * images.length)];
-      conn.sendFile(m.chat, randomImage, 'pinterest.jpg', `Resultado de búsqueda en Pinterest para "${text}"`);
+      for (const image of data) {
+        await conn.sendFile(m.chat, image, 'pinterest.jpg', '');
+      }
     } else {
       conn.reply(m.chat, 'No se encontraron resultados');
     }
@@ -29,6 +26,5 @@ const pinterest = async (m, { conn, text }) => {
 pinterest.help = ['pinterest'];
 pinterest.tags = ['search'];
 pinterest.command = ['pinterest6'];
-pinterest.group = true;
 
 export default pinterest;
