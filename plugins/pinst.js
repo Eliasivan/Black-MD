@@ -1,20 +1,20 @@
-const axios = require('axios');
+import axios from 'axios';
 
-const pinterestSearch = async (m, { conn, text }) => {
+const pinterest = async (m, { conn, text }) => {
   if (!text) return conn.reply(m.chat, 'Por favor, ingresa un texto para buscar en Pinterest');
 
   const apiKey = 'fg_STZFglNn';
-  const url = `https://api.fgmods.xyz/api/search/pinterest?text=${text}&apikey=${apiKey}`;
+  const url = `https://api.fgmods.xyz/api/search/pinterest?text=${encodeURIComponent(text)}&apikey=${apiKey}`;
 
   try {
     const response = await axios.get(url);
     const data = response.data;
 
-    if (data.status) {
+    if (data.result && data.result.length > 0) {
       const results = data.result;
       const mensaje = `Resultados de búsqueda en Pinterest para "${text}":\n\n`;
       results.forEach((result, index) => {
-        mensaje += `${index + 1}. ${result.title}\n${result.url}\n\n`;
+        mensaje += `${index + 1}. ${result.title}\n${result.url || result.images[0].url}\n\n`;
       });
       conn.reply(m.chat, mensaje);
     } else {
@@ -26,9 +26,9 @@ const pinterestSearch = async (m, { conn, text }) => {
   }
 };
 
-pinterestSearch.help = ['pinterest'];
-pinterestSearch.tags = ['search'];
-pinterestSearch.command = ['pinterest6'];
-pinterestSearch.group = true;
+pinterest.help = ['pinterest'];
+pinterest.tags = ['search'];
+pinterest.command = ['pinterest6'];
+pinterest.group = true;
 
-export default pinterestSearch;
+export default pinterest;
