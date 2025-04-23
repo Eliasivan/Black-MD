@@ -24,7 +24,6 @@ const pinterest = async (m, { conn, text }) => {
 
 pinterest.help = ['pinterest'];
 pinterest.tags = ['search'];
-pinterest.command = ['pinterest'];
-pinterest.group = true;
+pinterest.command = ['pind'];
 
 export default pinterest;
