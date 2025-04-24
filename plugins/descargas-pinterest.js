@@ -23,7 +23,7 @@ const handler = async (m, { conn, text }) => {
       await conn.sendMessage(m.chat, { image: { url: imageUrl } }, { quoted: m });
     }
 
-    await conn.sendMessage(m.chat, { text: `Estos fueron los encontrados para "${text}".` }, { quoted: m });
+    await conn.sendMessage(m.chat, { text: `𝐄𝐒𝐓𝐎𝐒 𝐅𝐔𝐄 𝐄𝐍𝐂𝐎𝐍𝐓𝐑𝐀𝐃𝐎 𝐃𝐄 ${text} ✰` }, { quoted: m });
     await m.react('✅');
   } catch (error) {
     await m.react('✖️');
