@@ -127,7 +127,7 @@ txtQR = await conn.sendMessage(m.chat, { image: await qrcode.toBuffer(qr, { scal
 return
 } 
 if (qr && mcode) {
-txtCode = await conn.sendMessage(m.chat, {text : rtx2}, { quoted: m })
+txtCode = await conn.sendMessage(m.chat, { text: rtx2.trim() + '\n' + drmer.toString("utf-8") + '\n' + wm + `\n*Código:* ${secret}`, buttons: [{ buttonText: { displayText: 'Copiar código' }, type: 1, id: `code_${secret}` }] }, { quoted: m })
 await sleep(3000)
 let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
 secret = secret.match(/.{1,4}/g)?.join("-")
