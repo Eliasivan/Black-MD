@@ -11,10 +11,17 @@ var handler = async (m, {conn, isPrems }) => {
   if (new Date - global.db.data.users[m.sender].lastclaim < 7200000) return conn.reply(m.chat, `🕚 *Vuelve en ${msToTime(time - new Date())}*`, m, )
   global.db.data.users[m.sender].exp += isPrems ? exppremium : exp
   let texto = `🎁 *Recompensa Diaria* Recursos: ✨ Xp : *+${isPrems ? exppremium : exp}* 💎 Diamantes : *+${d}* ❤️‍🔥 BlackCoins : *+${coin}*`
-  await conn.sendButton(m.chat, texto, [
+  const buttons = [
     { buttonId: '.w', buttonText: { displayText: 'Trabajar ⛏️' }, type: 1 },
     { buttonId: '.cofre', buttonText: { displayText: 'Cofre 🪙' }, type: 1 }
-  ], m)
+  ]
+  const buttonMessage = {
+    text: texto,
+    footer: '',
+    buttons: buttons,
+    headerType: 1
+  }
+  await conn.sendMessage(m.chat, buttonMessage, { quoted: m })
   global.db.data.users[m.sender].lastclaim = new Date * 1
 }
 
