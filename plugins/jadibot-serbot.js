@@ -137,11 +137,7 @@ async function connectionUpdate(update) {
         }
       ]
     }
-    txtCode = await conn.sendMessage(m.chat, buttonMessage, { quoted: m })
-  } catch (error) {
-    console.log(error) // Muestra el error en la consola
-  }
-}
+txtCode = await conn.sendMessage(m.chat, buttonMessage, { quoted: m })
 await sleep(3000)
 let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
 secret = secret.match(/.{1,4}/g)?.join("-")
