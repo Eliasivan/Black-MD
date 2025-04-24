@@ -19,29 +19,15 @@ const handler = async (m, { conn, args }) => {
 
   try {
     m.react('⏳'); // Reacción de tiempo
-    if (args[0].includes('audio')) {
-      const api = await (await fetch(`https://api.sylphy.xyz/download/ytmp3?url=${url}&apikey=sylph`)).json();
-      const title = api.result.title;
+    const api = await (await fetch(`https://api.sylphy.xyz/download/ytmp3?url=${url}&apikey=sylph`)).json();
+    const title = api.result.title;
 
-      const infoMessage = `*Información del audio:*\n\n*Título:* ${title}`;
+    const infoMessage = `*Información del audio:*\n\n*Título:* ${title}`;
 
-      m.reply(infoMessage);
+    m.reply(infoMessage);
 
-      conn.sendMessage(m.chat, { audio: { url: api.result.download_url }}, { mimetype: 'audio/mpeg' }, m);
-      m.react('✅'); // Reacción de verificación
-    } else if (args[0].includes('video')) {
-      const api = await (await fetch(`https://api.sylphy.xyz/download/ytmp4?url=${url}&apikey=sylph`)).json();
-      const title = api.result.title;
-
-      const infoMessage = `*Información del video:*\n\n*Título:* ${title}`;
-
-      m.reply(infoMessage);
-
-      conn.sendMessage(m.chat, { video: { url: api.result.download_url }}, { mimetype: 'video/mp4' }, m);
-      m.react('✅'); // Reacción de verificación
-    } else {
-      m.reply('Por favor, especifica si deseas descargar audio o video');
-    }
+    conn.sendMessage(m.chat, { audio: { url: api.result.download_url }}, { mimetype: 'audio/mpeg' }, m);
+    m.react('✅'); // Reacción de verificación
   } catch (error) {
     console.error(error);
     m.react('❌'); // Reacción de error
@@ -49,8 +35,8 @@ const handler = async (m, { conn, args }) => {
   }
 };
 
-handler.help = ['yt <url> <audio/video>'];
+handler.help = ['ytmp3 <url>'];
 handler.tags = ['downloader'];
-handler.command = ['yt'];
+handler.command = ['ytmp0', 'play0'];
 
 export default handler;
