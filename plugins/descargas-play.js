@@ -1,4 +1,4 @@
-import axios from 'axios';
+import fetch from 'node-fetch';
 import yts from 'yt-search';
 
 const handler = async (m, { conn, args }) => {
@@ -26,26 +26,9 @@ const handler = async (m, { conn, args }) => {
 
   try {
     m.react('⏳'); // Reacción de tiempo
-    const apiUrl = `https://api.sylphy.xyz/download/ytmp3?url=${encodeURIComponent(url)}&apikey=sylph`;
-    const response = await axios.get(apiUrl);
-
-    if (response.status === 200 && response.data.status) {
-      const audioUrl = response.data.result.download_url;
-      const audioTitle = response.data.result.title;
-
-      if (audioUrl && audioTitle) {
-        await conn.sendFile(m.chat, audioUrl, `${audioTitle}.mp3`, '', m, false, { mimetype: 'audio/mpeg' });
-        m.react('✅'); // Reacción de verificación
-        m.reply('Audio descargado y enviado con éxito!');
-      } else {
-        m.react('❌'); // Reacción de error
-        m.reply('Error al descargar el audio');
-      }
-    } else {
-      m.react('❌'); // Reacción de error
-      m.reply('Error al procesar la solicitud');
-      console.log(response.data); // Verificar la respuesta de la API
-    }
+    const api = await (await fetch(`https://api.sylphy.xyz/download/ytmp3?url=${url}&apikey=sylph`)).json();
+    conn.sendMessage(m.chat, { audio: { url: api.result.download_url }}, { mimetype: 'audio/mpeg' }, m);
+    m.react('✅'); // Reacción de verificación
   } catch (error) {
     console.error(error);
     m.react('❌'); // Reacción de error
