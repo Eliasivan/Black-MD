@@ -9,16 +9,12 @@ var handler = async (m, {conn, isPrems }) => {
   global.db.data.users[m.sender].money += d
   global.db.data.users[m.sender].exp += isPrems ? exppremium : exp
   let texto = `🎁 *Recompensa Diaria* Recursos: ✨ Xp : *+${isPrems ? exppremium : exp}* 💎 Diamantes : *+${d}* ❤️‍🔥 BlackCoins : *+${coin}*`
-  await conn.sendMessage(m.chat, { text: texto }, { quoted: m })
-  await conn.sendMessage(m.chat, {
-    text: '¿Qué deseas hacer ahora?',
-    buttons: [
-      { buttonId: '.w', buttonText: { displayText: 'Trabajar ⛏️' }},
-      { buttonId: '.cofre', buttonText: { displayText: 'Cofre 🪙' }}
-    ]
-  })
+  let wm = 'Recompensa Diaria'
+  let img = 'https://example.com/imagen.jpg' // Reemplaza con la URL de la imagen que deseas usar
+  let fkontak = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: m.chat } : {}) }, message: { contactMessage: { displayName: 'Recompensa Diaria', vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;a,;;;\nFN:'Recompensa Diaria'\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` }}}
+  await conn.sendButton(m.chat, texto, wm, img, [['Trabajar ⛏️', '.w'], ['Cofre 🪙', '.cofre']], m, fkontak)
 }
-await conn.sendButton(m.chat, texto, wm, img, [['🔰 𝙼𝙴𝙽𝚄', '/menu'] ], fkontak, m)
+
 handler.help = ['daily', 'claim']
 handler.tags = ['rpg']
 handler.command = ['daily', 'claim']
