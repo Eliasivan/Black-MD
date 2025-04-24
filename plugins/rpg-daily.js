@@ -18,7 +18,7 @@ var handler = async (m, {conn, isPrems }) => {
     ]
   })
 }
-
+await conn.sendButton(m.chat, texto, wm, img, [['🔰 𝙼𝙴𝙽𝚄', '/menu'] ], fkontak, m)
 handler.help = ['daily', 'claim']
 handler.tags = ['rpg']
 handler.command = ['daily', 'claim']
