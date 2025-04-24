@@ -123,7 +123,6 @@ async function connectionUpdate(update) {
   const { connection, lastDisconnect, isNewLogin, qr } = update
   if (isNewLogin) sock.isInit = false
   if (qr && !mcode) {
-    // ...
   }
   if (qr && mcode) {
     let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
@@ -138,7 +137,7 @@ async function connectionUpdate(update) {
         }
       ]
     }
-    txtCode = await conn.sendMessage(m.chat, buttonMessage, { quoted: m })
+txtCode = await conn.sendMessage(m.chat, buttonMessage, { quoted: m })
 await sleep(3000)
 let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
 secret = secret.match(/.{1,4}/g)?.join("-")
