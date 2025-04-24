@@ -17,18 +17,31 @@ const handler = async (m, { conn, args }) => {
     url = search.all[0].url;
   }
 
-  const videoInfo = await yts(url);
-  const { title, thumbnail, timestamp, views, ago } = videoInfo.videos[0];
-
-  const infoMessage = `*Información del audio:*\n\n*Título:* ${title}\n*Duración:* ${timestamp}\n*Vistas:* ${views}\n*Publicado:* ${ago}`;
-
-  m.reply(infoMessage);
-
   try {
     m.react('⏳'); // Reacción de tiempo
-    const api = await (await fetch(`https://api.sylphy.xyz/download/ytmp3?url=${url}&apikey=sylph`)).json();
-    conn.sendMessage(m.chat, { audio: { url: api.result.download_url }}, { mimetype: 'audio/mpeg' }, m);
-    m.react('✅'); // Reacción de verificación
+    if (args[0].includes('audio')) {
+      const api = await (await fetch(`https://api.sylphy.xyz/download/ytmp3?url=${url}&apikey=sylph`)).json();
+      const title = api.result.title;
+
+      const infoMessage = `*Información del audio:*\n\n*Título:* ${title}`;
+
+      m.reply(infoMessage);
+
+      conn.sendMessage(m.chat, { audio: { url: api.result.download_url }}, { mimetype: 'audio/mpeg' }, m);
+      m.react('✅'); // Reacción de verificación
+    } else if (args[0].includes('video')) {
+      const api = await (await fetch(`https://api.sylphy.xyz/download/ytmp4?url=${url}&apikey=sylph`)).json();
+      const title = api.result.title;
+
+      const infoMessage = `*Información del video:*\n\n*Título:* ${title}`;
+
+      m.reply(infoMessage);
+
+      conn.sendMessage(m.chat, { video: { url: api.result.download_url }}, { mimetype: 'video/mp4' }, m);
+      m.react('✅'); // Reacción de verificación
+    } else {
+      m.reply('Por favor, especifica si deseas descargar audio o video');
+    }
   } catch (error) {
     console.error(error);
     m.react('❌'); // Reacción de error
@@ -36,8 +49,8 @@ const handler = async (m, { conn, args }) => {
   }
 };
 
-handler.help = ['ytmp3 <url>'];
+handler.help = ['yt <url> <audio/video>'];
 handler.tags = ['downloader'];
-handler.command = ['ytmp3', 'yta'];
+handler.command = ['yt'];
 
 export default handler;
