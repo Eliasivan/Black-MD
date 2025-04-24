@@ -9,17 +9,14 @@ var handler = async (m, {conn, isPrems }) => {
   global.db.data.users[m.sender].money += d
   global.db.data.users[m.sender].exp += isPrems ? exppremium : exp
   let texto = `🎁 *Recompensa Diaria* Recursos: ✨ Xp : *+${isPrems ? exppremium : exp}* 💎 Diamantes : *+${d}* ❤️‍🔥 BlackCoins : *+${coin}*`
-  const buttons = [
-    { buttonId: '.w', buttonText: { displayText: 'Trabajar ⛏️' }, type: 1 },
-    { buttonId: '.cofre', buttonText: { displayText: 'Cofre 🪙' }, type: 1 }
-  ]
-  const buttonMessage = {
-    text: texto,
-    footer: '',
-    buttons: buttons,
-    headerType: 1
-  }
-  await conn.sendMessage(m.chat, buttonMessage, { quoted: m })
+  await conn.sendMessage(m.chat, { text: texto }, { quoted: m })
+  await conn.sendMessage(m.chat, {
+    text: '¿Qué deseas hacer ahora?',
+    buttons: [
+      { buttonId: '.w', buttonText: { displayText: 'Trabajar ⛏️' }},
+      { buttonId: '.cofre', buttonText: { displayText: 'Cofre 🪙' }}
+    ]
+  })
 }
 
 handler.help = ['daily', 'claim']
