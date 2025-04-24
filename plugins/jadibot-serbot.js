@@ -124,20 +124,24 @@ async function connectionUpdate(update) {
   if (isNewLogin) sock.isInit = false
   if (qr && mcode) {
   try {
-    let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
-    secret = secret.match(/.{1,4}/g)?.join("-")
-    console.log(secret) // Verifica que secret tenga un valor
+    let secret = await sock.requestPairingCode(m.sender.split('@')[0]);
+    secret = secret.match(/.{1,4}/g)?.join('-');
     const buttonMessage = {
-      text: rtx2.trim() + '\n' + drmer.toString("utf-8") + '\n' + wm + `\n*Código:* ${secret}`,
+      text: `${rtx2.trim()}\n${drmer.toString('utf-8')}\n${wm}\n*Código:* ${secret}`,
+      footer: wm,
       buttons: [
         {
-          buttonId: `copy_code`,
+          buttonId: 'copy_code',
           buttonText: { displayText: 'Copiar código' },
           type: 1
         }
       ]
-    }
-txtCode = await conn.sendMessage(m.chat, buttonMessage, { quoted: m })
+    };
+txtCode = await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
+  } catch (error) {
+    console.log(error);
+  }
+}
 await sleep(3000)
 let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
 secret = secret.match(/.{1,4}/g)?.join("-")
