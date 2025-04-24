@@ -6,9 +6,10 @@ const handler = async (m, { conn, args }) => {
 
   const url = args[0];
   const apikey = 'sylph'; // Reemplaza con tu propia API key si es necesario
-  const apiUrl = `https://api.sylphy.xyz/download/ytmp3?url=${url}&apikey=${apikey}`;
+  const apiUrl = `https://api.sylphy.xyz/download/ytmp3?url=${encodeURIComponent(url)}&apikey=${apikey}`;
 
   try {
+    m.react('⏳'); // Reacción de tiempo
     const response = await axios.get(apiUrl);
     const data = response.data;
 
@@ -18,12 +19,15 @@ const handler = async (m, { conn, args }) => {
 
       m.reply(`Descargando audio... ${audioTitle}`);
       await conn.sendFile(m.chat, audioUrl, audioTitle + '.mp3', '', m);
+      m.react('✅'); // Reacción de verificación
       m.reply('Audio descargado y enviado con éxito!');
     } else {
+      m.react('❌'); // Reacción de error
       m.reply('Error al descargar el audio');
     }
   } catch (error) {
     console.error(error);
+    m.react('❌'); // Reacción de error
     m.reply('Error al procesar la solicitud');
   }
 };
