@@ -10,34 +10,11 @@ var handler = async (m, {conn, isPrems }) => {
   let time = global.db.data.users[m.sender].lastclaim + 86400000 //12 Horas
   if (new Date - global.db.data.users[m.sender].lastclaim < 7200000) return conn.reply(m.chat, `🕚 *Vuelve en ${msToTime(time - new Date())}*`, m, )
   global.db.data.users[m.sender].exp += isPrems ? exppremium : exp
-  conn.reply(m.chat, `🎁 *Recompensa Diaria* Recursos: ✨ Xp : *+${isPrems ? exppremium : exp}* 💎 Diamantes : *+${d}* ❤️‍🔥 BlackCoins : *+${coin}*`, m, {
-    contextInfo: {
-      externalAdReply: {
-        mediaType: 1,
-        showAdAttribution: true,
-        title: '¿Qué deseas hacer ahora?',
-        body: 'Selecciona una opción',
-        sourceUrl: '',
-        thumbnailUrl: '',
-        buttons: [
-          {
-            buttonId: '.w',
-            buttonText: {
-              displayText: 'Trabajar ⛏️'
-            },
-            type: 1
-          },
-          {
-            buttonId: '.cofre',
-            buttonText: {
-              displayText: 'Cofre 🪙'
-            },
-            type: 1
-          }
-        ]
-      }
-    }
-  })
+  let texto = `🎁 *Recompensa Diaria* Recursos: ✨ Xp : *+${isPrems ? exppremium : exp}* 💎 Diamantes : *+${d}* ❤️‍🔥 BlackCoins : *+${coin}*`
+  await conn.sendButton(m.chat, texto, [
+    { buttonId: '.w', buttonText: { displayText: 'Trabajar ⛏️' }, type: 1 },
+    { buttonId: '.cofre', buttonText: { displayText: 'Cofre 🪙' }, type: 1 }
+  ], m)
   global.db.data.users[m.sender].lastclaim = new Date * 1
 }
 
