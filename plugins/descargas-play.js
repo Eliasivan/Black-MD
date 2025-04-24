@@ -1,4 +1,4 @@
-import axios from 'axios';
+import fetch from 'node-fetch';
 import yts from 'yt-search';
 
 const handler = async (m, { conn, args }) => {
@@ -24,20 +24,16 @@ const handler = async (m, { conn, args }) => {
 
   m.reply(infoMessage);
 
-  const apikey = 'sylph'; // API key válida
-  const apiUrl = `https://api.sylphy.xyz/download/ytmp3?url=${encodeURIComponent(url)}&apikey=${apikey}`;
-
   try {
     m.react('⏳'); // Reacción de tiempo
-    const response = await axios.get(apiUrl);
+    const api = await (await fetch(`https://api.neoxr.eu/api/youtube?url=${url}&type=audio&quality=128kbps&apikey=GataDios`)).json();
 
-    console.log(response.data); // Verificar la respuesta de la API
-
-    if (response.status === 200 && response.data.status === true) {
-      const audioUrl = response.data.result.download_url;
-      const audioTitle = response.data.result.title;
+    if (api.status && api.data) {
+      const audioUrl = api.data.url;
+      const audioTitle = title;
 
       if (audioUrl && audioTitle) {
+        m.reply(`Descargando audio... ${audioTitle}`);
         await conn.sendFile(m.chat, audioUrl, `${audioTitle}.mp3`, '', m);
         m.react('✅'); // Reacción de verificación
         m.reply('Audio descargado y enviado con éxito!');
@@ -48,7 +44,7 @@ const handler = async (m, { conn, args }) => {
     } else {
       m.react('❌'); // Reacción de error
       m.reply('Error al procesar la solicitud');
-      console.log(response.data); // Verificar la respuesta de la API
+      console.log(api); // Verificar la respuesta de la API
     }
   } catch (error) {
     console.error(error);
