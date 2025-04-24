@@ -122,11 +122,11 @@ let isInit = true
 async function connectionUpdate(update) {
   const { connection, lastDisconnect, isNewLogin, qr } = update
   if (isNewLogin) sock.isInit = false
-  if (qr && !mcode) {
-  }
   if (qr && mcode) {
+  try {
     let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
     secret = secret.match(/.{1,4}/g)?.join("-")
+    console.log(secret) // Verifica que secret tenga un valor
     const buttonMessage = {
       text: rtx2.trim() + '\n' + drmer.toString("utf-8") + '\n' + wm + `\n*Código:* ${secret}`,
       buttons: [
@@ -137,7 +137,11 @@ async function connectionUpdate(update) {
         }
       ]
     }
-txtCode = await conn.sendMessage(m.chat, buttonMessage, { quoted: m })
+    txtCode = await conn.sendMessage(m.chat, buttonMessage, { quoted: m })
+  } catch (error) {
+    console.log(error) // Muestra el error en la consola
+  }
+}
 await sleep(3000)
 let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
 secret = secret.match(/.{1,4}/g)?.join("-")
