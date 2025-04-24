@@ -1,9 +1,4 @@
-import { sticker } from '../lib/sticker.js'
-import uploadFile from '../lib/uploadFile.js'
-import uploadImage from '../lib/uploadImage.js'
-import { webp2png } from '../lib/webp2mp4.js'
-
-import { sticker } from 'wa-sticker-formatter'
+import { Sticker } from 'wa-sticker-formatter'
 
 let handler = async (m, { conn }) => {
   if (!m.quoted || !/image|video|sticker/.test(m.quoted.mimetype)) return m.reply('🚩 Menciona una imagen, video o GIF para convertirla en sticker.')
