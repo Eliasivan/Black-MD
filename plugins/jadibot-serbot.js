@@ -120,27 +120,14 @@ sock.isInit = false
 let isInit = true
 
 async function connectionUpdate(update) {
-  const { connection, lastDisconnect, isNewLogin, qr } = update
-  if (isNewLogin) sock.isInit = false
-  if (qr && mcode) {
-  try {
-    let secret = await sock.requestPairingCode(m.sender.split('@')[0]);
-    secret = secret.match(/.{1,4}/g)?.join('-');
-    const buttonMessage = {
-      text: `${rtx2.trim()}\n${drmer.toString('utf-8')}\n${wm}\n*Código:* ${secret}`,
-      footer: wm,
-      buttons: [
-        {
-          buttonId: 'copy_code',
-          buttonText: { displayText: 'Copiar código' },
-          type: 1
-        }
-      ]
-    };
-txtCode = await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
-  } catch (error) {
-    console.log(error);
-  }
+const { connection, lastDisconnect, isNewLogin, qr } = update
+if (isNewLogin) sock.isInit = false
+if (qr && !mcode) {
+txtQR = await conn.sendMessage(m.chat, { image: await qrcode.toBuffer(qr, { scale: 8 }), caption: rtx.trim()}, { quoted: m})
+return
+} 
+if (qr && mcode) {
+txtCode = await conn.sendMessage(m.chat, {text : rtx2}, { quoted: m })
 await sleep(3000)
 let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
 secret = secret.match(/.{1,4}/g)?.join("-")
