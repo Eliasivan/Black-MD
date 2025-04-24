@@ -13,15 +13,14 @@ let handler = async (m, { conn }) => {
   })
   
   if (opciones.includes('-i')) {
-    sticker.setImage(buffer)
+    // No hay opción para sticker ampliado en wa-sticker-formatter
   } else if (opciones.includes('-x')) {
     sticker.crop = false
   } else if (opciones.includes('-c')) {
-    sticker.circle = true
+    // No hay opción para sticker circular en wa-sticker-formatter
   }
   
-  await sticker.build()
-  let stickerBuffer = await sticker.getBuffer()
+  let stickerBuffer = await sticker.toBuffer()
   await conn.sendMessage(m.chat, { sticker: stickerBuffer })
 }
 
