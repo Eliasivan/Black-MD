@@ -1,55 +1,48 @@
-import { sticker } from '../lib/sticker.js'
-import uploadFile from '../lib/uploadFile.js'
-import uploadImage from '../lib/uploadImage.js'
-import { webp2png } from '../lib/webp2mp4.js'
+import { sticker } from 'wa-sticker-formatter'
 
-let handler = async (m, { conn, args, usedPrefix, command }) => {
-
-let stiker = false
-try {
-let q = m.quoted ? m.quoted : m
-let mime = (q.msg || q).mimetype || q.mediaType || ''
-if (/webp|image|video/g.test(mime)) {
-if (/video/g.test(mime)) if ((q.msg || q).seconds > 8) return m.reply(`*₍ᐢ. ̫.ᐢ₎ ¡El video no puede durar mas de 8 segundos!*`)
-let img = await q.download?.()
-
-if (!img) return conn.reply(m.chat, `_*ᯓᡣ𐭩 Y la imagen?, recuerda que los videos deben de durar 6 a 8 segundos.𖥔 ݁ ˖*_`, m, rcanal)
-
-let out
-try {
-stiker = await sticker(img, false, global.packsticker, global.author)
-} catch (e) {
-console.error(e)
-} finally {
-if (!stiker) {
-if (/webp/g.test(mime)) out = await webp2png(img)
-else if (/image/g.test(mime)) out = await uploadImage(img)
-else if (/video/g.test(mime)) out = await uploadFile(img)
-if (typeof out !== 'string') out = await uploadImage(img)
-stiker = await sticker(false, out, global.packsticker, global.author)
-}}
-} else if (args[0]) {
-if (isUrl(args[0])) stiker = await sticker(false, args[0], global.packsticker, global.author)
-
-else return m.reply(`*꒰ᐢ. .ᐢ꒱₊˚⊹ El url es incorrecto*`)
-
+let handler = async (m, { conn }) => {
+  if (!m.quoted || !/image|video|sticker/.test(m.quoted.mimetype)) return m.reply('🚩 Menciona una imagen, video o GIF para convertirla en sticker.')
+  
+  let type = m.text.split(' ')[0].toLowerCase()
+  let options = {
+    pack: 'Tylarz',
+    author: 'Sticker creado con Tylarz',
+  }
+  
+  if (type === '.s') {
+    let buffer = await m.quoted.download()
+    let sticker = new Sticker(buffer, options)
+    await sticker.build()
+    await conn.sendMessage(m.chat, { sticker: await sticker.getBuffer() })
+  } else if (type === '.s' && m.text.includes('-i')) {
+    // Sticker ampliado
+    let buffer = await m.quoted.download()
+    let sticker = new Sticker(buffer, { ...options, isImage: true })
+    await sticker.build()
+    await conn.sendMessage(m.chat, { sticker: await sticker.getBuffer() })
+  } else if (type === '.s' && m.text.includes('-x')) {
+    // Sticker acoplado
+    let buffer = await m.quoted.download()
+    let sticker = new Sticker(buffer, { ...options, crop: false })
+    await sticker.build()
+    await conn.sendMessage(m.chat, { sticker: await sticker.getBuffer() })
+  } else if (type === '.s' && m.text.includes('-c')) {
+    // Sticker circular
+    let buffer = await m.quoted.download()
+    let sticker = new Sticker(buffer, { ...options, circle: true })
+    await sticker.build()
+    await conn.sendMessage(m.chat, { sticker: await sticker.getBuffer() })
+  } else {
+    m.reply(`🚩 Opción inválida. Las opciones disponibles son:
+.s (sticker normal)
+.s -i (sticker ampliado)
+.s -x (sticker acoplado)
+.s -c (sticker circular)`)
+  }
 }
-} catch (e) {
-console.error(e)
-if (!stiker) stiker = e
-} finally {
-if (stiker) conn.sendFile(m.chat, stiker, 'sticker.webp', '',m,) //true, { contextInfo: { 'forwardingScore': 200, 'isForwarded': false, externalAdReply:{ showAdAttribution: false, title: packname, body: `𝐆𝐨𝐤𝐮-𝐁𝐥𝐚𝐜𝐤-𝐁𝐨𝐭-𝐌𝐃-𝐋𝐢𝐭𝐞`, mediaType: 2, sourceUrl: redes, thumbnail: icons}}}, { quoted: m })
 
-else return conn.reply(m.chat, '```ᯓᡣ𐭩 Y la imagen?, recuerda que los videos deben de durar 6 a 8 segundos.𖥔 ݁ ˖```', m, rcanal)
-
-
-}}
-handler.help = ['stiker <img>', 'sticker <url>']
+handler.help = ['.s', '.s -i', '.s -x', '.s -c']
 handler.tags = ['sticker']
-handler.register = true
-handler.command = ['s', 'sticker', 'stiker']
+handler.command = /^(\.s)$/i
 
 export default handler
-
-const isUrl = (text) => {
-return text.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)(jpe?g|gif|png)/, 'gi'))}
