@@ -1,54 +1,27 @@
-//𝘗𝘰𝘸𝘦𝘳 𝘣𝘺 𝘪𝘷𝘢𝘯
-let handler = async (m, { conn }) => {
-    const mascotas = [
-        'Perro',
-        'Gato',
-        'Loro',
-        'Tortuga',
-        'Conejo',
-        'Hámster',
-        'Pez',
-        'Iguana',
-        'Cobaya',
-        'Serpiente',
-        'Gallo',
-        'Erizo',
-        'Pájaro',
-        'Rana',
-        'Chinchilla',
-        'Foca',
-        'Gato esfinge',
-        'Dragón de Komodo',
-        'Canguro',
-        'Koala',
-        'Axolotl',
-        'Capibara',
-        'Mapache',
-        'Zorro',
-        'Hurón',
-        'Cacatúa',
-        'Gecko',
-        'Camaleón',
-        'Caracol',
-        'Cuyo',
-        'Jerbo',
-        'Ninfa',
-        'Canario',
-        'Pony',
-        'Alpaca',
-        'Cerdo vietnamita',
-    ];
+import axios from 'axios'
 
-    const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+let handler = async (m, { conn, usedPrefix, command, text }) => {
+  const username = `${conn.getName(m.sender)}`
+  const basePrompt = `Tu nombre es Goku-Black-Bot-MD-Lite y parece haber sido creado por Ivan. Tu versión actual es 2.0.1, Tú usas el idioma Español. Llamarás a las personas por su nombre ${username}, te gusta ser divertida, y te encanta aprender. Lo más importante es que debes ser amigable con la persona con la que estás hablando. ${username}`
 
-    const mascotaAleatoria = getRandom(mascotas);
+  if (!text) {
+    return conn.reply(m.chat, `🍟 *Ingrese su petición*\n🚩 *Ejemplo de uso:* ${usedPrefix + command} Como hacer un avión de papel`, m)
+  }
 
-    conn.reply(m.chat, `¡Tu mascota aleatoria es: ${mascotaAleatoria}!`, m);
+  await m.react('💬')
+
+  try {
+    const query = text
+    const prompt = `${basePrompt}. Responde lo siguiente: ${query}`
+    const response = await axios.get(`https://api.siputzx.my.id/api/ai/meta-llama-33-70B-instruct-turbo?content=${encodeURIComponent(prompt)}`)
+    await conn.reply(m.chat, response.data, m)
+  } catch (error) {
+    console.error('🚩 Error al obtener la respuesta:', error)
+    await conn.reply(m.chat, 'Error: intenta más tarde.', m)
+  }
 }
 
-handler.help = ['mascotaAleatoria'];
-handler.tags = ['juegos'];
-handler.command = ['mascotaAleatoria', 'mascota'];
-handler.register = true;
-
-export default handler;
+handler.help = ['chatgpt <texto>', 'ia <texto>']
+handler.tags = ['ai']
+handler.command = ['meta', 'chatgpt']
+export default handler
