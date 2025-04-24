@@ -7,8 +7,6 @@ var handler = async (m, {conn, isPrems }) => {
   let d = Math.floor(Math.random() * 30)
   global.db.data.users[m.sender].diamond += d
   global.db.data.users[m.sender].money += d
-  let time = global.db.data.users[m.sender].lastclaim + 86400000 //12 Horas
-  if (new Date - global.db.data.users[m.sender].lastclaim < 7200000) return conn.reply(m.chat, `🕚 *Vuelve en ${msToTime(time - new Date())}*`, m, )
   global.db.data.users[m.sender].exp += isPrems ? exppremium : exp
   let texto = `🎁 *Recompensa Diaria* Recursos: ✨ Xp : *+${isPrems ? exppremium : exp}* 💎 Diamantes : *+${d}* ❤️‍🔥 BlackCoins : *+${coin}*`
   const buttons = [
@@ -22,7 +20,6 @@ var handler = async (m, {conn, isPrems }) => {
     headerType: 1
   }
   await conn.sendMessage(m.chat, buttonMessage, { quoted: m })
-  global.db.data.users[m.sender].lastclaim = new Date * 1
 }
 
 handler.help = ['daily', 'claim']
@@ -35,15 +32,4 @@ export default handler
 
 function pickRandom(list) {
   return list[Math.floor(Math.random() * list.length)]
-}
-
-function msToTime(duration) {
-  var milliseconds = parseInt((duration % 1000) / 100),
-    seconds = Math.floor((duration / 1000) % 60),
-    minutes = Math.floor((duration / (1000 * 60)) % 60),
-    hours = Math.floor((duration / (1000 * 60 * 60)) % 24)
-  hours = (hours < 10) ? '0' + hours : hours
-  minutes = (minutes < 10) ? '0' + minutes : minutes
-  seconds = (seconds < 10) ? '0' + seconds : seconds
-  return hours + ' Horas ' + minutes + ' Minutos'
 }
