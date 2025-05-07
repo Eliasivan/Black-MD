@@ -42,7 +42,7 @@ const handler = async (m, { conn, command, text }) => {
 
       await conn.sendMessage(m.chat, {
         audio: { url: result },
-        fileName: `//api.vreden.my.id/api/ytmp3?url=${yt_play.url}`)).json()
+        fileName: `api.vreden.my.id/api/ytmp3?url=${yt_play.url}`)).json()
       const resulta = api.result
       const result = resulta.dl_url
 
