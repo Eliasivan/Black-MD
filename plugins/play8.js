@@ -1,15 +1,10 @@
-/*
-• @Eliasivan 
-- https://github.com/Eliasivan 
-*/
 import fetch from "node-fetch"
 import yts from 'yt-search'
 import axios from "axios"
 
 const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-zA-Z0-9_-]{11})/
 
-const handler = async (m, { conn, command, text }) => {
-  if (command !== 'play') return;
+const play = async (m, { conn, text }) => {
   try {
     if (!text.trim()) {
       return conn.reply(m.chat, `❀ Por favor, ingresa el nombre de la música a descargar.`, m)
@@ -42,7 +37,7 @@ const handler = async (m, { conn, command, text }) => {
 
       await conn.sendMessage(m.chat, {
         audio: { url: result },
-        fileName: `api.vreden.my.id/api/ytmp3?url=${yt_play.url}`)).json()
+        fileName: `//api.vreden.my.id/api/ytmp3?url=${yt_play.url}`)).json()
       const resulta = api.result
       const result = resulta.dl_url
 
@@ -61,9 +56,12 @@ const handler = async (m, { conn, command, text }) => {
   }
 }
 
-handler.command = ['play']
-handler.help = ['play']
-handler.tags = ['descargas']
+const handler = {
+  command: ['play'],
+  func: play,
+  help: ['play'],
+  tags: ['descargas']
+}
 
 function secondString(seconds) {
   const hours = Math.floor(seconds / 3600)
