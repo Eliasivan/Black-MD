@@ -33,7 +33,7 @@ author = author || 'no encontrado'
 
     const vistas = formatViews(views)
     const canal = author.name ? author.name : 'Desconocido'
-    const infoMessage = `*◉——⌈🔊 YOUTUBE-PLAY 🔊⌋——◉*\n ❏ 📌 *Titulo:* ${title} ❏ 📆 *Publicado:* ${ago} ❏ ⌚ ❏ 👀 *Vistas:* ${`${MilesNumber(views)}`} ❏ 👤 *Autor:* ${yt_play.author.name} ❏ ⏯️ *Canal:* ${yt_play.author.url} ❏ 🆔 *ID:* ${yt_play.videoId} ❏ 🪬 *Tipo:* ${yt_play.type} ❏ 🔗 *Link:* ${url}\n ❏ *_Enviando audio, aguarde un momento．．．_*`
+    const infoMessage = `*◉——⌈🔊 YOUTUBE-PLAY 🔊⌋——◉*\n ❏ 📌 *Titulo:* ${title} ❏ 📆 *Publicado:* ${ago} ❏ 💥 ❏ 👤 *Autor:* ${yt_play.author.name} ❏ ⏯️ *Canal:* ${yt_play.author.url} ❏ 🆔 *ID:* ${yt_play.videoId} ❏ 🪬 *Tipo:* ${yt_play.type} ❏ 🔗 *Link:* ${url}\n ❏ *_Enviando audio, aguarde un momento．．．_*`
 
     const thumb = (await conn.getFile(thumbnail))?.data
 
