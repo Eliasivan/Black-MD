@@ -11,7 +11,7 @@ const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-z
 const handler = async (m, { conn, text }) => {
   try {
     if (!text.trim()) {
-      return conn.reply(m.chat, `Por favor, ingresa el nombre de la música a descargar.`, m)
+      return conn.reply(m.chat, `❀ Por favor, ingresa el nombre de la música a descargar.`, m)
     }
 
     let videoIdToFind = text.match(youtubeRegexID) || null
