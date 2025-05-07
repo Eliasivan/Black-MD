@@ -35,7 +35,8 @@ author = author || 'no encontrado'
     const canal = author.name ? author.name : 'Desconocido'
     const infoMessage = `*◉--⌈🎵 YOUTUBE-PLAY 🎵⌋--◉* 
 ❏ 📌 *Titulo:* ${title} 
-❏ 📆 *Publicado:* ${ago} ❏ 
+❏ 📆 *Publicado:* ${ago} 
+❏ 🌟 *Vistas:* ${vistas}
 ❏ 🔗 *Link:* ${url}\n 
 ❏ *_Enviando audio, aguarde un momento．．．_*`
 
