@@ -33,8 +33,7 @@ author = author || 'no encontrado'
 
     const vistas = formatViews(views)
     const canal = author.name ? author.name : 'Desconocido'
-    const infoMessage = `
-*◉--⌈🎵 YOUTUBE-PLAY 🎵⌋--◉*\n 
+    const infoMessage = `*◉--⌈🎵 YOUTUBE-PLAY 🎵⌋--◉* 
 ❏ 📌 *Titulo:* ${title} 
 ❏ 📆 *Publicado:* ${ago} ❏ 
 ❏ 🔗 *Link:* ${url}\n 
