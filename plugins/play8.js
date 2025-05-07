@@ -33,7 +33,7 @@ author = author || 'no encontrado'
 
     const vistas = formatViews(views)
     const canal = author.name ? author.name : 'Desconocido'
-    const infoMessage = `「✦」Descargando *<${title || 'Desconocido'}>*\n\n> ✦ Canal » *${canal}*\n> ✰ Vistas » *${vistas || 'Desconocido'}*\n> ⴵ Duración » *${timestamp || 'Desconocido'}*\n> ✐ Publicado » *${ago || 'Desconocido'}*\n> 🜸 Link » ${url}`
+    const infoMessage = `*◉——⌈🔊 YOUTUBE-PLAY 🔊⌋——◉*\n ❏ 📌 *Titulo:* ${yt_play.title} ❏ 📆 *Publicado:* ${yt_play.ago} ❏ ⌚ *Duracion:* ${secondString(yt_play.duration.seconds)} ❏ 👀 *Vistas:* ${`${MilesNumber(yt_play.views)}`} ❏ 👤 *Autor:* ${yt_play.author.name} ❏ ⏯️ *Canal:* ${yt_play.author.url} ❏ 🆔 *ID:* ${yt_play.videoId} ❏ 🪬 *Tipo:* ${yt_play.type} ❏ 🔗 *Link:* ${yt_play.url}\n ❏ *_Enviando audio, aguarde un momento．．．_*`
 
     const thumb = (await conn.getFile(thumbnail))?.data
 
@@ -89,10 +89,8 @@ author = author || 'no encontrado'
   }
 }
 
-handler.command = handler.help = [
-'play']
+handler.command = ['play']
 handler.tags = ['descargas']
-handler.group = true
 
 export default handler
 
