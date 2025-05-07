@@ -16,26 +16,16 @@ const handler = async (m, { conn, command, text }) => {
     }
 
     let videoIdToFind = text.match(youtubeRegexID) || null
-    let yt_play = await yts(videoIdToFind === null ? text : 'https:                                
+    let yt_play = await yts(text)
 
     if (videoIdToFind) {
       const videoId = videoIdToFind[1]
-      yt_play = yt_play.all.find(item => item.videoId === videoId) || yt_play.videos.find(item => item.videoId === videoId)
+      yt_play = yt_play.videos.find(item => item.videoId === videoId)
+    } else {
+      yt_play = yt_play.videos[0]
     }
 
-    yt_play = yt_play.all?.[0] || yt_play.videos?.[0] || yt_play
-
-    if (!yt_play || yt_play.length == 0) {
-      return m.reply('//youtu.be/' + videoIdToFind[1])
-
-    if (videoIdToFind) {
-      const videoId = videoIdToFind[1]
-      yt_play = yt_play.all.find(item => item.videoId === videoId) || yt_play.videos.find(item => item.videoId === videoId)
-    }
-
-    yt_play = yt_play.all?.[0] || yt_play.videos?.[0] || yt_play
-
-    if (!yt_play || yt_play.length == 0) {
+    if (!yt_play) {
       return m.reply('✧ No se encontraron resultados para tu búsqueda.')
     }
 
@@ -48,7 +38,11 @@ const handler = async (m, { conn, command, text }) => {
       const resulta = api.result
       const result = resulta.dl_url
 
-      if (!result) throw new Error('//api.vreden.my.id/api/ytmp3?url=${yt_play.url}`)).json()
+      if (!result) throw new Error('⚠ El enlace de audio no se generó correctamente.')
+
+      await conn.sendMessage(m.chat, {
+        audio: { url: result },
+        fileName: `//api.vreden.my.id/api/ytmp3?url=${yt_play.url}`)).json()
       const resulta = api.result
       const result = resulta.dl_url
 
@@ -56,7 +50,7 @@ const handler = async (m, { conn, command, text }) => {
 
       await conn.sendMessage(m.chat, {
         audio: { url: result },
-        fileName: `${api.result.title}.mp3`,
+        fileName: `${yt_play.title}.mp3`,
         mimetype: 'audio/mpeg'
       }, { quoted: m })
     } catch (e) {
@@ -77,7 +71,7 @@ function secondString(seconds) {
   const secs = seconds % 60
 
   if (hours > 0) {
-    return `${hours}:${minutes.toString().padStart(2, 'function secondString(seconds) {
+    return `function secondString(seconds) {
   const hours = Math.floor(seconds / 3600)
   const minutes = Math.floor((seconds % 3600) / 60)
   const secs = seconds % 60
