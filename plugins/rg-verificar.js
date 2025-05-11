@@ -60,7 +60,7 @@ let regbot = `
 ║•  *Experiencia* » 300 🪙
 ║• *Tokens* » 20 💸
 ╚══✦「꧙꧙꧙꧙꧙꧙꧙꧙꧙꧙꧙꧙」
-> 🎈 ¡Muchísimas gracias por usar a Ruby-Hoshino-Bot!
+> 🎈 ¡Muchísimas gracias por usar a Goku black Bot!
 > Recuerda seguirme en mi canal para que no te pierdas nada de las novedades del bot. ¡Diviértete!`
 
 
