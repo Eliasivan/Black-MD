@@ -93,7 +93,7 @@ await conn.sendMessage(m.chat, {
                 thumbnailUrl: 'https://qu.ax/FGSG.jpg' }}}, {quoted: m})
 */
 
-let chtxt = `ੈ₊˚༅༴│↷◌⁺˖ Ruby Hoshino
+let chtxt = `ੈ₊˚༅༴│↷◌⁺˖ Goku black 
 🔥ੈ₊˚༅༴│.👥 *𝚄𝚜𝚎𝚛* » ${m.pushName || 'Anónimo'}  
 🔥ੈ₊˚༅༴│.📇 *𝚅𝚎𝚛𝚒𝚏𝚒𝚌𝚊𝚌𝚒𝚘́𝚗* » ${user.name}  
 🔥ੈ₊˚༅༴│.🍰 *𝙴𝚍𝚊𝚍* » ${user.age} años  
