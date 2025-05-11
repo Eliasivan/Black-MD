@@ -8,7 +8,7 @@ let handler = async function (m, { conn, text, args, usedPrefix, command }) {
     let user = global.db.data.users[m.sender]
     let name2 = conn.getName(m.sender)
     let whe = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : m.sender
-    let perfil = await conn.profilePictureUrl(whe, 'image').catch(_ => 'https://telegra.ph/file/0bb7e9e7c8cb4e820f1fe.jpg')
+    let perfil = await conn.profilePictureUrl(whe, 'image').catch(_ => 'https://qu.ax/FGSG.jpg')
 
     if (user.registered === true) {
         return m.reply(`*『✦』Ya estás registrado, para volver a registrarte, usa el comando: #unreg*`)
@@ -43,35 +43,35 @@ let handler = async function (m, { conn, text, args, usedPrefix, command }) {
 
 let sn = createHash('md5').update(m.sender).digest('hex');
 let regbot = `
-╔═̴̸᪳᷍═̷✩⃢̴═⃨⃜═̶⃕╡̴˚̸᪵✧̷⃘⃛᪻᪻᪻᷼᷍✧̵⃨˚̷᪵╞̶⃔══⃢̸⃨⃜✩̷══̸͜͞═̸̸̸᪳͟╗
-𝐑𝐄𝐆𝐈𝐒𝐓𝐑𝐎 𝐂𝐎𝐌𝐏𝐋𝐄𝐓𝐎 𝐄𝐗𝐈𝐓𝐎𝐒𝐎
-╚̷͓═̴̸᪳᷍═̷✩⃢̴═⃨⃜═̶⃕╡̴˚̸᪵✧̷⃘⃛᪻᪻᪻᷼᷍✧̵⃨˚̷᪵╞̶⃔══⃢̸⃨⃜✩̷══̸͜͞═̸̸̸᪳͟╝
+╭══• ೋ•✧๑♡๑✧•ೋ •══╮
+*¡𝚁𝙴𝙶𝙸𝚂𝚃𝚁𝙾 𝙲𝙾𝙼𝙿𝙻𝙴𝚃𝙾 𝙴𝚇𝙸𝚃𝙾𝚂𝙾!*
+╰══• ೋ•✧๑♡๑✧•ೋ •══╯
+║_-~-__-~-__-~-__-~-__-~-__-~-__-~-__-~-__-~-__-~-__
+║
+║ ֪ ׂ⛓️ ̶ ׁ ֪ 𝐍𝐨𝐦𝐛𝐫𝐞: ${name}
+║ ֪ ׁ🌫️  𝇌 𝐄𝐝𝐚𝐝: ${age} *Años*
+║
+║ *𝙶𝚛𝚊𝚌𝚒𝚜 𝚙𝚘𝚛 𝚛𝚎𝚐𝚒𝚜𝚝𝚛𝚊𝚛𝚝𝚎* 
+║📝 *𝚄𝚝𝚒𝚕𝚒𝚣𝚊* *.menu* *𝚙𝚊𝚛𝚊* *𝚟𝚎𝚛* *𝚎𝚕* *𝚖𝚎𝚗ú* *𝚍𝚎* *𝚌𝚘𝚖𝚊𝚗𝚍𝚘𝚜.*
+║
+║
+║ ✨ 𝗥𝗲𝗰𝗼𝗺𝗽𝗲𝗻𝘀𝗮𝘀:
+║• *${moneda}* » 40
+║•  *Experiencia* » 300 🪙
+║• *Tokens* » 20 💸
+╚══✦「꧙꧙꧙꧙꧙꧙꧙꧙꧙꧙꧙꧙」
+> 🎈 ¡Muchísimas gracias por usar a Ruby-Hoshino-Bot!
+> Recuerda seguirme en mi canal para que no te pierdas nada de las novedades del bot. ¡Diviértete!`
 
-﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡
-*‧˚꒰🫧꒱༘‧: 𝐍𝐨𝐦𝐛𝐫𝐞:* ${name}
-*‧˚꒰🔍꒱༘‧: 𝐄𝐝𝐚𝐝:* ${age}
-꒰꛱ ͜ ꛱|꛱ ꛱͜ |꛱ ꛱͜ |꛱ ͜ ꛱|꛱ ͜ |୨🌔🏮୧꛱|꛱ ꛱͜ |꛱ ͜ ꛱ |꛱ ͜ ꛱|꛱ ꛱͜ |꛱ ͜ ꒱
-*「💥」𝐑𝐞𝐜𝐨𝐦𝐩𝐞𝐧𝐬𝐚𝐬:*
-ᦷᩘᦷ     ݂   🍅 ፡ Estrellas 🌟
-ᦷᩘᦷ     ݂   🎴  ፡ 5 Blackcoins 🪙
-ᦷᩘᦷ     ݂   🍅 ፡ 245 Experiencia 💸
-ᦷᩘᦷ     ݂   🎴  ፡ 12 Tokens 💰
-﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡﹏͜͡
-
- 🍫 Usᥲ *#perfil* ⍴ᥲrᥲ ᥎ᥱr 𝗍ᥙ ⍴ᥱr𝖿іᥣ.
-*usa el comando .menu para ver el menú y .verreg para ver tu verificación*
-
-> (˶ᵔ ᵕ ᵔ˶) Recuerda seguír el canal de Goku black bot para estar al tanto de avisos y novedades del Bot 🔥
-`
 
 await conn.sendMessage(m.chat, {
     text: regbot,
     contextInfo: {
         externalAdReply: {
             title: '⊱『✅𝆺𝅥 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗔𝗗𝗢(𝗔) 𝆹𝅥✅』⊰',
-            thumbnailUrl: 'https://telegra.ph/file/0bb7e9e7c8cb4e820f1fe.jpg',
+            thumbnailUrl: 'https://qu.ax/FGSG.jpg',
             mediaType: 1,
-            body: 'El Bot Más Good ☄'
+            body: wm,
         }
     }
 }, { quoted: m });
@@ -90,10 +90,10 @@ await conn.sendMessage(m.chat, {
                 containsAutoReply: true,
                 showAdAttribution: true,
                 mediaType: 1, 
-                thumbnailUrl: 'https://telegra.ph/file/0bb7e9e7c8cb4e820f1fe.jpg' }}}, {quoted: m})
+                thumbnailUrl: 'https://qu.ax/FGSG.jpg' }}}, {quoted: m})
 */
 
-let chtxt = `ੈ₊˚༅༴│↷◌⁺˖ 🌸 *𝐆𝐎𝐊𝐔 - 𝐁𝐋𝐀𝐂𝐊* 🌸
+let chtxt = `ੈ₊˚༅༴│↷◌⁺˖ Ruby Hoshino
 🔥ੈ₊˚༅༴│.👥 *𝚄𝚜𝚎𝚛* » ${m.pushName || 'Anónimo'}  
 🔥ੈ₊˚༅༴│.📇 *𝚅𝚎𝚛𝚒𝚏𝚒𝚌𝚊𝚌𝚒𝚘́𝚗* » ${user.name}  
 🔥ੈ₊˚༅༴│.🍰 *𝙴𝚍𝚊𝚍* » ${user.age} años  
@@ -101,7 +101,7 @@ let chtxt = `ੈ₊˚༅༴│↷◌⁺˖ 🌸 *𝐆𝐎𝐊𝐔 - 𝐁𝐋𝐀�
 🔥ੈ₊˚༅༴│.🍬 *𝙽𝚞𝚖𝚎𝚛𝚘 𝚍𝚎 𝚛𝚎𝚐𝚒𝚜𝚝𝚛𝚘* »
 ⤷ ${sn}`;
 
-    let channelID = '120363351515256850@newsletter';
+    let channelID = '120363335626706839@newsletter';
         await conn.sendMessage(channelID, {
         text: chtxt,
         contextInfo: {
