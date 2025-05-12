@@ -5,12 +5,15 @@ const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-z
 const handler = async (m, { conn, text, usedPrefix, command }) => {
   try {
     if (!text.trim()) {
+      await m.react("❌");
       return conn.reply(
         m.chat,
         `Por favor, ingresa el nombre de la música o el enlace del video para descargar el audio.`,
         m
       );
     }
+
+    await m.react("🔍"); // Reacción de búsqueda
 
     let videoIdToFind = text.match(youtubeRegexID) || null;
     let ytplay2 = await yts(videoIdToFind === null ? text : "https://youtu.be/" + videoIdToFind[1]);
@@ -22,8 +25,11 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     ytplay2 = ytplay2.all?.[0] || ytplay2.videos?.[0] || ytplay2;
 
     if (!ytplay2 || ytplay2.length === 0) {
+      await m.react("❌");
       return m.reply("✧ No se encontraron resultados para tu búsqueda.");
     }
+
+    await m.react("📥"); // Reacción de inicio de descarga
 
     let { title, thumbnail, timestamp, views, ago, url, author } = ytplay2;
     title = title || "No encontrado";
@@ -60,6 +66,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       const apiData = await apiResponse.json();
 
       if (!apiData || apiData.status !== true || !apiData.data || !apiData.data.url) {
+        await m.react("⚠️");
         throw new Error("⚠ El enlace de audio no se generó correctamente.");
       }
 
@@ -70,7 +77,10 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
         { audio: { url: audioUrl }, fileName: `${audioTitle}.mp3`, mimetype: "audio/mpeg" },
         { quoted: m }
       );
+
+      await m.react("✅"); // Reacción de éxito
     } catch (e) {
+      await m.react("⚠️"); // Reacción de error
       return conn.reply(
         m.chat,
         "⚠︎ No se pudo enviar el audio. Esto puede deberse a que el archivo es demasiado pesado o a un error en la generación de la URL. Por favor, intenta nuevamente más tarde.",
@@ -78,6 +88,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       );
     }
   } catch (error) {
+    await m.react("❌"); // Reacción de error general
     return m.reply(`⚠︎ Ocurrió un error: ${error.message}`);
   }
 };
