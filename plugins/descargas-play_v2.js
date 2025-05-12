@@ -1,80 +1,57 @@
+
 import axios from 'axios';
 
 const youtubeMusic = async (m, { conn, args, usedPrefix, command }) => {
     try {
-        // Verificar si se proporcionó un enlace de YouTube
         if (!args || !args[0]) {
             return conn.reply(
                 m.chat,
-                `❌ Por favor, proporciona un enlace válido de YouTube.\n\nEjemplo de uso:\n${usedPrefix}${command} https://www.youtube.com/watch?v=dQw4w9WgXcQ`,
+                `❌ Por favor, proporciona un término de búsqueda o un enlace válido de YouTube.\n\nEjemplo de uso:\n${usedPrefix}${command} https://www.youtube.com/watch?v=dQw4w9WgXcQ\n${usedPrefix}${command} nombre de la canción`,
                 m
             );
         }
 
-        const youtubeUrl = args[0];
+        const inputQuery = args.join(' ');
 
-        // Validar el enlace de YouTube
-        const isYoutubeLink = (url) => {
-            const pattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
-            return pattern.test(url);
-        };
-
-        if (!isYoutubeLink(youtubeUrl)) {
-            return conn.reply(
-                m.chat,
-                `❌ El enlace proporcionado no es válido. Asegúrate de que sea un enlace de YouTube.`,
-                m
-            );
-        }
-
-        // Reaccionar con un emoji para indicar que el proceso ha comenzado
         await m.react('⏳');
 
-        // Llamar a la API de descarga
-        const downloadApi = `https://api.vreden.my.id/api/ytmp3?url=${encodeURIComponent(youtubeUrl)}`;
-        const response = await axios.get(downloadApi);
+        const apiUrl = `https://api.vreden.my.id/api/ytplaymp3?query=${encodeURIComponent(inputQuery)}`;
+        const response = await axios.get(apiUrl);
 
-        // Verificar si la API devolvió un resultado válido
-        if (!response.data || !response.data.result || !response.data.result.url) {
+        if (!response.data || !response.data.result || !response.data.result.audio || !response.data.result.title) {
             return conn.reply(
                 m.chat,
-                `❌ Hubo un problema al intentar descargar el audio. Por favor, intenta nuevamente más tarde.`,
+                `❌ No se encontraron resultados o hubo un problema al procesar tu solicitud.`,
                 m
             );
         }
 
-        // Extraer información del video
-        const { url: audioUrl, title, thumbnail, duration, views } = response.data.result;
+        const { audio, title, thumb, duration } = response.data.result;
 
-        // Generar un mensaje con la información del video
         const videoInfo = `
-🎥 *Título del Video:* ${title}
+🎵 *Título:* ${title}
 ⏱️ *Duración:* ${duration}
-👁️ *Vistas:* ${views}
-🌐 *Enlace del Video:* ${youtubeUrl}
+✅ *Audio Descargado con Éxito*
         `.trim();
 
-        // Enviar el archivo de audio al chat con la información del video
         await conn.sendFile(
             m.chat,
-            audioUrl,
+            audio,
             `${title}.mp3`,
-            `🎵 *Aquí tienes tu archivo de audio descargado con éxito!*\n\n${videoInfo}`,
+            videoInfo,
             m
         );
 
-        // Enviar la miniatura del video como mensaje adicional (opcional)
-        if (thumbnail) {
+        if (thumb) {
             await conn.sendFile(
                 m.chat,
-                thumbnail,
+                thumb,
                 'thumbnail.jpg',
-                `🖼️ *Miniatura del Video:*\n${title}`,
+                `🖼️ *Miniatura del Video*`,
                 m
             );
         }
 
-        // Reaccionar con un emoji al completar el proceso
         await m.react('✅');
     } catch (error) {
         console.error(error);
@@ -86,9 +63,8 @@ const youtubeMusic = async (m, { conn, args, usedPrefix, command }) => {
     }
 };
 
-// Definición de metadatos del comando
-youtubeMusic.help = ['ytmp']; // Ayuda para el comando
-youtubeMusic.tags = ['downloader']; // Categoría del comando
-youtubeMusic.command = ['ytmp', 'ytaudio']; // Alias del comando
+youtubeMusic.help = ['ytplaymp3'];
+youtubeMusic.tags = ['downloader'];
+youtubeMusic.command = ['ytplaymp3', 'ytplay'];
 
 export default youtubeMusic;
