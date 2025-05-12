@@ -2,69 +2,67 @@ import axios from 'axios';
 
 const youtubeMusic = async (m, { conn, args, usedPrefix, command }) => {
     try {
-        // Verificar si se proporcionó un enlace de YouTube
+        // Verificar si se proporcionó una consulta de búsqueda o un enlace de YouTube
         if (!args || !args[0]) {
             return conn.reply(
                 m.chat,
-                `❌ Por favor, proporciona un enlace válido de YouTube.\n\nEjemplo de uso:\n${usedPrefix}${command} https://www.youtube.com/watch?v=dQw4w9WgXcQ`,
+                `❌ Por favor, proporciona un enlace válido de YouTube o un término de búsqueda.\n\nEjemplo de uso:\n${usedPrefix}${command} https://www.youtube.com/watch?v=dQw4w9WgXcQ\n${usedPrefix}${command} nombre de la canción`,
                 m
             );
         }
 
-        const url = args[0];
+        const input = args.join(' '); // Unir los argumentos
+        let videoUrl;
 
-        // Validar el enlace de YouTube
-        const isValidYoutubeURL = (url) => {
+        // Detectar si el input es un enlace de YouTube
+        const isYoutubeLink = (url) => {
             const pattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
             return pattern.test(url);
         };
 
-        if (!isValidYoutubeURL(url)) {
-            return conn.reply(
-                m.chat,
-                `❌ El enlace proporcionado no es válido. Asegúrate de que sea un enlace de YouTube.`,
-                m
-            );
+        if (isYoutubeLink(input)) {
+            videoUrl = input; // Si es un enlace, usarlo directamente
+        } else {
+            // Si es un texto, buscar el video usando la API de búsqueda
+            const searchApi = `https://delirius-apiofc.vercel.app/search/ytsearch?q=${encodeURIComponent(input)}`;
+            const searchResponse = await axios.get(searchApi);
+
+            if (!searchResponse.data || !searchResponse.data[0]) {
+                return conn.reply(
+                    m.chat,
+                    `❌ No se encontraron resultados para "${input}". Por favor, intenta con otro término de búsqueda.`,
+                    m
+                );
+            }
+
+            // Usar el primer resultado de la búsqueda
+            videoUrl = searchResponse.data[0].url;
         }
 
         // Reaccionar con un emoji para indicar que el proceso ha comenzado
         await m.react('⏳');
 
-        // Construir la URL de la API
-        const apiUrl = `https://ytdl.sylphy.xyz/dl/mp3?url=${encodeURIComponent(url)}`;
+        // Llamar a la API de descarga
+        const downloadApi = `https://api.vreden.my.id/api/ytmp3?url=${encodeURIComponent(videoUrl)}`;
+        const downloadResponse = await axios.get(downloadApi);
 
-        // Realizar la solicitud a la API
-        const response = await axios.get(apiUrl, { responseType: 'arraybuffer' });
-
-        // Verificar si la API devolvió un resultado
-        if (!response || response.status !== 200) {
+        // Verificar si la API de descarga devolvió un resultado
+        if (!downloadResponse.data || !downloadResponse.data.result || !downloadResponse.data.result.url) {
             return conn.reply(
                 m.chat,
-                `❌ Hubo un problema al procesar tu solicitud. Por favor, intenta nuevamente más tarde.`,
+                `❌ Hubo un problema al intentar descargar el audio. Por favor, intenta nuevamente más tarde.`,
                 m
             );
         }
 
-        // Verificar el tamaño del archivo (opcional)
-        if (response.data.byteLength > 10 * 1024 * 1024) { // 10 MB
-            return conn.reply(
-                m.chat,
-                `❌ El archivo de audio es demasiado grande para enviarse.`,
-                m
-            );
-        }
-
-        // Extraer el nombre del archivo del encabezado (si está disponible)
-        const fileName = response.headers['content-disposition']
-            ? response.headers['content-disposition'].split('filename=')[1].replace(/"/g, '')
-            : 'audio.mp3';
+        const { url: audioUrl, title } = downloadResponse.data.result;
 
         // Enviar el archivo de audio al chat
         await conn.sendFile(
             m.chat,
-            Buffer.from(response.data),
-            fileName,
-            `🎵 Aquí tienes tu archivo de audio descargado con éxito.\n🎶 Disfrútalo!`,
+            audioUrl,
+            `${title}.mp3`,
+            `🎵 *Título:* ${title}\n✅ ¡Aquí tienes tu archivo de audio descargado con éxito!`,
             m
         );
 
@@ -81,8 +79,8 @@ const youtubeMusic = async (m, { conn, args, usedPrefix, command }) => {
 };
 
 // Definición de metadatos del comando
-youtubeMusic.help = ['ytmp3']; // Ayuda para el comando
+youtubeMusic.help = ['ytmp3', 'ytbuscar']; // Ayuda para el comando
 youtubeMusic.tags = ['downloader']; // Categoría del comando
-youtubeMusic.command = ['ytmp', 'ytaudio']; // Alias del comando
+youtubeMusic.command = ['ytmp', 'ytaudio', 'ytbuscar']; // Alias del comando
 
 export default youtubeMusic;
