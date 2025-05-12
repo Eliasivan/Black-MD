@@ -11,11 +11,15 @@ const youtubeMusic = async (m, { conn, args, usedPrefix, command }) => {
             );
         }
 
-        // Extract URL del primer argumento
         const url = args[0];
 
-        // Verificar si el enlace es válido
-        if (!url.startsWith('http') || !url.includes('youtube.com/watch')) {
+        // Validar el enlace de YouTube
+        const isValidYoutubeURL = (url) => {
+            const pattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+            return pattern.test(url);
+        };
+
+        if (!isValidYoutubeURL(url)) {
             return conn.reply(
                 m.chat,
                 `❌ El enlace proporcionado no es válido. Asegúrate de que sea un enlace de YouTube.`,
@@ -37,6 +41,15 @@ const youtubeMusic = async (m, { conn, args, usedPrefix, command }) => {
             return conn.reply(
                 m.chat,
                 `❌ Hubo un problema al procesar tu solicitud. Por favor, intenta nuevamente más tarde.`,
+                m
+            );
+        }
+
+        // Verificar el tamaño del archivo (opcional)
+        if (response.data.byteLength > 10 * 1024 * 1024) { // 10 MB
+            return conn.reply(
+                m.chat,
+                `❌ El archivo de audio es demasiado grande para enviarse.`,
                 m
             );
         }
