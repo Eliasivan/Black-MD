@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 const youtubeMusic = async (m, { conn, args, usedPrefix, command }) => {
@@ -6,27 +5,40 @@ const youtubeMusic = async (m, { conn, args, usedPrefix, command }) => {
         if (!args || !args[0]) {
             return conn.reply(
                 m.chat,
-                `❌ Por favor, proporciona un término de búsqueda o un enlace válido de YouTube.\n\nEjemplo de uso:\n${usedPrefix}${command} https://www.youtube.com/watch?v=dQw4w9WgXcQ\n${usedPrefix}${command} nombre de la canción`,
+                `❌ Por favor, proporciona un enlace válido de YouTube.\n\nEjemplo de uso:\n${usedPrefix}${command} https://www.youtube.com/watch?v=dQw4w9WgXcQ`,
                 m
             );
         }
 
-        const inputQuery = args.join(' ');
+        const videoUrl = args[0];
+
+        const isYoutubeLink = (url) => {
+            const pattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+            return pattern.test(url);
+        };
+
+        if (!isYoutubeLink(videoUrl)) {
+            return conn.reply(
+                m.chat,
+                `❌ El enlace proporcionado no es válido. Asegúrate de que sea un enlace de YouTube.`,
+                m
+            );
+        }
 
         await m.react('⏳');
 
-        const apiUrl = `https://api.vreden.my.id/api/ytplaymp3?query=${encodeURIComponent(inputQuery)}`;
-        const response = await axios.get(apiUrl);
+        const apiURL = `https://api.neoxr.eu/api/youtube?url=${encodeURIComponent(videoUrl)}&type=audio&quality=128kbps&apikey=russellxz`;
+        const response = await axios.get(apiURL);
 
-        if (!response.data || !response.data.result || !response.data.result.audio || !response.data.result.title) {
+        if (!response.data || response.data.status !== true || !response.data.data || !response.data.data.audio) {
             return conn.reply(
                 m.chat,
-                `❌ No se encontraron resultados o hubo un problema al procesar tu solicitud.`,
+                `❌ Hubo un problema al intentar descargar el audio. Por favor, intenta nuevamente más tarde.`,
                 m
             );
         }
 
-        const { audio, title, thumb, duration } = response.data.result;
+        const { audio, title, thumbnail, duration } = response.data.data;
 
         const videoInfo = `
 🎵 *Título:* ${title}
@@ -42,10 +54,10 @@ const youtubeMusic = async (m, { conn, args, usedPrefix, command }) => {
             m
         );
 
-        if (thumb) {
+        if (thumbnail) {
             await conn.sendFile(
                 m.chat,
-                thumb,
+                thumbnail,
                 'thumbnail.jpg',
                 `🖼️ *Miniatura del Video*`,
                 m
@@ -63,8 +75,8 @@ const youtubeMusic = async (m, { conn, args, usedPrefix, command }) => {
     }
 };
 
-youtubeMusic.help = ['ytplaymp3'];
+youtubeMusic.help = ['ytmp3'];
 youtubeMusic.tags = ['downloader'];
-youtubeMusic.command = ['ytplaymp3', 'ytplay'];
+youtubeMusic.command = ['ytmp3', 'yttes'];
 
 export default youtubeMusic;
