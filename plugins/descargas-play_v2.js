@@ -69,6 +69,6 @@ const youtubeMusic = async (m, { conn, args, usedPrefix, command }) => {
 // Definición de metadatos del comando
 youtubeMusic.help = ['ytmp3']; // Ayuda para el comando
 youtubeMusic.tags = ['downloader']; // Categoría del comando
-youtubeMusic.command = ['ytmp3', 'ytaudio']; // Alias del comando
+youtubeMusic.command = ['ytmp', 'ytaudio']; // Alias del comando
 
 export default youtubeMusic;
