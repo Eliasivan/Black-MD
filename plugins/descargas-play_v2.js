@@ -43,16 +43,36 @@ const youtubeMusic = async (m, { conn, args, usedPrefix, command }) => {
             );
         }
 
-        const { url: audioUrl, title } = response.data.result;
+        // Extraer información del video
+        const { url: audioUrl, title, thumbnail, duration, views } = response.data.result;
 
-        // Enviar el archivo de audio al chat
+        // Generar un mensaje con la información del video
+        const videoInfo = `
+🎥 *Título del Video:* ${title}
+⏱️ *Duración:* ${duration}
+👁️ *Vistas:* ${views}
+🌐 *Enlace del Video:* ${youtubeUrl}
+        `.trim();
+
+        // Enviar el archivo de audio al chat con la información del video
         await conn.sendFile(
             m.chat,
             audioUrl,
             `${title}.mp3`,
-            `🎵 *Título:* ${title}\n✅ ¡Aquí tienes tu archivo de audio descargado con éxito!`,
+            `🎵 *Aquí tienes tu archivo de audio descargado con éxito!*\n\n${videoInfo}`,
             m
         );
+
+        // Enviar la miniatura del video como mensaje adicional (opcional)
+        if (thumbnail) {
+            await conn.sendFile(
+                m.chat,
+                thumbnail,
+                'thumbnail.jpg',
+                `🖼️ *Miniatura del Video:*\n${title}`,
+                m
+            );
+        }
 
         // Reaccionar con un emoji al completar el proceso
         await m.react('✅');
@@ -67,7 +87,7 @@ const youtubeMusic = async (m, { conn, args, usedPrefix, command }) => {
 };
 
 // Definición de metadatos del comando
-youtubeMusic.help = ['ytmp3']; // Ayuda para el comando
+youtubeMusic.help = ['ytmp']; // Ayuda para el comando
 youtubeMusic.tags = ['downloader']; // Categoría del comando
 youtubeMusic.command = ['ytmp', 'ytaudio']; // Alias del comando
 
