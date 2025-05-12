@@ -1,6 +1,3 @@
-/*
-- GRACIAS POR VER ESTE ARCHIVO 
-*/
 import axios from 'axios';
 
 const youtubeMusic = async (m, { conn, args, usedPrefix, command }) => {
@@ -70,9 +67,9 @@ const youtubeMusic = async (m, { conn, args, usedPrefix, command }) => {
     }
 };
 
-// Definicin de metadatos del comando
-handler.help = ['ytmp3']; // Ayuda para el comando
-handler.tags = ['downloader']; // Categoría del comando
-handler.command = ['ytmp30', 'ytaudios']; // Alias del comando
+// Definición de metadatos del comando
+youtubeMusic.help = ['ytmp3']; // Ayuda para el comando
+youtubeMusic.tags = ['downloader']; // Categoría del comando
+youtubeMusic.command = ['ytmp', 'ytaudio']; // Alias del comando
 
-export default handler;
+export default youtubeMusic;
