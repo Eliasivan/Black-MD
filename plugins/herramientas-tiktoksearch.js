@@ -1,34 +1,39 @@
 import axios from "axios";
 
-const handler = async (m, { conn, text}) => {
-    if (!text) return m.reply("🔍 *Por favor, ingresa un término de búsqueda para encontrar videos en TikTok.*");
+const handler = async (m, { conn, text }) => {
+    if (!text) {
+        await m.react("❌"); // Reacción de error
+        return m.reply("🔍 *Por favor, ingresa un término de búsqueda para encontrar videos en TikTok.*");
+    }
 
     try {
-        m.react("🔄");
+        await m.react("⭐"); // Reacción de carga inicial
         let info = await tiktok.search(text);
-        let videoAleatorio = Math.floor(Math.random() * info.length);
-        let { metadata, estadisticas, author, media} = info[videoAleatorio];
 
-        let mensaje = `
+        if (info.length < 5) {
+            await m.react("⚠️"); // Reacción de advertencia
+            return m.reply("⚠️ *No se encontraron suficientes resultados para mostrar 5 videos.*");
+        }
+
+        // Enviar los primeros 5 videos
+        for (let i = 0; i < 5; i++) {
+            let { metadata, media } = info[i];
+
+            let mensaje = `
 🎥 *Título:* ${metadata.titulo}
 ⏳ *Duración:* ${metadata.duracion} segundos
 📅 *Creado:* ${metadata.creado}
-
-📊 *Estadísticas:*
-👀 *Reproducciones:* ${estadisticas.reproducciones}
-❤️ *Likes:* ${estadisticas.likes}
-💬 *Comentarios:* ${estadisticas.comentarios}
-🔄 *Compartidos:* ${estadisticas.compartidos}
-⬇️ *Descargas:* ${estadisticas.descargas}
-
-👤 *Autor:* ${author.name}
 `;
 
-        await conn.sendFile(m.chat, media.no_watermark, "tiktok_video.mp4", mensaje, m);
-} catch (error) {
+            await conn.sendFile(m.chat, media.no_watermark, `tiktok_video_${i + 1}.mp4`, mensaje, m);
+        }
+
+        await m.react("✅"); // Reacción de éxito
+    } catch (error) {
         console.error("❌ Error en la búsqueda de TikTok:", error);
+        await m.react("❌"); // Reacción de error
         m.reply("⚠️ *No se encontraron resultados o hubo un error en la API.*");
-}
+    }
 };
 
 handler.command = ["tiktoksearch"];
@@ -43,7 +48,7 @@ const tiktok = {
                 web: 1,
                 hd: 1,
                 keywords: q,
-};
+            };
 
             const config = {
                 method: "post",
@@ -54,9 +59,9 @@ const tiktok = {
                     "X-Requested-With": "XMLHttpRequest",
                     "User-Agent": "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36",
                     Referer: "https://tikwm.com/",
-},
+                },
                 data: data,
-};
+            };
 
             const response = await axios(config);
 
@@ -76,30 +81,30 @@ const tiktok = {
                             minute: "numeric",
                             second: "numeric",
                             hour12: false,
-}),
-},
+                        }),
+                    },
                     estadisticas: {
                         reproducciones: Number(video.play_count).toLocaleString(),
                         likes: Number(video.digg_count).toLocaleString(),
                         comentarios: Number(video.comment_count).toLocaleString(),
                         compartidos: Number(video.share_count).toLocaleString(),
                         descargas: Number(video.download_count).toLocaleString(),
-},
+                    },
                     author: {
                         name: video.author.nickname,
                         username: "@" + video.author.unique_id,
-},
+                    },
                     media: {
                         no_watermark: "https://tikwm.com" + video.play,
                         watermark: "https://tikwm.com" + video.wmplay,
                         audio: "https://tikwm.com" + video.music,
-},
-}));
-} else {
+                    },
+                }));
+            } else {
                 throw new Error("Sin información disponible");
-}
-} catch (error) {
+            }
+        } catch (error) {
             throw new Error("Error en la búsqueda de TikTok: " + error);
-}
-},
+        }
+    },
 };
