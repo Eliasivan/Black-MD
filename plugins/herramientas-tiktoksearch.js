@@ -2,33 +2,33 @@ import axios from "axios";
 
 const handler = async (m, { conn, text }) => {
     if (!text) {
-        await m.react("❌"); // Reacción de error
-        return m.reply("🔍 *Por favor, ingresa un término de búsqueda para encontrar videos en TikTok.*");
+        await m.react("❌"); 
+        return m.reply("⚡ *ingresa el texto para buscarlo en tiktok*");
     }
 
     try {
-        await m.react("⭐"); // Reacción de carga inicial
+        await m.react("⭐");
         let info = await tiktok.search(text);
 
         if (info.length < 5) {
-            await m.react("⚠️"); // Reacción de advertencia
+            await m.react("⚠️");
             return m.reply("⚠️ *No se encontraron suficientes resultados para mostrar 5 videos.*");
         }
 
-        // Enviar los primeros 5 videos
+       
         for (let i = 0; i < 5; i++) {
             let { metadata, media } = info[i];
 
             let mensaje = `
-🎥 *Título:* ${metadata.titulo}
-⏳ *Duración:* ${metadata.duracion} segundos
-📅 *Creado:* ${metadata.creado}
+𖥍 *Título:* ${metadata.titulo}
+𖥍 *Duración:* ${metadata.duracion} segundos
+𖥍 *Creado:* ${metadata.creado}
 `;
 
             await conn.sendFile(m.chat, media.no_watermark, `tiktok_video_${i + 1}.mp4`, mensaje, m);
         }
 
-        await m.react("✅"); // Reacción de éxito
+        await m.react("✅");
     } catch (error) {
         console.error("❌ Error en la búsqueda de TikTok:", error);
         await m.react("❌"); // Reacción de error
