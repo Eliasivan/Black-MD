@@ -1,4 +1,4 @@
-import { canLevelUp, xpRange } from '../lib/levelling.js';
+/*import { canLevelUp, xpRange } from '../lib/levelling.js';
 import { levelup } from '../lib/canvas.js';
 
 export function before(m, { conn }) {
@@ -30,4 +30,4 @@ export function before(m, { conn }) {
     );
   }
   return true;
-}
+}*/
