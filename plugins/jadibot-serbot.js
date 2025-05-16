@@ -58,6 +58,27 @@ blackJBOptions.conn = conn
 blackJBOptions.args = args
 blackJBOptions.usedPrefix = usedPrefix
 blackJBOptions.command = command
+const imageUrl = ''; // Cambia esto por la URL real de tu imagen
+    const caption = `⚡ ¡Comienza a configurar tu Sub-Bot ahora!\n\n💡 Sigue las instrucciones para vincular tu dispositivo.\n\n🌐 URL: [Haz clic aquí](https://github.com/Eliasivan/Goku-Black-Bot-MD/blob/main/plugins%2Fjadibot-serbot.js)`;
+
+    // Enviar imagen desde la URL
+    await conn.sendMessage(m.chat, {
+        image: { url: imageUrl },
+        caption: caption,
+        contextInfo: {
+            externalAdReply: {
+                title: "Configuración del Sub-Bot",
+                body: "📖 Documentación completa aquí",
+                thumbnailUrl: imageUrl, // Puedes usar la misma imagen como miniatura
+                sourceUrl: "https://github.com/Eliasivan/Goku-Black-Bot-MD/blob/main/plugins%2Fjadibot-serbot.js"
+            }
+        }
+    }, { quoted: m });
+
+    // Configurar el Sub-Bot
+    blackJadiBot(blackJBOptions);
+    global.db.data.users[m.sender].Subs = new Date() * 1;
+};
 blackJadiBot(blackJBOptions)
 global.db.data.users[m.sender].Subs = new Date * 1
 } 
