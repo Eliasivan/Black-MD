@@ -71,7 +71,6 @@ const imageUrl = 'https://files.catbox.moe/sv8m42.jpg'; // Imagen proporcionada
                 body: "📖 Documentación completa aquí",
                 thumbnailUrl: imageUrl, // Puedes usar la misma imagen como miniatura
                 sourceUrl: "https://github.com/Eliasivan/Goku-Black-Bot-MD/blob/main/plugins%2Fjadibot-serbot.js"
-            }
         }
     }, { quoted: m });
 
