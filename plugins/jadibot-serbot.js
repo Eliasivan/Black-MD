@@ -58,7 +58,7 @@ blackJBOptions.conn = conn
 blackJBOptions.args = args
 blackJBOptions.usedPrefix = usedPrefix
 blackJBOptions.command = command
-const imageUrl = ''; // Cambia esto por la URL real de tu imagen
+const imageUrl = 'https://files.catbox.moe/sv8m42.jpg'; // Cambia esto por la URL real de tu imagen
     const caption = `⚡ ¡Comienza a configurar tu Sub-Bot ahora!\n\n💡 Sigue las instrucciones para vincular tu dispositivo.\n\n🌐 URL: [Haz clic aquí](https://github.com/Eliasivan/Goku-Black-Bot-MD/blob/main/plugins%2Fjadibot-serbot.js)`;
 
     // Enviar imagen desde la URL
