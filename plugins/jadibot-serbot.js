@@ -58,8 +58,8 @@ blackJBOptions.conn = conn
 blackJBOptions.args = args
 blackJBOptions.usedPrefix = usedPrefix
 blackJBOptions.command = command
-const imageUrl = 'https://files.catbox.moe/sv8m42.jpg'; // Imagen proporcionada
-    const caption = `⚡ ¡Comienza a configurar tu Sub-Bot ahora!\n\n💡 Sigue las instrucciones para vincular tu dispositivo.\n\n🌐 URL: [Haz clic aquí](https://github.com/Eliasivan/Goku-Black-Bot-MD/blob/main/plugins%2Fjadibot-serbot.js)`;
+const imageUrl = 'https://files.catbox.moe/sv8m42.jpg';
+    const caption = `Gracias por querer ser parte de GokuBlack-Bot ☄`;
 
     // Enviar imagen desde la URL
     await conn.sendMessage(m.chat, {
@@ -67,10 +67,10 @@ const imageUrl = 'https://files.catbox.moe/sv8m42.jpg'; // Imagen proporcionada
         caption: caption,
         contextInfo: {
             externalAdReply: {
-                title: "Configuración del Sub-Bot",
-                body: "📖 Documentación completa aquí",
-                thumbnailUrl: imageUrl, // Puedes usar la misma imagen como miniatura
-                sourceUrl: "https://github.com/Eliasivan/Goku-Black-Bot-MD/blob/main/plugins%2Fjadibot-serbot.js"
+                title: "ser Sub-Bot",
+                body: "Ser parte de GokuBlack",
+                thumbnailUrl: imageUrl,
+                sourceUrl: ""
             }
         }
     }, { quoted: m });
