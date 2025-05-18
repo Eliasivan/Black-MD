@@ -61,18 +61,18 @@ blackJBOptions.command = command
 const imageUrl = 'https://files.catbox.moe/sv8m42.jpg';
     const caption = `Gracias por querer ser parte de GokuBlack-Bot ☄`;
 
-    /*await conn.sendMessage(m.chat, {
+    await conn.sendMessage(m.chat, {
         image: { url: imageUrl },
-        caption: caption,
+        /*caption: caption,
         contextInfo: {
             externalAdReply: {
                 title: "ser Sub-Bot",
                 body: "Ser parte de GokuBlack",
                 thumbnailUrl: imageUrl,
-                sourceUrl: ""
+                sourceUrl: ""*/
             }
         }
-    }, { quoted: m });*/
+    }, { quoted: m });
 
     blackJadiBot(blackJBOptions);
     global.db.data.users[m.sender].Subs = new Date() * 1;
