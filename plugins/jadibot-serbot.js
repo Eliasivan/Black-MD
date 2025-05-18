@@ -59,17 +59,17 @@ blackJBOptions.args = args
 blackJBOptions.usedPrefix = usedPrefix
 blackJBOptions.command = command
 const imageUrl = 'https://files.catbox.moe/sv8m42.jpg';
-    const caption = `Gracias por querer ser parte de GokuBlack-Bot ☄`;
+    const caption = `𝗚𝗿𝗮𝗰𝗶𝗮𝘀 𝗽𝗼𝗿 𝗾𝘂𝗲𝗿𝗲𝗿 𝘀𝗲𝗿 𝗽𝗮𝗿𝘁𝗲 𝗱𝗲 𝗹𝗮 𝗳𝗮𝗺𝗶𝗹𝗶𝗮 𝗱𝗲 𝘀𝘂𝗯-𝗯𝗼𝘁𝘀 𝗮 𝗰𝗼𝗻𝘁𝗶𝗻𝘂𝗮𝗰𝗶𝗼𝗻 𝘁𝗲 𝗽𝗮𝘀𝗮𝗿𝗲 𝗰𝗼𝗱𝗶𝗴𝗼 𝗱𝗲 8 𝗱𝗶𝗴𝗶𝘁𝗼𝘀 𝘆 𝗱𝗼𝗻𝗱𝗲 𝗽𝗼𝗻𝗲𝗿 (◕‿◕)`;
 
     await conn.sendMessage(m.chat, {
         image: { url: imageUrl }
-        /*caption: caption,
+        caption: caption,
         contextInfo: {
             externalAdReply: {
-                title: "ser Sub-Bot",
-                body: "Ser parte de GokuBlack",
+                title: "𝗦𝗲𝗿 𝗦𝘂𝗯-𝗕𝗼𝘁",
+                body: "𝗣𝗼𝘄𝗲𝗿 𝗕𝘆 𝗚𝗼𝗸𝘂𝗕𝗹𝗮𝗰𝗸",
                 thumbnailUrl: imageUrl,
-                sourceUrl: ""*/
+                sourceUrl: ""
             }
         }
     }, { quoted: m });
