@@ -61,8 +61,7 @@ blackJBOptions.command = command
 const imageUrl = 'https://files.catbox.moe/sv8m42.jpg';
     const caption = `Gracias por querer ser parte de GokuBlack-Bot ☄`;
 
-    // Enviar imagen desde la URL
-    await conn.sendMessage(m.chat, {
+    /*await conn.sendMessage(m.chat, {
         image: { url: imageUrl },
         caption: caption,
         contextInfo: {
@@ -73,9 +72,8 @@ const imageUrl = 'https://files.catbox.moe/sv8m42.jpg';
                 sourceUrl: ""
             }
         }
-    }, { quoted: m });
+    }, { quoted: m });*/
 
-    // Configurar el Sub-Bot
     blackJadiBot(blackJBOptions);
     global.db.data.users[m.sender].Subs = new Date() * 1;
 };
