@@ -62,7 +62,7 @@ const imageUrl = 'https://files.catbox.moe/sv8m42.jpg';
     const caption = `Gracias por querer ser parte de GokuBlack-Bot ☄`;
 
     await conn.sendMessage(m.chat, {
-        image: { url: imageUrl },
+        image: { url: imageUrl }
         /*caption: caption,
         contextInfo: {
             externalAdReply: {
