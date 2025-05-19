@@ -1,46 +1,87 @@
-const handler = {}; // Definimos el objeto handler
+import { youtubedl, youtubedlv2 } from '@bochilteam/scraper';
+import fetch from 'node-fetch';
+import yts from 'yt-search';
+import ytdl from 'ytdl-core';
 
-handler.help = ['cambio <monto> <tipo>\nEjemplo: .cambio 100 dolar-a-pyg'];
-handler.tags = ['Economia'];
-handler.admin = false;
-handler.group = true;
-
-handler.ejecutar = async (m, { conn, args }) => {
-  try {
-    const cambio = {
-      "dolar-a-pyg": 7200,
-      "pyg-a-dolar": 0.000139,
-    };
-
-    if (!args[0] || !args[1]) {
-      const resultado = `*Cambio actual:*\n- 1 Dólar = ${cambio["dolar-a-pyg"]} Guaraníes\n- 1 Guaraní = ${cambio["pyg-a-dolar"]} Dólares\n\n*Ejemplo de uso:*\n.cambio 50 dolar-a-pyg\n.cambio 300000 pyg-a-dolar`;
-      return conn.reply(m.chat, resultado, m);
+var handler = async (m, { text, conn, args, usedPrefix, command }) => {
+    if (!args[0]) {
+        return conn.reply(m.chat, '*🍇 Ingresa un enlace de YouTube válido.*', m);
     }
 
-    const monto = parseFloat(args[0].replace(/,/g, '').replace(/\./g, ''));
-    const tipo = args[1].toLowerCase();
-
-    if (isNaN(monto) || !(tipo in cambio)) {
-      const errorMsg = `❌ Uso incorrecto.\n*Ejemplo de uso:*\n.cambio 50 dolar-a-pyg\n.cambio 300000 pyg-a-dolar\n\n*Opciones:* dolar-a-pyg | pyg-a-dolar`;
-      return conn.reply(m.chat, errorMsg, m);
+    let youtubeLink = '';
+    if (args[0].includes('you')) {
+        youtubeLink = args[0];
+    } else {
+        const index = parseInt(args[0]) - 1;
+        if (index >= 0) {
+            if (Array.isArray(global.videoList) && global.videoList.length > 0) {
+                const matchingItem = global.videoList.find(item => item.from === m.sender);
+                if (matchingItem) {
+                    if (index < matchingItem.urls.length) {
+                        youtubeLink = matchingItem.urls[index];
+                    } else {
+                        return conn.reply(
+                            m.chat,
+                            `*🍓 No se encontró un enlace para ese número. Ingresa un número del 1 al ${matchingItem.urls.length}.*`,
+                            m
+                        );
+                    }
+                } else {
+                    return conn.reply(
+                        m.chat,
+                        `*🥑 Usa el comando \`${usedPrefix}playlist <texto>\` para buscar vídeos y luego selecciona un número.*`,
+                        m
+                    );
+                }
+            } else {
+                return conn.reply(
+                    m.chat,
+                    `*🍉 Usa el comando \`${usedPrefix}playlist <texto>\` para buscar vídeos y luego selecciona un número.*`,
+                    m
+                );
+            }
+        }
     }
 
-    const resultadoCambio = monto * cambio[tipo];
-    let mensaje = '';
+    conn.reply(m.chat, `*🎶 Cargando... Por favor, espera unos segundos.*`, m);
 
-    if (tipo === "dolar-a-pyg") {
-      mensaje = `💱 *${monto} Dólares* son aproximadamente *${resultadoCambio.toLocaleString('es-PY')} Guaraníes*.`;
-    } else if (tipo === "pyg-a-dolar") {
-      mensaje = `💱 *${monto} Guaraníes* son aproximadamente *${resultadoCambio.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Dólares*.`;
+    try {
+        let q = '128kbps';
+        const yt = await youtubedl(youtubeLink).catch(async _ => await youtubedlv2(youtubeLink));
+        const dl_url = await yt.audio[q].download();
+        const ttl = await yt.title;
+        const size = await yt.audio[q].fileSizeH;
+        await conn.sendFile(m.chat, dl_url, `${ttl}.mp3`, null, m, false, { mimetype: 'audio/mp4' });
+    } catch (error) {
+        try {
+            const apiResponse = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${youtubeLink}`);
+            const apiData = await apiResponse.json();
+            if (apiData.status === true && apiData.result) {
+                const title = apiData.result.title || 'audio';
+                const audioUrl = apiData.result.audio;
+                await conn.sendMessage(m.chat, { audio: { url: audioUrl }, fileName: `${title}.mp3`, mimetype: 'audio/mp4' }, { quoted: m });
+            } else {
+                throw new Error('La API no devolvió un resultado exitoso.');
+            }
+        } catch (secondError) {
+            try {
+                const searchResults = await yts(youtubeLink);
+                const video = searchResults.all.find(v => v.type === 'video');
+                if (!video) throw new Error('No se encontró el video.');
+                const info = await ytdl.getInfo(video.url);
+                const format = ytdl.chooseFormat(info.formats, { filter: 'audioonly' });
+                await conn.sendMessage(m.chat, { audio: { url: format.url }, fileName: `${video.title}.mp3`, mimetype: 'audio/mp4' }, { quoted: m });
+            } catch (thirdError) {
+                await conn.reply(m.chat, '*❌ Error: No se pudo procesar el audio.*', m);
+            }
+        }
     }
-
-    return conn.reply(m.chat, mensaje, m);
-  } catch (error) {
-    console.error(error);
-    return conn.reply(m.chat, '❌ Ocurrió un error al procesar el comando. Inténtalo nuevamente más tarde.', m);
-  }
 };
 
-handler.command = ['cambio', 'convertir', 'moneda']; // Definimos los comandos al final
+handler.help = ['yta'];
+handler.tags = ['descargas'];
+handler.command = /^audio|fgmp3|dlmp3|getaud|yt(a|mp3)$/i;
+
+handler.register = true;
 
 export default handler;
