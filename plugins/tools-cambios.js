@@ -1,3 +1,10 @@
+const handler = {}; // Definimos el objeto handler
+
+handler.help = ['cambio <monto> <tipo>\nEjemplo: .cambio 100 dolar-a-pyg'];
+handler.tags = ['Economia'];
+handler.admin = false;
+handler.group = true;
+
 handler.ejecutar = async (m, { conn, args }) => {
   try {
     const cambio = {
@@ -34,6 +41,6 @@ handler.ejecutar = async (m, { conn, args }) => {
   }
 };
 
-handler.command = ['cambio', 'convertir', 'moneda'];
+handler.command = ['cambio', 'convertir', 'moneda']; // Definimos los comandos al final
 
 export default handler;
