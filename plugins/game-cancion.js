@@ -44,7 +44,8 @@ const handler = async (m, { conn, usedPrefix }) => {
   // Enviamos el audio de la canción
   try {
     const audioMessage = await conn.sendMessage(
-      m }, fileName: `cancion.mp3`, mimetype: 'audio/mpeg' },
+      m.chat,
+      { audio: { url: json.link_song }, fileName: `cancion.mp3`, mimetype: 'audio/mpeg' },
       { quoted: m }
     );
 
