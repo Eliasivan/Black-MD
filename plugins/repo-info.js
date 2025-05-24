@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
 let handler = async (m, { conn, usedPrefix, command }) => {
-    const githubRepoURL = 'https://github.com/Ivanmods15/Goku-Black-Bot-MD-Lite';
+    const githubRepoURL = 'https://github.com/Eliasivan/Goku-Black-Bot-MD';
 
     try {
         const [, username, repoName] = githubRepoURL.match(/github\.com\/([^/]+)\/([^/]+)/);
@@ -20,43 +20,29 @@ let handler = async (m, { conn, usedPrefix, command }) => {
         Codes += `    ✩  *ENLACE DE GITHUB* : ${repoData.html_url}\n`;
         Codes += `    ✩  *DESCRIPCIÓN* : ${repoData.description || 'Sin descripción disponible'}\n\n`;
         Codes += `*¡No olvides darle una estrella y hacer fork al repositorio!*\n\n`;
-        Codes += `> *Código creado por ivan y terminado por José Elver*`;
+        Codes += `> *${dev}*`;
 
-        await conn.sendMessage(m.chat, {
-            image: { url: 'https://files.catbox.moe/zhxljj.jpg' },
-            caption: Codes,
+        // Enviar el mensaje con la información del repositorio
+        await conn.sendMessage(m.chat, { 
+            text: Codes,
             contextInfo: { 
                 mentionedJid: [m.sender],
                 forwardingScore: 999,
-                isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363276986902836@newsletter',
-                    newsletterName: 'Power by ivan',
-                    serverMessageId: 143
-                }
+                isForwarded: true
             }
         }, { quoted: m });
 
+        // Enviar el audio desde la URL
         await conn.sendMessage(m.chat, {
             audio: { url: 'https://github.com/JawadYTX/KHAN-DATA/raw/refs/heads/main/autovoice/repo.m4a' },
             mimetype: 'audio/mp4',
-            ptt: true,
-            contextInfo: { 
-                mentionedJid: [m.sender],
-                forwardingScore: 999,
-                isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363276986902836@newsletter',
-                    newsletterName: 'Power by ivan',
-                    serverMessageId: 143
-                }
-            }
+            ptt: true
         }, { quoted: m });
 
     } catch (error) {
         await conn.reply(m.chat, "Lo siento, ocurrió un error al obtener la información del repositorio. Por favor, intenta de nuevo más tarde.", m);
     }
-}
+};
 
 handler.tags = ['info'];
 handler.help = ['repo', 'sc', 'script', 'info'];
