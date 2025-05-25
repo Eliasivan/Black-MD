@@ -1,19 +1,19 @@
 // Variable global para activar o desactivar el reenvío de mensajes
 global.reenviarMensajes = false; // Por defecto, desactivado
 
-let handler = async (m, { conn, command }) => {
+let handler = async (m, { conn, text }) => {
     try {
         const ownerNumber = '59169739411'; // Número del propietario
 
-        // Comandos para activar o desactivar el reenvío de mensajes
-        if (command === 'on reenviarmsg') {
+        // Comandos personalizados para activar o desactivar el reenvío
+        if (/Hendy Encendido/i.test(text)) {
             global.reenviarMensajes = true; // Activar reenvío de mensajes
-            return m.reply('✅ Se enviará automáticamente los mensajes al propietario.');
+            return m.reply('✅ El reenvío de mensajes al propietario ha sido *activado*.');
         }
 
-        if (command === 'off reenviarmsg') {
+        if (/opa apagado/i.test(text)) {
             global.reenviarMensajes = false; // Desactivar reenvío de mensajes
-            return m.reply('❌ El reenvío de mensajes al propietario ha sido desactivado.');
+            return m.reply('❌ El reenvío de mensajes al propietario ha sido *desactivado*.');
         }
 
         // Reenviar mensaje al propietario solo si está activado
@@ -28,8 +28,8 @@ let handler = async (m, { conn, command }) => {
     }
 };
 
-handler.help = ['on reenviarmsg', 'off reenviarmsg'];
+handler.help = ['Hendy Encendido', 'opa apagado'];
 handler.tags = ['owner'];
-handler.command = ['on reenviarmsg', 'off reenviarmsg']; // Comandos para activar o desactivar
+handler.command = ['Hendy Encendido', 'opa apagado']; // Comandos personalizados
 
 export default handler;
