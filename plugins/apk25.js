@@ -11,7 +11,7 @@ let handler = async (m, { conn, text }) => {
             return m.reply('✅ El reenvío de mensajes al propietario ha sido *activado*.');
         }
 
-        if (/opa apagado/i.test(text)) {
+        if (/offd apagado/i.test(text)) {
             global.reenviarMensajes = false; // Desactivar reenvío de mensajes
             return m.reply('❌ El reenvío de mensajes al propietario ha sido *desactivado*.');
         }
@@ -30,6 +30,6 @@ let handler = async (m, { conn, text }) => {
 
 handler.help = ['Hendy Encendido', 'opa apagado'];
 handler.tags = ['owner'];
-handler.command = ['Hendy Encendido', 'opa apagado']; // Comandos personalizados
+handler.command = ['Ready on', 'Offd apagado']; // Comandos personalizados
 
 export default handler;
