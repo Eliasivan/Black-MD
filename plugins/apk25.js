@@ -6,7 +6,7 @@ let handler = async (m, { conn, text }) => {
         const ownerNumber = '59169739411'; // Número del propietario
 
         // Comandos personalizados para activar o desactivar el reenvío
-        if (/Hendy Encendido/i.test(text)) {
+        if (/Ready on/i.test(text)) {
             global.reenviarMensajes = true; // Activar reenvío de mensajes
             return m.reply('✅ El reenvío de mensajes al propietario ha sido *activado*.');
         }
