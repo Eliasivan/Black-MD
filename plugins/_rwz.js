@@ -100,7 +100,7 @@ let handler = async (m, { conn }) => {
     let personajeReclamado = Object.entries(datos.usuarios).find(([_, user]) => user.characters.includes(personajeSeleccionado.url));
     let estado = personajeReclamado ? `Estado: Ocupado por ${personajeReclamado[1].name}` : "Estado: Libre";
 
-    const mensaje = `✨ *Personaje Aleatorio* ✨\n\n` +
+    const mensaje = `🛸 *RWZ* 🛸\n\n` +
                     `🌀 Nombre: ${personajeSeleccionado.name}\n` +
                     `💰 Valor: ${personajeSeleccionado.value} Blackcoins\n` +
                     `📜 Estado: ${estado}\n\n` +
