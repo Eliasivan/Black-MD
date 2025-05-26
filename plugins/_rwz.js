@@ -102,7 +102,7 @@ let handler = async (m, { conn }) => {
 
     const mensaje = `✨ *Personaje Aleatorio* ✨\n\n` +
                     `🌀 Nombre: ${personajeSeleccionado.name}\n` +
-                    `💰 Valor: ${personajeSeleccionado.value} WFcoins\n` +
+                    `💰 Valor: ${personajeSeleccionado.value} Blackcoins\n` +
                     `📜 Estado: ${estado}\n\n` +
                     `🔑 Identificador: <id:${idUnico}>`;
 
