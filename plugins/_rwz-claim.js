@@ -46,20 +46,24 @@ const validateEnvironment = () => {
 // Manejador principal para el comando
 const handler = async (message, { connection }) => {
     try {
+        // Verificar si existe el método sendMessage en lugar de reply
+        if (!connection?.sendMessage) {
+            console.error("❌ La función sendMessage no está definida en la conexión.");
+            return;
+        }
+
         if (!message.citado) {
-            await connection.reply(
+            await connection.sendMessage(
                 message.chat,
-                "❌ Por favor cita un mensaje que contenga información válida para usar este comando.",
-                message
+                { text: "❌ Por favor cita un mensaje que contenga información válida para usar este comando." }
             );
             return;
         }
 
         if (!validateEnvironment()) {
-            await connection.reply(
+            await connection.sendMessage(
                 message.chat,
-                "🚫 Este comando está restringido para los usuarios del Goku-Black-Bot-MD.\n🔗 Visita: https://github.com/Eliasivan/Goku-Black-Bot-MD",
-                message
+                { text: "🚫 Este comando está restringido para los usuarios del Goku-Black-Bot-MD.\n🔗 Visita: https://github.com/Eliasivan/Goku-Black-Bot-MD" }
             );
             return;
         }
@@ -67,10 +71,9 @@ const handler = async (message, { connection }) => {
         const userId = message.remitente;
         const extractedId = message.citado.texto.match(/<id:(.*)>/)?.[1];
         if (!extractedId) {
-            await connection.reply(
+            await connection.sendMessage(
                 message.chat,
-                "❌ No se pudo extraer un ID válido del mensaje citado.",
-                message
+                { text: "❌ No se pudo extraer un ID válido del mensaje citado." }
             );
             return;
         }
@@ -84,19 +87,17 @@ const handler = async (message, { connection }) => {
             const remainingTime = 600000 - (currentTime - lastUsage);
             const minutes = Math.floor(remainingTime / 60000);
             const seconds = Math.floor((remainingTime % 60000) / 1000);
-            await connection.reply(
+            await connection.sendMessage(
                 message.chat,
-                `⏳ Por favor espera antes de usar este comando nuevamente.\nTiempo restante: ${minutes} minutos y ${seconds} segundos.`,
-                message
+                { text: `⏳ Por favor espera antes de usar este comando nuevamente.\nTiempo restante: ${minutes} minutos y ${seconds} segundos.` }
             );
             return;
         }
 
         if (!targetCharacter) {
-            await connection.reply(
+            await connection.sendMessage(
                 message.chat,
-                "❌ Lo siento, este personaje no está disponible en este momento.",
-                message
+                { text: "❌ Lo siento, este personaje no está disponible en este momento." }
             );
             return;
         }
@@ -106,10 +107,9 @@ const handler = async (message, { connection }) => {
         );
 
         if (isOwnedBySomeone) {
-            await connection.reply(
+            await connection.sendMessage(
                 message.chat,
-                `❌ El personaje ${targetCharacter.nombre} ya pertenece a otro usuario.`,
-                message
+                { text: `❌ El personaje ${targetCharacter.nombre} ya pertenece a otro usuario.` }
             );
             cooldowns[userId] = currentTime;
             return;
@@ -141,17 +141,15 @@ const handler = async (message, { connection }) => {
                 saveData(database);
 
                 const previousOwner = targetCharacter.userId;
-                await connection.reply(
+                await connection.sendMessage(
                     message.chat,
-                    `🎉 Felicidades @${userId.split('@')[0]}, ¡has robado exitosamente a ${targetCharacter.nombre} de @${previousOwner.split('@')[0]}!`,
-                    message
+                    { text: `🎉 Felicidades @${userId.split('@')[0]}, ¡has robado exitosamente a ${targetCharacter.nombre} de @${previousOwner.split('@')[0]}!` }
                 );
             } else {
                 const currentOwner = targetCharacter.userId;
-                await connection.reply(
+                await connection.sendMessage(
                     message.chat,
-                    `❌ No lograste robar el personaje ${targetCharacter.nombre} de @${currentOwner.split('@')[0]}.`,
-                    message
+                    { text: `❌ No lograste robar el personaje ${targetCharacter.nombre} de @${currentOwner.split('@')[0]}.` }
                 );
             }
 
@@ -168,10 +166,9 @@ const handler = async (message, { connection }) => {
         );
 
         if (alreadyOwned) {
-            await connection.reply(
+            await connection.sendMessage(
                 message.chat,
-                `🎉 ¡Ya posees al personaje ${targetCharacter.nombre}!`,
-                message
+                { text: `🎉 ¡Ya posees al personaje ${targetCharacter.nombre}!` }
             );
             return;
         }
@@ -191,19 +188,17 @@ const handler = async (message, { connection }) => {
 
         saveData(database);
 
-        await connection.reply(
+        await connection.sendMessage(
             message.chat,
-            `🎉 Felicidades @${userId.split('@')[0]}, ¡has reclamado exitosamente a ${targetCharacter.nombre}!`,
-            message
+            { text: `🎉 Felicidades @${userId.split('@')[0]}, ¡has reclamado exitosamente a ${targetCharacter.nombre}!` }
         );
 
         cooldowns[userId] = currentTime;
     } catch (error) {
         console.error("❌ Error en el manejador:", error.message);
-        await connection.reply(
+        await connection.sendMessage(
             message.chat,
-            "❌ Ocurrió un error al procesar tu comando. Por favor, intenta nuevamente más tarde.",
-            message
+            { text: "❌ Ocurrió un error al procesar tu comando. Por favor, intenta nuevamente más tarde." }
         );
     }
 };
