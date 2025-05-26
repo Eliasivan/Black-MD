@@ -115,7 +115,7 @@ let handler = async (m, { conn }) => {
         'externalAdReply': {
           'showAdAttribution': true,
           'title': "¡Nuevo personaje!",
-          'body': "🦋 HuTao-Proyecto ❤️‍🔥",
+          'body': "💥 Goku-Black-Bot-MD 💥",
           'thumbnailUrl': personajeSeleccionado.url,
           'sourceUrl': "https://github.com/Eliasivan/Goku-Black-Bot-MD",
           'previewType': 'PHOTO',
