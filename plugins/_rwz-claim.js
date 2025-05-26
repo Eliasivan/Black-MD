@@ -10,7 +10,21 @@ const saveData = (data) => {
     try {
         fs.writeFileSync('base_de_datos.json', JSON.stringify(data, null, 2));
     } catch (error) {
-        console.error("Error al guardar los datos:", error);
+        console.error("❌ Error al guardar los datos:", error.message);
+    }
+};
+
+// Función para cargar datos desde el archivo
+const loadData = () => {
+    try {
+        if (fs.existsSync('base_de_datos.json')) {
+            const data = fs.readFileSync('base_de_datos.json', 'utf-8');
+            return JSON.parse(data);
+        }
+        return { usuarios: {}, personajesReservados: [] };
+    } catch (error) {
+        console.error("❌ Error al cargar la base de datos:", error.message);
+        return { usuarios: {}, personajesReservados: [] };
     }
 };
 
@@ -24,89 +38,85 @@ const validateEnvironment = () => {
             SECRET_KEY === "ir83884kkc82k393i48"
         );
     } catch (error) {
-        console.error("Error al leer package.json:", error);
+        console.error("❌ Error al validar el entorno:", error.message);
         return false;
     }
 };
 
 // Manejador principal para el comando
 const handler = async (message, { connection }) => {
-    if (!message.citado) {
-        console.error("Mensaje no citado. Se requiere un mensaje citado para continuar.");
-        return;
-    }
-
-    if (!validateEnvironment()) {
-        await connection.reply(
-            message.chat,
-            "🚫 Este comando está restringido para los usuarios del Goku-Black-Bot-MD.\n🔗 Visita: https://github.com/Eliasivan/Goku-Black-Bot-MD",
-            message
-        );
-        return;
-    }
-
-    const userId = message.remitente;
-    const extractedId = message.citado.texto.match(/<id:(.*)>/)?.[1];
-    let database;
-
-    // Intentar cargar la base de datos desde el archivo
     try {
-        database = fs.existsSync('base_de_datos.json')
-            ? JSON.parse(fs.readFileSync('base_de_datos.json', 'utf-8'))
-            : { usuarios: {}, personajesReservados: [] };
-    } catch (error) {
-        console.error("Error al cargar la base de datos:", error);
-        database = { usuarios: {}, personajesReservados: [] };
-    }
+        if (!message.citado) {
+            await connection.reply(
+                message.chat,
+                "❌ Por favor cita un mensaje que contenga información válida para usar este comando.",
+                message
+            );
+            return;
+        }
 
-    if (!extractedId) {
-        console.error("No se pudo extraer el ID del mensaje citado.");
-        return;
-    }
+        if (!validateEnvironment()) {
+            await connection.reply(
+                message.chat,
+                "🚫 Este comando está restringido para los usuarios del Goku-Black-Bot-MD.\n🔗 Visita: https://github.com/Eliasivan/Goku-Black-Bot-MD",
+                message
+            );
+            return;
+        }
 
-    const targetCharacter = database.personajesReservados.find((item) => item.id === extractedId);
-    const currentTime = Date.now();
-    const lastUsage = cooldowns[userId] || 0;
+        const userId = message.remitente;
+        const extractedId = message.citado.texto.match(/<id:(.*)>/)?.[1];
+        if (!extractedId) {
+            await connection.reply(
+                message.chat,
+                "❌ No se pudo extraer un ID válido del mensaje citado.",
+                message
+            );
+            return;
+        }
 
-    if (currentTime - lastUsage < 600000) {
-        const remainingTime = 600000 - (currentTime - lastUsage);
-        const minutes = Math.floor(remainingTime / 60000);
-        const seconds = Math.floor((remainingTime % 60000) / 1000);
-        await connection.reply(
-            message.chat,
-            `⏳ Por favor espera antes de usar este comando nuevamente.\nTiempo restante: ${minutes} minutos y ${seconds} segundos.`,
-            message
+        let database = loadData();
+        const targetCharacter = database.personajesReservados.find((item) => item.id === extractedId);
+        const currentTime = Date.now();
+        const lastUsage = cooldowns[userId] || 0;
+
+        if (currentTime - lastUsage < 600000) {
+            const remainingTime = 600000 - (currentTime - lastUsage);
+            const minutes = Math.floor(remainingTime / 60000);
+            const seconds = Math.floor((remainingTime % 60000) / 1000);
+            await connection.reply(
+                message.chat,
+                `⏳ Por favor espera antes de usar este comando nuevamente.\nTiempo restante: ${minutes} minutos y ${seconds} segundos.`,
+                message
+            );
+            return;
+        }
+
+        if (!targetCharacter) {
+            await connection.reply(
+                message.chat,
+                "❌ Lo siento, este personaje no está disponible en este momento.",
+                message
+            );
+            return;
+        }
+
+        const isOwnedBySomeone = database.usuarios[targetCharacter.userId]?.personajes?.some(
+            (character) => character.url === targetCharacter.url
         );
-        return;
-    }
 
-    if (!targetCharacter) {
-        await connection.reply(
-            message.chat,
-            "❌ Lo siento, este personaje no está disponible en este momento.",
-            message,
-            { menciones: [userId] }
-        );
-        return;
-    }
+        if (isOwnedBySomeone) {
+            await connection.reply(
+                message.chat,
+                `❌ El personaje ${targetCharacter.nombre} ya pertenece a otro usuario.`,
+                message
+            );
+            cooldowns[userId] = currentTime;
+            return;
+        }
 
-    const isOwnedBySomeone = database.usuarios[targetCharacter.userId]?.personajes?.some(
-        (character) => character.url === targetCharacter.url
-    );
-
-    if (isOwnedBySomeone) {
-        await connection.reply(
-            message.chat,
-            `❌ El personaje ${targetCharacter.nombre} ya pertenece a otro usuario. ¡Intenta con otro comando!`,
-            message,
-            { menciones: [userId] }
-        );
-        cooldowns[userId] = currentTime;
-        return;
-    }
-
-    if (targetCharacter.userId !== userId) {
-        setTimeout(async () => {
+        // Intentar robar el personaje
+        if (targetCharacter.userId !== userId) {
             const success = Math.random() < 0.5;
 
             if (success) {
@@ -134,66 +144,71 @@ const handler = async (message, { connection }) => {
                 await connection.reply(
                     message.chat,
                     `🎉 Felicidades @${userId.split('@')[0]}, ¡has robado exitosamente a ${targetCharacter.nombre} de @${previousOwner.split('@')[0]}!`,
-                    message,
-                    { menciones: [userId, previousOwner] }
+                    message
                 );
             } else {
                 const currentOwner = targetCharacter.userId;
                 await connection.reply(
                     message.chat,
                     `❌ No lograste robar el personaje ${targetCharacter.nombre} de @${currentOwner.split('@')[0]}.`,
-                    message,
-                    { menciones: [userId, currentOwner] }
+                    message
                 );
             }
 
             cooldowns[userId] = currentTime;
+            return;
+        }
+
+        // Agregar el personaje al usuario
+        database.usuarios[userId] = database.usuarios[userId] || { personajes: [], conteo: 0, puntosTotales: 0 };
+
+        const userCharacters = database.usuarios[userId];
+        const alreadyOwned = userCharacters.personajes.some(
+            (character) => character.url === targetCharacter.url
+        );
+
+        if (alreadyOwned) {
+            await connection.reply(
+                message.chat,
+                `🎉 ¡Ya posees al personaje ${targetCharacter.nombre}!`,
+                message
+            );
+            return;
+        }
+
+        userCharacters.personajes.push({
+            nombre: targetCharacter.nombre,
+            url: targetCharacter.url,
+            valor: targetCharacter.valor,
         });
-        return;
-    }
+        userCharacters.conteo++;
+        userCharacters.puntosTotales += targetCharacter.valor;
 
-    database.usuarios[userId] = database.usuarios[userId] || { personajes: [], conteo: 0, puntosTotales: 0 };
+        database.usuarios[userId] = userCharacters;
+        database.personajesReservados = database.personajesReservados.filter(
+            (item) => item.id !== extractedId
+        );
 
-    const userCharacters = database.usuarios[userId];
-    const alreadyOwned = userCharacters.personajes.some(
-        (character) => character.url === targetCharacter.url
-    );
+        saveData(database);
 
-    if (alreadyOwned) {
         await connection.reply(
             message.chat,
-            `🎉 ¡Ya posees al personaje ${targetCharacter.nombre}!`,
-            message,
-            { menciones: [userId] }
+            `🎉 Felicidades @${userId.split('@')[0]}, ¡has reclamado exitosamente a ${targetCharacter.nombre}!`,
+            message
         );
-        return;
+
+        cooldowns[userId] = currentTime;
+    } catch (error) {
+        console.error("❌ Error en el manejador:", error.message);
+        await connection.reply(
+            message.chat,
+            "❌ Ocurrió un error al procesar tu comando. Por favor, intenta nuevamente más tarde.",
+            message
+        );
     }
-
-    userCharacters.personajes.push({
-        nombre: targetCharacter.nombre,
-        url: targetCharacter.url,
-        valor: targetCharacter.valor,
-    });
-    userCharacters.conteo++;
-    userCharacters.puntosTotales += targetCharacter.valor;
-
-    database.usuarios[userId] = userCharacters;
-    database.personajesReservados = database.personajesReservados.filter(
-        (item) => item.id !== extractedId
-    );
-
-    saveData(database);
-
-    await connection.reply(
-        message.chat,
-        `🎉 Felicidades @${userId.split('@')[0]}, ¡has reclamado exitosamente a ${targetCharacter.nombre}!`,
-        message,
-        { menciones: [userId] }
-    );
-
-    cooldowns[userId] = currentTime;
 };
 
+// Configuración del comando
 handler.help = ['confirmar'];
 handler.tags = ['diversión'];
 handler.command = ['cz', 'confirmar'];
