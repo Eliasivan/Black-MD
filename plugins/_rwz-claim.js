@@ -1,21 +1,25 @@
-import sistemaArchivos from 'fs';
-import cargarEntorno from 'dotenv';
-cargarEntorno.config();
+import fs from 'fs';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const CLAVE_SECRETA = process.env.SECRET_KEY;
-const rastreadorTiempos = {};
+const SECRET_KEY = process.env.SECRET_KEY;
+const cooldowns = {};
 
-const guardarDatos = (datos) => {
-    sistemaArchivos.writeFileSync('base_de_datos.json', JSON.stringify(datos, null, 2));
+const saveData = (data) => {
+    try {
+        fs.writeFileSync('database.json', JSON.stringify(data, null, 2));
+    } catch (error) {
+        console.error("Error al guardar los datos:", error);
+    }
 };
 
-const validarEntorno = () => {
+const validateEnvironment = () => {
     try {
-        const informacionPaquete = JSON.parse(sistemaArchivos.readFileSync('./metadata.json', 'utf-8'));
+        const packageInfo = JSON.parse(fs.readFileSync('./metadata.json', 'utf-8'));
         return (
-            informacionPaquete.name === "Goku-Black-Bot-MD" &&
-            informacionPaquete.repository.url === 'https://github.com/Eliasivan/Goku-Black-Bot-MD.git' &&
-            CLAVE_SECRETA === "ir83884kkc82k393i48"
+            packageInfo.name === "Goku-Black-Bot-MD" &&
+            packageInfo.repository.url === 'https://github.com/Eliasivan/Goku-Black-Bot-MD.git' &&
+            SECRET_KEY === "ir83884kkc82k393i48"
         );
     } catch (error) {
         console.error("Error al leer metadata.json:", error);
@@ -23,163 +27,141 @@ const validarEntorno = () => {
     }
 };
 
-const manejador = async (mensaje, { conexion }) => {
-    if (!mensaje.citado) return;
+const handler lastUsage = cooldowns[userId] || 0;
 
-    if (!validarEntorno()) {
-        await conexion.responder(
-            mensaje.chat,
-            "🚫 Este comando está restringido para los usuarios del Goku-Black-Bot-MD.\n🔗 Visita: https://github.com/Eliasivan/Goku-Black-Bot-MD",
-            mensaje
+    if (currentTime - lastUsage < 600000) {
+        const remainingTime = 600000 - (currentTime - lastUsage);
+        const minutes = Math.floor(remainingTime / 60000);
+        const seconds = Math.floor((remainingTime % 60000) / 1000);
+        await connection.responder(
+            message.chat,
+            `⏳ Por favor espera antes de usar este comando nuevamente.\nTiempo restante: ${minutes} minutos y ${seconds} segundos.`,
+            message
         );
         return;
     }
 
-    const idUsuario = mensaje.remitente;
-    const idExtraido = mensaje.citado.texto.match(/<id:(.*)>/)?.[1];
-    let baseDeDatos = sistemaArchivos.existsSync('base_de_datos.json')
-        ? JSON.parse(sistemaArchivos.readFileSync('base_de_datos.json', 'utf-8'))
-        : { usuarios: {}, personajesReservados: [] };
-
-    if (!idExtraido) return;
-
-    const personajeObjetivo = baseDeDatos.personajesReservados.find((item) => item.id === idExtraido);
-    const tiempoActual = Date.now();
-    const ultimoUso = rastreadorTiempos[idUsuario] || 0;
-
-    if (tiempoActual - ultimoUso < 600000) {
-        const tiempoRestante = 600000 - (tiempoActual - ultimoUso);
-        const minutos = Math.floor(tiempoRestante / 60000);
-        const segundos = Math.floor((tiempoRestante % 60000) / 1000);
-        await conexion.responder(
-            mensaje.chat,
-            `⏳ Por favor espera antes de usar este comando nuevamente.\nTiempo restante: ${minutos} minutos y ${segundos} segundos.`,
-            mensaje
-        );
-        return;
-    }
-
-    if (!personajeObjetivo) {
-        await conexion.responder(
-            mensaje.chat,
+    if (!targetCharacter) {
+        await connection.responder(
+            message.chat,
             "❌ Lo siento, este personaje no está disponible en este momento.",
-            mensaje,
-            { menciones: [idUsuario] }
+            message,
+            { menciones: [userId] }
         );
         return;
     }
 
-    const esPropiedadDeAlguien = baseDeDatos.usuarios[personajeObjetivo.userId]?.personajes?.some(
-        (personaje) => personaje.url === personajeObjetivo.url
+    const isOwnedBySomeone = database.users[targetCharacter.userId]?.characters?.some(
+        (character) => character.url === targetCharacter.url
     );
 
-    if (esPropiedadDeAlguien) {
-        await conexion.responder(
-            mensaje.chat,
-            `❌ El personaje ${personajeObjetivo.nombre} ya pertenece a otro usuario. ¡Intenta con otro comando!`,
-            mensaje,
-            { menciones: [idUsuario] }
+    if (isOwnedBySomeone) {
+        await connection.responder(
+            message.chat,
+            `❌ El personaje ${targetCharacter.nombre} ya pertenece a otro usuario. ¡Intenta con otro comando!`,
+            message,
+            { menciones: [userId] }
         );
-        rastreadorTiempos[idUsuario] = tiempoActual;
+        cooldowns[userId] = currentTime;
         return;
     }
 
-    if (personajeObjetivo.userId !== idUsuario) {
+    if (targetCharacter.userId !== userId) {
         setTimeout(async () => {
-            const exito = Math.random() < 0.5;
+            const success = Math.random() < 0.5;
 
-            if (exito) {
-                if (!baseDeDatos.usuarios[idUsuario]) {
-                    baseDeDatos.usuarios[idUsuario] = { personajes: [], conteo: 0, puntosTotales: 0 };
+            if (success) {
+                if (!database.users[userId]) {
+                    database.users[userId] = { characters: [], count: 0, totalPoints: 0 };
                 }
 
-                baseDeDatos.usuarios[idUsuario].personajes.push({
-                    nombre: personajeObjetivo.nombre,
-                    url: personajeObjetivo.url,
-                    valor: personajeObjetivo.valor,
+                database.users[userId].characters.push({
+                    nombre: targetCharacter.nombre,
+                    url: targetCharacter.url,
+                    valor: targetCharacter.valor,
                 });
 
-                if (baseDeDatos.usuarios[personajeObjetivo.userId]) {
-                    baseDeDatos.usuarios[personajeObjetivo.userId].personajes = baseDeDatos.usuarios[
-                        personajeObjetivo.userId
-                    ].personajes.filter((personaje) => personaje.url !== personajeObjetivo.url);
+                if (database.users[targetCharacter.userId]) {
+                    database.users[targetCharacter.userId].characters = database.users[
+                        targetCharacter.userId
+                    ].characters.filter((character) => character.url !== targetCharacter.url);
                 }
 
-                baseDeDatos.personajesReservados = baseDeDatos.personajesReservados.filter(
-                    (item) => item.id !== idExtraido
+                database.reservedCharacters = database.reservedCharacters.filter(
+                    (item) => item.id !== extractedId
                 );
 
-                guardarDatos(baseDeDatos);
+                saveData(database);
 
-                const propietarioAnterior = personajeObjetivo.userId;
-                await conexion.responder(
-                    mensaje.chat,
-                    `🎉 Felicidades @${idUsuario.split('@')[0]}, ¡has robado exitosamente a ${personajeObjetivo.nombre} de @${propietarioAnterior.split('@')[0]}!`,
-                    mensaje,
-                    { menciones: [idUsuario, propietarioAnterior] }
+                const previousOwner = targetCharacter.userId;
+                await connection.responder(
+                    message.chat,
+                    `🎉 Felicidades @${userId.split('@')[0]}, ¡has robado exitosamente a ${targetCharacter.nombre} de @${previousOwner.split('@')[0]}!`,
+                    message,
+                    { menciones: [userId, previousOwner] }
                 );
             } else {
-                const propietarioActual = personajeObjetivo.userId;
-                await conexion.responder(
-                    mensaje.chat,
-                    `❌ No lograste robar el personaje ${personajeObjetivo.nombre} de @${propietarioActual.split('@')[0]}.`,
-                    mensaje,
-                    { menciones: [idUsuario, propietarioActual] }
+                const currentOwner = targetCharacter.userId;
+                await connection.responder(
+                    message.chat,
+                    `❌ No lograste robar el personaje ${targetCharacter.nombre} de @${currentOwner.split('@')[0]}.`,
+                    message,
+                    { menciones: [userId, currentOwner] }
                 );
             }
 
-            rastreadorTiempos[idUsuario] = tiempoActual;
+            cooldowns[userId] = currentTime;
         });
         return;
     }
 
-    if (!baseDeDatos.usuarios[idUsuario]) {
-        baseDeDatos.usuarios[idUsuario] = { personajes: [], conteo: 0, puntosTotales: 0 };
+    if (!database.users[userId]) {
+        database.users[userId] = { characters: [], count: 0, totalPoints: 0 };
     }
 
-    const personajesUsuario = baseDeDatos.usuarios[idUsuario];
-    const yaPosee = personajesUsuario.personajes.some(
-        (personaje) => personaje.url === personajeObjetivo.url
+    const userCharacters = database.users[userId];
+    const alreadyOwned = userCharacters.characters.some(
+        (character) => character.url === targetCharacter.url
     );
 
-    if (yaPosee) {
-        await conexion.responder(
-            mensaje.chat,
-            `🎉 ¡Ya posees al personaje ${personajeObjetivo.nombre}!`,
-            mensaje,
-            { menciones: [idUsuario] }
+    if (alreadyOwned) {
+        await connection.responder(
+            message.chat,
+            `🎉 ¡Ya posees al personaje ${targetCharacter.nombre}!`,
+            message,
+            { menciones: [userId] }
         );
         return;
     }
 
-    personajesUsuario.personajes.push({
-        nombre: personajeObjetivo.nombre,
-        url: personajeObjetivo.url,
-        valor: personajeObjetivo.valor,
+    userCharacters.characters.push({
+        nombre: targetCharacter.nombre,
+        url: targetCharacter.url,
+        valor: targetCharacter.valor,
     });
-    personajesUsuario.conteo++;
-    personajesUsuario.puntosTotales += personajeObjetivo.valor;
+    userCharacters.count++;
+    userCharacters.totalPoints += targetCharacter.valor;
 
-    baseDeDatos.usuarios[idUsuario] = personajesUsuario;
-    baseDeDatos.personajesReservados = baseDeDatos.personajesReservados.filter(
-        (item) => item.id !== idExtraido
+    database.users[userId] = userCharacters;
+    database.reservedCharacters = database.reservedCharacters.filter(
+        (item) => item.id !== extractedId
     );
 
-    guardarDatos(baseDeDatos);
+    saveData(database);
 
-    await conexion.responder(
-        mensaje.chat,
-        `🎉 Felicidades @${idUsuario.split('@')[0]}, ¡has reclamado exitosamente a ${personajeObjetivo.nombre}!`,
-        mensaje,
-        { menciones: [idUsuario] }
+    await connection.responder(
+        message.chat,
+        `🎉 Felicidades @${userId.split('@')[0]}, ¡has reclamado exitosamente a ${targetCharacter.nombre}!`,
+        message,
+        { menciones: [userId] }
     );
 
-    rastreadorTiempos[idUsuario] = tiempoActual;
+    cooldowns[userId] = currentTime;
 };
 
-manejador.ayuda = ['confirmar'];
-manejador.etiquetas = ['diversión'];
-manejador.comando = ['cz', 'confirmar'];
-manejador.grupo = true;
+handler.help = ['confirmar'];
+handler.tags = ['diversión'];
+handler.command = ['cz', 'confirmarz'];
+handler.group = true;
 
-export default manejador;
+export default handler;
