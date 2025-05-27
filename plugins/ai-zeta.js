@@ -1,22 +1,45 @@
-import fetch from 'node-fetch'
+import axios from 'axios';
 
-const handler = async (m, { conn, command, args, text }) => {
-  if (!text) return conn.reply(m.chat, `*[ ☆ ] Has usado mal el comando.*\n*EJEMPLO:* ${command} HOLA BUENAS :)`, m, rcanal)
+const handler = async (m, { text, usedPrefix, command }) => {
+  if (!text) {
+    return conn.reply(
+      m.chat,
+      `✨ *Ingresa una búsqueda*\n\nEjemplo: ${usedPrefix + command} paisajes hermosos`,
+      m
+    );
+  }
 
   try {
-    let response = await fetch(`https://api.kyuurzy.site/api/ai/aizeta?query=${encodeURIComponent(text)}`);
-    let zeta = await response.json();
+    await m.react('🕒');
+    conn.sendPresenceUpdate('composing', m.chat);
 
-    if (zeta.result && zeta.result.answer) {
-      await conn.sendMessage(m.chat, { text: `${zeta.result.answer}` }, { quoted: m })
+    const response = await axios.get(`https://api.dorratz.com/v2/pinterest?q=${encodeURIComponent(text)}`);
+    const data = response.data;
+
+    if (data && data.result) {
+      const results = data.result.map((item, index) => `🔹 ${index + 1}. ${item.title}\n${item.link}`).join('\n\n');
+      await conn.reply(
+        m.chat,
+        `✨ *Resultados de Pinterest para:* "${text}"\n\n${results}`,
+        m
+      );
     } else {
-      await conn.reply(m.chat, 'No se obtuvo una respuesta válida de la API.', m, rcanal)
+      conn.reply(m.chat, '❌ No se encontraron resultados para tu búsqueda.', m);
     }
-  } catch (e) {
-    await conn.reply(m.chat, `Hubo un error al procesar tu solicitud. ${e}`, m, rcanal);
+
+    await m.react('✅️');
+  } catch (error) {
+    console.error("❌ Error al obtener la respuesta de la API:", error.message);
+    conn.reply(
+      m.chat,
+      '❌ Ocurrió un error al procesar tu solicitud. Por favor, intenta nuevamente más tarde.',
+      m
+    );
   }
-}
-handler.tags = ['ai']
-handler.help = ['zeta <texto>']
-handler.command = ['zeta']
-export default handler
+};
+
+handler.command = ['pin1'];
+handler.help = ['pinterest'];
+handler.tags = ['search'];
+
+export default handler;
