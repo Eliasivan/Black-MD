@@ -10,7 +10,7 @@ import readline from 'readline';
         // Crear socket de WhatsApp
         const sock = makeWASocket({
             auth: state,
-            printQRInTerminal: false, // Se desactiva el QR
+            printQRInTerminal: true, // Activar QR
         });
 
         // Interfaz de entrada para solicitar el número
@@ -26,13 +26,13 @@ import readline from 'readline';
                 // Solicitar el número de WhatsApp
                 const addNumber = await question(chalk.bold.cyan('Ingrese el número de WhatsApp (+57321XXXXXXX): '));
                 const pairingCode = await sock.requestPairingCode(addNumber.replace(/\D/g, ''));
-                const formattedCode = pairingCode.match(/.{1,4}/g).join('-'); // Formatea el código en bloques de 4 dígitos
+                const formattedCode = pairingCode.match(/.{1,4}/g).join('-'); // Formatear el código en bloques de 4 dígitos
                 console.log(chalk.bold.green(`Código de vinculación generado: ${formattedCode}`));
 
-                // Mostrar carta de felicitación cuando esté vinculado
+                // Mostrar mensaje de conexión al poner el código
                 console.log(chalk.bgMagenta.white(`
     ╭───────────────────────────────╮
-    │ ✨ ¡Felicidades! 🎉           │
+    │ ✨ ¡Conectado! 🎉             │
     │ Tu bot está vinculado con    │
     │ éxito a WhatsApp.            │
     │ ¡Gracias por usar Goku-Black │
@@ -52,10 +52,39 @@ import readline from 'readline';
             }
         };
 
-        // Solicitar el código de vinculación
-        await requestPairingCode();
+        // Manejo de eventos de conexión
+        sock.ev.on('connection.update', (update) => {
+            const { connection, qr } = update;
 
-        console.log(chalk.bold.green('Bot iniciado correctamente.'));
+            if (connection === 'open') {
+                console.log(chalk.bgGreen.white(`
+    ╭───────────────────────────────╮
+    │ ✨ ¡Conectado! 🎉             │
+    │ Tu bot está vinculado con    │
+    │ éxito a WhatsApp.            │
+    │ ¡Gracias por usar Goku-Black │
+    │ Bot-MD-Lite!                 │
+    │ 🥂 ¡Disfrútalo al máximo!     │
+    ╰───────────────────────────────╯
+                `));
+            }
+
+            if (qr) {
+                console.log(chalk.bold.yellow('Escanea el código QR para vincular tu bot.'));
+            }
+        });
+
+        // Solicitar el código de vinculación o escaneo de QR
+        const methodChoice = await question(chalk.bold.cyan('Seleccione el método de vinculación:\n1. Escanear QR\n2. Código de 8 dígitos\n--> '));
+
+        if (methodChoice === '2') {
+            await requestPairingCode();
+        } else if (methodChoice === '1') {
+            console.log(chalk.bold.green('Generando código QR, escanéalo desde tu dispositivo.'));
+        } else {
+            console.log(chalk.bold.red('Opción inválida. Por favor, seleccione 1 o 2.'));
+            rl.close();
+        }
     } catch (error) {
         console.error(chalk.bold.red('Error al iniciar el bot:'), error);
     }
