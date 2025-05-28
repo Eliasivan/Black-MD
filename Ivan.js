@@ -106,8 +106,8 @@ if (!methodCodeQR && !methodCode && !fs.existsSync(`./${sessions}/creds.json`)) 
 do {
 opcion = await question(
 colores('Seleccione una opción:\n') +
-chalk.bold.red('📷 Vincular con Código QR\n') +
-chalk.bold.red('✏️ Vincular con Código de Texto (8 Dígitos)\n--> ')
+chalk.bold.red('1. 📷 Vincular con Código QR\n') +
+chalk.bold.red('2. ✏️ Vincular con Código de Texto (8 Dígitos)\n--> ')
 );
 if (!/^[1-2]$/.test(opcion)) {
 console.log(chalk.bold.redBright(`🚩 No se permiten numeros que no sean 1 o 2, tampoco letras o símbolos especiales.`))
