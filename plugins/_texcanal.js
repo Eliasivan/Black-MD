@@ -1,13 +1,16 @@
 const handler = async (m, { conn, args }) => {
     if (!args || args.length < 2) {
-        return m.reply(`✳️ Ejemplo de uso:\n.chReact httpsanal/id-de-mensaje texto de reacción`);
+        return m.reply(`✳️ Ejemplo de uso:\n.chReact https://whatsapp.com/channel/canal/id-de-mensaje texto de reacción`);
     }
 
     const channelLinkRegex = /^https:\/\/whatsapp\.com\/channel\/([A-Za-z0-9_-]{22,})\/([A-Za-z0-9_-]+)$/;
     const match = args[0].match(channelLinkRegex);
 
     if (!match) {
-        return m.reply("❌ [, channelId, messageId] = match;
+        return m.reply_CANAL/ID_MENSAJE");
+    }
+
+    const [, channelId, messageId] = match;
 
     const styleMap = {
         a: '🅐', b: '🅑', c: '🅒', d: '🅓', e: '🅔', f: '🅕', g: '🅖',
@@ -23,7 +26,13 @@ const handler = async (m, { conn, args }) => {
     const emojiReaction = reactionText.split('').map(c => styleMap[c] || c).join('');
 
     try {
+        console.log("Channel ID:", channelId);
+        console.log("Message ID:", messageId);
+        console.log("Emoji Reaction:", emojiReaction);
+
         const channelInfo = await conn.newsletterMetadata("invite", channelId);
+        console.log("Channel Info:", channelInfo);
+
         if (!channelInfo) {
             return m.reply("❌ No se pudo obtener información del canal. Verifica que el enlace sea correcto.");
         }
@@ -31,7 +40,8 @@ const handler = async (m, { conn, args }) => {
         await conn.newsletterReactMessage(channelInfo.id, messageId, emojiReaction);
         return m.reply(`✅ Reacción *${emojiReaction}* enviada correctamente al mensaje en el canal *${channelInfo.name}*`);
     } catch (error) {
-        console.error("Error:", error); // Registra el error en la consola para depuración
+        console.error("Error:", error); // Registra el error completo
+
         if (error.message.includes('not found')) {
             return m.reply("❌ El canal o mensaje no fue encontrado. Verifica que tengas acceso al canal y que el mensaje exista.");
         }
