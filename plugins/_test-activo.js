@@ -17,4 +17,3 @@ const handler = async (m, { conn, text }) => {
 };
 
 export default handler;
-```
