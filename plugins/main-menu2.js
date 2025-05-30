@@ -50,7 +50,7 @@ let handler = async (m, { conn, args }) => {
             externalAdReply: {
                 title: "Menú de Audios",
                 body: "Comandos disponibles para reproducir audios",
-                thumbnailUrl: './Menu2.jpg',
+                thumbnailUrl: 'https://files.catbox.moe/0ous50.jpg',
                 sourceUrl: 'https://github.com/Eliasivan/Goku-Black-Bot-MD',
                 mediaType: 1,
                 showAdAttribution: true,
