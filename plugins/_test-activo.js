@@ -9,11 +9,13 @@ const handler = async (m, { conn, text }) => {
             contextInfo: {
                 thumbnailUrl: 'https://files.catbox.moe/0ous50.jpg',
                 newsletterJid: '12345@s.whatsapp.net',
-                newsletterName: 'GokuBlack',
+                newsletterName: 'Goku-Black-Bot-MD',
             }
         });
         await m.react('👍🏻');
     }
 };
+
+handler.custom = true;
 
 export default handler;
