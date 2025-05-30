@@ -1,13 +1,22 @@
 import fetch from 'node-fetch';
 
-let handler = async (m, { conn, usedPrefix, command }) => {
-  let activo = `Estoy activo ✅`;
-  await conn.reply(m.chat, activo, m);
-  await m.react('👍🏻');
+const handler = async (m, { conn, text }) => {
+    const mensaje = "Estoy activo ✅";
+
+    if (text.toLowerCase() === "activo" || text.toLowerCase() === "p") {
+        await conn.sendMessage(m.chat, { 
+            text: mensaje,
+            contextInfo: {
+                thumbnailUrl: 'https://files.catbox.moe/0ous50.jpg',
+                newsletterJid: '12345@s.whatsapp.net',
+                newsletterName: 'Goku-Black-Bot-MD',
+            }
+        });
+        await m.react('👍🏻');
+    }
 };
 
-handler.help = ['activo'];
 handler.tags = ['info'];
-handler.command = ['activo'];
+handler.command = /^activo|p$/i;
 
 export default handler;
