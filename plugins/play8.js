@@ -31,14 +31,13 @@ const handler = async (m, { conn, text, command }) => {
 
             await conn.sendMessage(m.chat, { 
                 audio: { url: audioUrl }, 
-                mimetype: 'audio/ogg', 
-                ptt: true 
+                mimetype: 'audio/mpeg' 
             }, { quoted: m });
 
             await m.react('✅');
         } catch (error) {
             await m.react('❌');
-            return conn.reply(m.chat, 'No se pudo enviar el audio como nota de voz. Intenta nuevamente.', m);
+            return conn.reply(m.chat, 'No se pudo enviar el audio. Intenta nuevamente.', m);
         }
     } catch (error) {
         await m.react('❌');
