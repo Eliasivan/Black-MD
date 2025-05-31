@@ -17,10 +17,12 @@ const handler = async (m, { conn, text, command }) => {
             const videoId = videoIdToFind[1];
             ytplay2 = ytplay2.all.find(item => item.videoId === videoId) || ytplay2.videos.find(item => item.videoId === videoId);
         }
-        ytplay2 = ytplay2.all?.[0] || ytplay2.videos?.[0] || ytplay2;
+        ytplay2 = ytplay2.all?.[0] || ytplay2.videos?.[0] || ytplay2play2 || ytplay2.length == 0) {
+            await m.react('❌'); // Reacción en caso de no encontrar resultados
+            return conn.reply(m.chat, '✧ No se encontraron resultados para tu búsqueda.', m);
+        }
 
-        if (!ytplay2 || ytplay2.length == 0) {
-            await m.react('❌'); // Reacción en caso title, thumbnail, timestamp, views, url, author } = ytplay2;
+        let { title, thumbnail, timestamp, views, url, author } = ytplay2;
         title = title || 'no encontrado';
         thumbnail = thumbnail || 'no encontrado';
         timestamp = timestamp || 'no encontrado';
@@ -80,8 +82,11 @@ const handler = async (m, { conn, text, command }) => {
     }
 };
 
-handler.command = ['play'];
+// Ajuste para que el bot reconozca el comando
+handler.command = ['play', 'yta', 'ytmp3', 'playaudio']; // Comandos soportados
 handler.tags = ['descargas'];
+handler.help = ['play <texto>']; // Ayuda visible para el usuario
+handler.group = true;
 
 export default handler;
 
@@ -92,9 +97,7 @@ function formatViews(views) {
 
     if (views >= 1_000_000_000) {
         return `${(views / 1_000_000_000).toFixed(1)}B (${views.toLocaleString()})`;
-    } else if (views >= 1_000_000) {
-        return `${(views / 1_000_000).toFixed(1)}M (${views.toLocaleString()})`;
-    } else if (views >= 1_000) {
+    } else if (views    } else if (views >= 1_000) {
         return `${(views / 1_000).toFixed(1)}k (${views.toLocaleString()})`;
     }
     return views.toString();
