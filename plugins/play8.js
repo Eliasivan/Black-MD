@@ -7,7 +7,7 @@ const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-z
 const handler = async (m, { conn, text, usedPrefix, command }) => {
     try {
         if (!text.trim()) {
-            return conn.reply(m.chat, `Por favor, ingresa el nombre de la música a descargar. ${dev}`, m);
+            return conn.reply(m.chat, `Por favor, ingresa el nombre de la música a descargar`, m, rcanal);
         }
 
         let videoIdToFind = text.match(youtubeRegexID) || null;
@@ -16,29 +16,28 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
         if (videoIdToFind) {
             const videoId = videoIdToFind[1];
             ytplay2 = ytplay2.all.find(item => item.videoId === videoId) || ytplay2.videos.find(item => item.videoId === videoId);
-2 || ytplay2.length == 0) {
+        }
+        ytplay2 = ytplay20] || ytplay2.videos?.[0] || ytplay2;
+
+        if (!ytplay2 || ytplay2.length == 0) {
             return m.reply('✧ No se encontraron resultados para tu búsqueda.');
         }
 
         let { title, thumbnail, timestamp, views, ago, url, author } = ytplay2;
         title = title || 'no encontrado';
-        thumbnail = thumbnail || 'no encontrado';
-        timestamp = timestamp || 'no encontrado';
+        thumbnail = encontrado';
         views = views || 'no encontrado';
         ago = ago || 'no encontrado';
-       no encontrado';
+        url = url || 'no encontrado';
+        author = author || 'no encontrado';
 
         const vistas = formatViews(views);
         const canal = author.name ? `${author.name} rcanal` : 'rcanal Desconocido';
-        const infoMessage = `「✦」Descargando *<${title || 'Desconocido'}>*\n\n> ✧ Canal » *${canal}*\n> ✰ Vistas » *${vistas || 'Desconocido'}*\n> ⴵ Duración » *${timestamp || 'Desconocido'}*\n`;
+        const infoMessageocido'}>*\n\n> ✧ Canal » *${canal}*\n> ✰ Vistas » *${vistas || 'Desconocido'}*\n> ⴵ Duración » *${timestamp || 'Desconocido'}*\n`;
 
         const thumb = (await conn.getFile(thumbnail))?.data;
         const JT = {
-            contextInfo: {
-                externalAdReply: {
-                    title: botname,
-                    body: dev,
-                    mediaType: 1,
+1,
                     previewType: 0,
                     mediaUrl: url,
                     sourceUrl: url,
@@ -50,9 +49,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
         await conn.reply(m.chat, infoMessage, m, JT);
 
-        if (command === 'play' || command === 'yta' || command === 'ytmp3' || command === 'playaudio') {
-            try {
-                const api = await (await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`)).json();
+        if (command === 'play' || command === 'yta' || command === 'ytmp3' || command                const api = await (await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`)).json();
                 const resulta = api.result;
                 const result = resulta.download.url;
 
@@ -97,3 +94,5 @@ function formatViews(views) {
     } else if (views >= 1_000) {
         return `${(views / 1_000).toFixed(1)}k (${views.toLocaleString()})`;
     }
+    return views.toString();
+}
