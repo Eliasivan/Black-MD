@@ -15,21 +15,21 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
         if (videoIdToFind) {
             const videoId = videoIdToFind[1];
-            ytplay2 = ytplay2.all.find(item => item.videoId === videoId) || ytplay2.videosId === videoId);
-        }
-        ytplay2 = ytplay2.all?.[0] || ytplay2.videos?.[0] || ytplay2;
-
-        if (!ytplay2 || ytplay2.length == 0) {
+            ytplay2 = ytplay2.all.find(item => item.videoId === videoId) || ytplay2.videos.find(item => item.videoId === videoId);
+2 || ytplay2.length == 0) {
             return m.reply('✧ No se encontraron resultados para tu búsqueda.');
         }
 
         let { title, thumbnail, timestamp, views, ago, url, author } = ytplay2;
         title = title || 'no encontrado';
         thumbnail = thumbnail || 'no encontrado';
-        author = author || 'no encontrado';
+        timestamp = timestamp || 'no encontrado';
+        views = views || 'no encontrado';
+        ago = ago || 'no encontrado';
+       no encontrado';
 
         const vistas = formatViews(views);
-        const canal = author.name ? author.name : 'Desconocido';
+        const canal = author.name ? `${author.name} rcanal` : 'rcanal Desconocido';
         const infoMessage = `「✦」Descargando *<${title || 'Desconocido'}>*\n\n> ✧ Canal » *${canal}*\n> ✰ Vistas » *${vistas || 'Desconocido'}*\n> ⴵ Duración » *${timestamp || 'Desconocido'}*\n`;
 
         const thumb = (await conn.getFile(thumbnail))?.data;
@@ -79,8 +79,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     }
 };
 
-handler.command = ['play];
-handler.help = ['play'];
+handler.command = handler.help = ['play'];
 handler.tags = ['descargas'];
 handler.group = true;
 
@@ -98,5 +97,3 @@ function formatViews(views) {
     } else if (views >= 1_000) {
         return `${(views / 1_000).toFixed(1)}k (${views.toLocaleString()})`;
     }
-    return views.toString();
-}
