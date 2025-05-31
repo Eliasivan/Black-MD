@@ -20,7 +20,7 @@ const handler = async (m, { conn, text, command }) => {
 
         const infoMessage = `Descargando música\n\nNombre: *${title || 'Desconocido'}*\nURL: *${url || 'No disponible'}*\nVistas: *${formatViews(views)}*\nDuración: *${timestamp || 'No disponible'}*\n`;
 
-        await conn.reply(m.chat, infoMessage, m);
+        await conn.reply(m.chat, infoMessage, m, rcanal);
 
         try {
             const apiResponse = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`);
@@ -45,7 +45,7 @@ const handler = async (m, { conn, text, command }) => {
     }
 };
 
-handler.command = ['play', 'yta', 'ytmp3', 'playaudio'];
+handler.command = ['play'];
 handler.tags = ['descargas'];
 handler.help = ['play <texto>'];
 
