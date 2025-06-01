@@ -62,7 +62,7 @@ blackJBOptions.command = command
 blackJadiBot(blackJBOptions);
 global.db.data.users[m.sender].Subs = new Date() * 1;
 };
-handler.command = ['jadibot', 'serbot']
+handler.command = ['qr', 'code']
 handler.help = ['qr', 'code']
 handler.tags = ['socket']
 export default handler 
