@@ -36,6 +36,7 @@ let drm1 = ""
 let drm2 = ""
 let rtx = `Goku-Black-Bot-MD\n\nↂ SUB BOT FUNCION֎\n\n* 𝐮𝐬𝐚 𝐨𝐭𝐫𝐨 𝐜𝐞𝐥 𝐨 𝐭𝐮 𝐩𝐜 𝐩𝐚𝐫𝐚 𝐩𝐨𝐝𝐞𝐫 𝐯𝐢𝐧𝐜𝐮𝐥𝐚𝐫 𝐞𝐥 𝐛𝐨𝐭 𝐞𝐧 𝐭𝐮 𝐝𝐢𝐬𝐩𝐨𝐬𝐢𝐭𝐢𝐯𝐨 𝐪𝐮𝐞 𝐬𝐞𝐫𝐚 𝐞𝐥 𝐛𝐨𝐭 *\n\n\`1\` » 𝐡𝐚𝐠𝐚 𝐜𝐥𝐢𝐜𝐤 𝐞𝐧 𝐥𝐨𝐬 3 𝐩𝐮𝐧𝐭𝐨𝐬 𝐝𝐞 𝐥𝐚 𝐩𝐚𝐫𝐭𝐞 𝐬𝐮𝐩𝐞𝐫𝐢𝐨𝐫 𝐝𝐞𝐫𝐞𝐜𝐡𝐚\n\n\`2\` » 𝐭𝐨𝐪𝐮𝐞 𝐞𝐧 𝐝𝐢𝐬𝐩𝐨𝐜𝐢𝐭𝐢𝐯𝐨𝐬 𝐯𝐢𝐧𝐜𝐮𝐥𝐚𝐝𝐨𝐬\n\n\`3\` » 𝐞𝐬𝐜𝐚𝐧𝐞𝐞 𝐞𝐥 𝐜𝐨𝐝𝐢𝐠𝐨 𝐐𝐑 𝐩𝐚𝐫𝐚 𝐢𝐧𝐢𝐜𝐢𝐚𝐫 𝐬𝐞𝐜𝐜𝐢𝐨𝐧 𝐜𝐨𝐧 𝐞𝐥 𝐛𝐨𝐭\n\n *¡Este código QR expira en 45 segundos!*\n\n*𝐉𝐀𝐃𝐈𝐁𝐎𝐓 𝐄𝐃𝐈𝐓𝐀𝐃𝐎 𝐏𝐎𝐑* *Ivan*\n\n${global.dev}`;
 let rtx2 =  `sᴜʙ ʙᴏᴛ-ᴍᴏᴅᴇ ᴄᴏᴅᴇ\n\n✰ Usa éste Código para convertirte en Sub-Bot Temporal.\n\n→ Tres Puntitos\n→ Dispositivos Vinculados\n→ Vincular Dispositivo\n→ Vincular con el número de teléfono.\n\n➤ *Importante:*\n» No es recomendable usar tu cuenta principal.\n» Si el Bot principal se reinicia, todos los Sub-Bots se desconectaran.\n\n${global.dev}`;
+//let
 
 const blackJBOptions = {}
 if (global.conns instanceof Array) console.log()
@@ -58,24 +59,8 @@ blackJBOptions.conn = conn
 blackJBOptions.args = args
 blackJBOptions.usedPrefix = usedPrefix
 blackJBOptions.command = command
-const imageUrl = 'https://files.catbox.moe/sv8m42.jpg';
-    const caption = `𝗚𝗿𝗮𝗰𝗶𝗮𝘀 𝗽𝗼𝗿 𝗾𝘂𝗲𝗿𝗲𝗿 𝘀𝗲𝗿 𝗽𝗮𝗿𝘁𝗲 𝗱𝗲 𝗹𝗮 𝗳𝗮𝗺𝗶𝗹𝗶𝗮 𝗱𝗲 𝘀𝘂𝗯-𝗯𝗼𝘁𝘀 𝗮 𝗰𝗼𝗻𝘁𝗶𝗻𝘂𝗮𝗰𝗶𝗼𝗻 𝘁𝗲 𝗽𝗮𝘀𝗮𝗿𝗲 𝗰𝗼𝗱𝗶𝗴𝗼 𝗱𝗲 8 𝗱𝗶𝗴𝗶𝘁𝗼𝘀 𝘆 𝗱𝗼𝗻𝗱𝗲 𝗽𝗼𝗻𝗲𝗿 (◕‿◕)`;
-
-    await conn.sendMessage(m.chat, {
-        image: { url: imageUrl },
-        caption: caption,
-        contextInfo: {
-            externalAdReply: {
-                title: "𝗦𝗲𝗿 𝗦𝘂𝗯-𝗕𝗼𝘁",
-                body: "𝗣𝗼𝘄𝗲𝗿 𝗕𝘆 𝗚𝗼𝗸𝘂𝗕𝗹𝗮𝗰𝗸",
-                thumbnailUrl: imageUrl,
-                sourceUrl: ""
-            }
-        }
-    }, { quoted: m });
-
-    blackJadiBot(blackJBOptions);
-    global.db.data.users[m.sender].Subs = new Date() * 1;
+blackJadiBot(blackJBOptions);
+global.db.data.users[m.sender].Subs = new Date() * 1;
 };
 handler.command = ['jadibot', 'serbot']
 handler.help = ['serbot', 'serbot code']
