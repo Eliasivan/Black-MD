@@ -128,12 +128,12 @@ txtQR = await conn.sendMessage(m.chat, { image: await qrcode.toBuffer(qr, { scal
 return
 } 
 if (qr && mcode) {
-await conn.sendMessage(m.chat, { 
+txtCode = await conn.sendMessage(m.chat, { 
     image: { url: imagenUrl }, 
     caption: rtx2
 });
 
-await sleep(3000)
+/*await sleep(3000)*/
 let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
 secret = secret.match(/.{1,4}/g)?.join("-")
 codeBot = await conn.reply(m.chat, `${secret}`, m, rcanal);
