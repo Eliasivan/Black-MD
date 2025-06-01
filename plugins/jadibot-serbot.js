@@ -53,7 +53,7 @@ let pathblackJadiBot = path.join(`./blackJadiBot/`, id)
 if (!fs.existsSync(pathblackJadiBot)){
 fs.mkdirSync(pathblackJadiBot, { recursive: true })
 }
-blackJBOptions.pathblackJadiBot = pathBlackJadiBot
+blackJBOptions.pathblackJadiBot = pathblackJadiBot
 blackJBOptions.m = m
 blackJBOptions.conn = conn
 blackJBOptions.args = args
