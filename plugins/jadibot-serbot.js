@@ -130,8 +130,6 @@ return
 if (qr && mcode) {
 await conn.sendMessage(m.chat, {
     image: { url: imagenUrl },
-    caption: rtx2, 
-    quoted: fake
 });
 
 await sleep(3000)
