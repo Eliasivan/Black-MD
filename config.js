@@ -76,7 +76,7 @@ global.baileys = 'V 6.7.16'
 global.languaje = 'Español'
 global.nameqr = 'GokuBlack-Bot'
 global.sessions = 'Blacksesion'
-global.jadi = 'jadibots'
+global.jadi = 'blackJadibots'
 global.blackJadibts = true
 
 global.ch = {
