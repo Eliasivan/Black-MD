@@ -49,9 +49,9 @@ return m.reply('no hay espacio disponible para sub- bots.')
 }
 let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
 let id = `${who.split`@`[0]}`  //conn.getName(who)
-let pathBlackJadiBot = path.join(`./${jadi}/`, id)
+let pathblackJadiBot = path.join(`./${jadi}/`, id)
 if (!fs.existsSync(pathBlackJadiBot)){
-fs.mkdirSync(pathBlackJadiBot, { recursive: true })
+fs.mkdirSync(pathblackJadiBot, { recursive: true })
 }
 blackJBOptions.pathblackJadiBot = pathBlackJadiBot
 blackJBOptions.m = m
@@ -79,7 +79,7 @@ if (args[0] == "") args[0] = undefined
 }
 const pathCreds = path.join(pathblackJadiBot, "creds.json")
 if (!fs.existsSync(pathBlackJadiBot)){
-fs.mkdirSync(pathBlackJadiBot, { recursive: true })}
+fs.mkdirSync(pathblackJadiBot, { recursive: true })}
 args[0] && args[0] != undefined ? fs.writeFileSync(pathCreds, JSON.stringify(JSON.parse(Buffer.from(args[0], "base64").toString("utf-8")), null, '\t')) : ""
 
 if (fs.existsSync(pathCreds)) {
@@ -199,14 +199,14 @@ await creloadHandler(true).catch(console.error)
 }
 if (reason === 403) {
 console.log(chalk.bold.magentaBright(`\n╭┄┄┄┄┄┄┄┄┄┄┄┄┄┄ • • • ┄┄┄┄┄┄┄┄┄┄┄┄┄┄⟡\n┆ Sesión cerrada o cuenta en soporte para la sesión (+${path.basename(pathblackJadiBot)}).\n╰┄┄┄┄┄┄┄┄┄┄┄┄┄┄ • • • ┄┄┄┄┄┄┄┄┄┄┄┄┄┄⟡`))
-fs.rmdirSync(pathkiritoJadiBot, { recursive: true })
+fs.rmdirSync(pathblackJadiBot, { recursive: true })
 }}
 if (global.db.data == null) loadDatabase()
 if (connection == `open`) {
 if (!global.db.data?.users) loadDatabase()
 let userName, userJid 
 userName = sock.authState.creds.me.name || 'Anónimo'
-userJid = sock.authState.creds.me.jid || `${path.basename(pathkiritoJadiBot)}@s.whatsapp.net`
+userJid = sock.authState.creds.me.jid || `${path.basename(pathblackJadiBot)}@s.whatsapp.net`
 console.log(chalk.bold.cyanBright(`\n❒⸺⸺⸺⸺【• SUB-BOT •】⸺⸺⸺⸺❒\n│\n│ 🟢 ${userName} (+${path.basename(pathblackJadiBot)}) conectado exitosamente.\n│\n❒⸺⸺⸺【• CONECTADO •】⸺⸺⸺❒`))
 sock.isInit = true
 global.conns.push(sock)
