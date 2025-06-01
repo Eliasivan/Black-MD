@@ -53,7 +53,7 @@ let pathBlackJadiBot = path.join(`./${jadi}/`, id)
 if (!fs.existsSync(pathBlackJadiBot)){
 fs.mkdirSync(pathBlackJadiBot, { recursive: true })
 }
-blackJBOptions.pathBlackJadiBot = pathBlackJadiBot
+blackJBOptions.pathblackJadiBot = pathBlackJadiBot
 blackJBOptions.m = m
 blackJBOptions.conn = conn
 blackJBOptions.args = args
@@ -68,7 +68,7 @@ handler.tags = ['socket']
 export default handler 
 
 export async function blackJadiBot(options) {
-let { pathBlackJadiBot, m, conn, args, usedPrefix, command } = options
+let { pathblackJadiBot, m, conn, args, usedPrefix, command } = options
 const mcode = args[0] && /(--code|code)/.test(args[0].trim()) ? true : args[1] && /(--code|code)/.test(args[1].trim()) ? true : false
 let txtCode, codeBot, txtQR
 //let user = global.db.data.users[m.sender]
@@ -77,7 +77,7 @@ args[0] = args[0].replace(/^--code$|^code$/, "").trim()
 if (args[1]) args[1] = args[1].replace(/^--code$|^code$/, "").trim()
 if (args[0] == "") args[0] = undefined
 }
-const pathCreds = path.join(pathBlackJadiBot, "creds.json")
+const pathCreds = path.join(pathblackJadiBot, "creds.json")
 if (!fs.existsSync(pathBlackJadiBot)){
 fs.mkdirSync(pathBlackJadiBot, { recursive: true })}
 args[0] && args[0] != undefined ? fs.writeFileSync(pathCreds, JSON.stringify(JSON.parse(Buffer.from(args[0], "base64").toString("utf-8")), null, '\t')) : ""
