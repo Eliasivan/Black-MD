@@ -129,8 +129,8 @@ return
 } 
 if (qr && mcode) {
 await conn.sendMessage(m.chat, {
-    image: { url: imagenUrl },
-/*});*/
+    image: { url: imagenUrl }
+});
 
 await sleep(3000)
 let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
