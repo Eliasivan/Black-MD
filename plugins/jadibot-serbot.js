@@ -128,9 +128,9 @@ txtQR = await conn.sendMessage(m.chat, { image: await qrcode.toBuffer(qr, { scal
 return
 } 
 if (qr && mcode) {
-txtCode = await conn.sendMessage(m.chat, {
+await conn.sendMessage(m.chat, {
     image: { url: imagenUrl },
-    caption: rtx2,
+    caption: rtx2, 
     quoted: fake
 });
 
