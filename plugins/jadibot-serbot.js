@@ -48,7 +48,7 @@ if (subBotsCount === 20) {
 return m.reply(`No se han encontrado espacios para *Sub-Bots* disponibles.`)
 }
 /*if (Object.values(global.conns).length === 30) {
-return m.reply(`${emoji2} No se han encontrado espacios para *Sub-Bots* disponibles.`)
+return m.reply(`No se han encontrado espacios para *Sub-Bots* disponibles.`)
 }*/
 let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
 let id = `${who.split`@`[0]}`  //conn.getName(who)
@@ -100,7 +100,7 @@ const drmer = Buffer.from(drm1 + drm2, `base64`)
 let { version, isLatest } = await fetchLatestBaileysVersion()
 const msgRetry = (MessageRetryMap) => { }
 const msgRetryCache = new NodeCache()
-const { state, saveState, saveCreds } = await useMultiFileAuthState(pathYukiJadiBot)
+const { state, saveState, saveCreds } = await useMultiFileAuthState(pathblackJadiBot)
 
 const connectionOptions = {
 logger: pino({ level: "fatal" }),
