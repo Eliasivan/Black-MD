@@ -7,6 +7,6 @@ const handler = async (m, { conn }) => {
 
 handler.tags = ['tools'];
 handler.help = ['webinfo'];
-handler.command = ['code', 'Code'];
+handler.command = ['code', 'dCode'];
 
 export default handler;
