@@ -267,10 +267,10 @@ if (opts['swonly'] && m.chat !== 'status@broadcast')  return
  if (typeof m.text !== 'string')
             m.text = ''
 
-let _user = global.db.data && global.db.data.users && global.db.data.users[m.sender]
+/*let _user = global.db.data && global.db.data.users && global.db.data.users[m.sender]*/
 const sendNum = m.sender.replace(/[^0-9]/g, '')
 const isROwner = [conn.decodeJid(global.conn.user.id), ...global.owner.map(([number]) => number)]
-  .map(v => v.replace(/[^0-9]/g, ''))
+.map(v => v.replace(/[^0-9]/g, ''))
 .includes(sendNum)
 const isOwner = isROwner || m.fromMe
 const isMods = isOwner || global.mods.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
