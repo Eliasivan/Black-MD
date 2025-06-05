@@ -554,17 +554,9 @@ botAdmin: '「🚩」 *Para usar esta función debo ser admin.*',
 unreg: '「˗ˏˋ ♡ ˎˊ˗」 *¡oye tu! no estas registrado, registrese para usar esta función*\n\n*/reg nombre.edad*\n\n*_❕ Ejemplo_* : */reg GokuBlack.20*',
 restrict: '「💫」 *Esta característica esta desactivada.*'
 }[type];
-if (msg) return conn.reply(m.chat, msg, m, rcanal).then(_ => m.react('✖️'))}
-const file = global.__filename(import.meta.url, true);
+if (msg) return m.reply(msg).then(_ => m.react('✖️'))}
 
-// NO TOCAR
+let file = global.__filename(import.meta.url, true)
 watchFile(file, async () => {
-unwatchFile(file);
-console.log(chalk.green('Actualizando "handler.js"'));
-//if (global.reloadHandler) console.log(await global.reloadHandler());
-
-if (global.conns && global.conns.length > 0 ) {
-const users = [...new Set([...global.conns.filter((conn) => conn.user && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED).map((conn) => conn)])];
-for (const userr of users) {
-userr.subreloadHandler(false)
-}}});
+unwatchFile(file)
+console.log(chalk.magenta("Se actualizo 'handler.js'"))})
