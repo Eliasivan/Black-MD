@@ -556,7 +556,9 @@ restrict: '「💫」 *Esta característica esta desactivada.*'
 }[type];
 if (msg) return m.reply(msg).then(_ => m.react('✖️'))}
 
-let file = global.__filename(import.meta.url, true)
-watchFile(file, async () => {
-unwatchFile(file)
-console.log(chalk.magenta("Se actualizo 'handler.js'"))})
+const file = fileURLToPath(import.meta.url)
+watchFile(file, () => {
+    unwatchFile(file)
+    console.log(chalk.greenBright("Actualizando 'handler.js'"))
+    import(`${file}?update=${Date.now()}`)
+})
