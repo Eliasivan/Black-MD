@@ -251,6 +251,21 @@ autobio: false,
 }} catch (e) {
 console.error(e)
 }
+//GOKU-BLACK-BOT-MD 
+const mainBot = global?.conn?.user?.jid
+const chat = global.db.data.chats[m.chat] || {}
+const isSubbs = chat.antiLag === true
+const allowedBots = chat.per || []
+if (!allowedBots.includes(mainBot)) allowedBots.push(mainBot)
+const isAllowed = allowedBots.includes(this?.user?.jid)
+if (isSubbs && !isAllowed) 
+            return
+        // --
+if (opts['nyimak'])  return
+if (!m.fromMe && opts['self'])  return
+if (opts['swonly'] && m.chat !== 'status@broadcast')  return
+ if (typeof m.text !== 'string')
+            m.text = ''
 
 let _user = global.db.data && global.db.data.users && global.db.data.users[m.sender]
 const sendNum = m.sender.replace(/[^0-9]/g, '')
