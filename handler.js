@@ -534,7 +534,7 @@ if (!m.fromMe) return this.sendMessage(m.chat, { react: { text: emot, key: m.key
 }
 function pickRandom(list) {
     return list[Math.floor(Math.random() * list.length)];
-}
+} // Cierre correcto
 
 global.dfail = (type, m, usedPrefix, command, conn) => {
 
@@ -558,7 +558,6 @@ restrict: '「💫」 *Esta característica esta desactivada.*'
 if (msg) {
     return m.reply(msg).then(_ => m.react('✖️'))
 }
-
 const file = fileURLToPath(import.meta.url)
 watchFile(file, () => {
     unwatchFile(file)
