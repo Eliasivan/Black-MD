@@ -1,14 +1,12 @@
 import fetch from 'node-fetch'
 
 let handler = async (m, { conn, usedPrefix, command }) => {
-        if (!db.data.chats[m.chat].modohorny && m.isGroup) return m.reply('🚩 *¡Estos comandos están desactivados!*');
-
- m.react(rwait)
+    m.react('🍆');
 
     if (command === 'pussy') {
         let xp = await conn.getFile('https://api.fgmods.xyz/api/nsfw-nime/pussy?apikey=fg_ZIKajBcu')
-        conn.sendFile(m.chat, xp.data, 'img.jpg', `*✅ Aquí tienes una Pussy*`, m)
-        m.react('🤗');
+        conn.sendFile(m.chat, xp.data, 'img.jpg', `*Toma Tu Pussy 🍑*`, m)
+        m.react('🥛');
     } else {
         throw `Comando no válido. Usa: ${usedPrefix}pussy`
     }
