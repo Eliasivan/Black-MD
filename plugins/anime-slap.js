@@ -7,13 +7,13 @@ let handler = async (m, { conn, usedPrefix }) => {
     } else {
         who = m.chat;
     }
-    if (!who) throw `🚩 Por favor, { react: { text: '👊🏻', key: m.key } });
+    if (!who) throw `🚩 Por favor`, { react: { text: '👊🏻', key: m.key } });
 
     let str = `${name2} ha golpeado a ${name}`.trim();
 
     try {
         let response = await fetch(`https://api.waifu.pics/sfw/slap`);
-        if (!response.ok) throw `❌ Error, who] }, { quoted: m });
+        if (!response.ok) throw `❌ Error`, who] }, { quoted: m });
     } catch (error) {
         throw `❌ Ocurrió un error: ${error}`;
     }
