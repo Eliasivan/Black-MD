@@ -31,10 +31,10 @@ let tags = {
 
 const defaultMenu = {
   before: `╭══════════════ ⪩
-“ Hola *Humano* mi nombre es *Goku-Black-Bot-MD*, %greeting ”
+“ Hola ${taguser} Soy *Makima-Bot-MD*, %greeting ”
 
 ╔══✦「 Info del Bot 」✦══╗
-║ ✧ 👨🏻‍💻 Creador: Ivan
+║ ✧ 👨🏻‍💻 Creador: Félix
 ║ ✧ 🌀 Tipo Bot: Goku-Black-Bot-MD
 ║ ✧ 🚩 Modo: Público
 ║ ✧ 📚 Baileys: Multi Device
