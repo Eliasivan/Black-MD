@@ -28,6 +28,6 @@ let actionHandler = async (msg, { conn, args, usedPrefix, command }) => {
 
 handler.help = ['golpear @usuario'];
 handler.tags = ['anime'];
-handler.command = ['golpear'];
+handler.command = ['pegarte'];
 
 export default handler;
