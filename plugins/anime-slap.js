@@ -1,33 +1,31 @@
 import fetch from 'node-fetch';
 import { sticker } from '../lib/sticker.js';
 
-let handler = async (msg, { conn, args, usedPrefix, command }) => {
+let handler = async (m, { conn, args, usedPrefix, command }) => {
     let target;
-    if (msg.isGroup) {
-        target = msg.mentionedJid[0] ? msg.mentionedJid[0] : msg.quoted ? msg.quoted.sender : false;
+    if (m.isGroup) {
+        target = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : false;
     } else {
-        target = msg.chat;
+        target = m.chat;
     }
 
-    if (!target) throw `⚡️ No se seleccionó un usuario.\n\n💡 Ejemplo: ${usedPrefix + command} @usuario`;
+    if (!target) throw `🚩 No mencion targetName = conn.getName(target);
+    let senderName = conn.getName(m.sender);
+    m.react('⏳');
 
-    let targetName = conn.getName(target);
-    let senderName = conn.getName(msg.sender);
-    msg.react('⏳');
+    try {
+        let response = await fetch(`https://api.waifu.pics/sfw/slap`);
+        if (!response.ok) throw `❌ Error al obtener datos de la API.`;
 
-    let response = await fetch(`https://api.waifu.pics/sfw/slap`);
-    if (!response.ok) throw await response.text();
-
-    let jsonData = await response.json();
-    let { url } = jsonData;
-
-    let generatedSticker = await sticker(null, url, `¡${senderName} acaba de dar un golpe fuerte!`, `${targetName}`);
-    conn.sendFile(msg.chat, generatedSticker, null, { asSticker: true }, msg);
-    msg.react('💥');
+        await conn.sendFile(m.chat, generatedSticker, null, { asSticker: true }, m);
+        m.react('💥');
+    } catch (error) {
+        throw `❌ Ocurrió un error: ${error}`;
+    }
 };
 
-handler.help = ['pegar @usuario'];
+handler.help = ['bofetada @usuario'];
 handler.tags = ['anime'];
-handler.command = /^(pegar2|golpear2)$/i;
+handler.command = /^(bofetada0|slap)$/i;
 
 export default handler;
