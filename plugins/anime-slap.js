@@ -1,18 +1,20 @@
 import fetch from 'node-fetch';
 
-let handler = async (m, { conn, usedPrefix }) => {
+let handler = async (m, { conn, usedPrefix, command }) => {
     let who;
     if (m.isGroup) {
         who = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : false;
     } else {
         who = m.chat;
     }
-    if (!who) throw `🚩 Por favor, etiqueta o menciona a alguien.\n💡 Usa: ${usedPrefix}bofetada @usuario`;
+    if (!who) throw `🚩 Por favor, etiqueta o menciona a alguien.\n💡 Usa: ${usedPrefix}${command} @usuario`;
 
     let name = conn.getName(who);
     let name2 = conn.getName(m.sender);
 
-    await conn.sendMessage(m.chat, { react: { text: '👊🏻', key:.trim();
+    await conn.sendMessage(m.chat, { react: { text: '👊🏻', key: m.key } });
+
+    let str = `${name2} ha golpeado a ${name}`.trim();
 
     try {
         let response = await fetch(`https://api.waifu.pics/sfw/slap`);
@@ -27,9 +29,9 @@ let handler = async (m, { conn, usedPrefix }) => {
     }
 };
 
-handler.help = ['bofetada @tag'];
+handler.help = ['bofetada @usuario'];
 handler.tags = ['fun'];
-handler.command = ['slap', 'bofetada'];
+handler.command = /^(slap|bofetada)$/i;
 handler.group = true;
 
 export default handler;
