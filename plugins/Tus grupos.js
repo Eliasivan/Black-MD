@@ -1,55 +1,26 @@
+import fetch from 'node-fetch'
 
-let handler = async (m, { conn, args }) => {
-  try {
-    let id = args?.[0]?.match(/\d+\-\d+@g.us/) || m.chat;
+let handler = async (m, { conn, usedPrefix, command }) => {
+    if (!global.db.data.chats[m.chat].nsfw) throw `🚫 ${mssg.gpNsfw(usedPrefix)}`
+    let user = global.db.data.users[m.sender].age
+    if (user < 17) throw `❎ ${mssg.nsfwAge}`
 
-    const participantesUnicos = Object.values(conn.chats[id]?.messages || {})
-      .map((item) => item.key.participant)
-      .filter((value, index, self) => self.indexOf(value) === index);
+    m.react(rwait)
 
-    const participantesOrdenados = participantesUnicos.sort((a, b) =>
-      a.split("@")[0].localeCompare(b.split("@")[0]),
-    );
+    if (command === 'pussy') {
+        let xp = await conn.getFile(global.API('fgmods', '/api/nsfw/pussy', {}, 'apikey'))
+        conn.sendFile(m.chat, xp.data, 'img ${mssg.random} *${command}*`, m)
+        m.react(xmoji)
+    } else {
+        throw `❎ ${mssg.invalidCommand}`
+    }
+}
 
-    const listaEnLinea =
-      participantesOrdenados
-        .map((k, i) => `*${i + 1}.* @${k.split("@")[0]}`)
-        .join("\n") || "No hay usuarios en linea en este momento :c.";
+handler.help = ['pussy']
+handler.tags = ['nsfw']
+handler.command = /^pussy$/i // Solo acepta el comando "pussy"
+handler.diamond = true
+handler.register = true
+handler.group = true
 
-    const imgUrl = "https://qu.ax/aVEXL.jpg";
-    const responseImg = await axios.get(imgUrl, {
-      responseType: "arraybuffer",
-    });
-
-    await conn.sendFile(
-      m.chat,
-      responseImg.data,
-      "thumbnail.png",
-      `*🌐 Lista de usuarios en línea ahora ♡:*\n${listaEnLinea}\n\n\`Goku-Black-Bot-MD By Ivan\``,
-      m,
-      {
-        contextInfo: { mentionedJid: participantesOrdenados },
-      },
-    );
-
-    await m.react("✅");
-  } catch (error) {
-    console.error(error);
-    await m.reply("Hubo un error al enviar  la imagen.");
-  }
-};
-
-handler.help = ["listonline"];
-handler.tags = ["grupo"];
-handler.command = ["listonline", "online", "linea", "enlinea"];
-handler.owner = false;
-handler.mods = false;
-handler.premium = false;
-handler.group = true;
-handler.private = false;
-handler.admin = false;
-handler.botAdmin = false;
-handler.fail = null;
-handler.register = true;
-
-export default handler;
+export default handler
