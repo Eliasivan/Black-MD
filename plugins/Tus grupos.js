@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 
 let handler = async (m, { conn, usedPrefix, command }) => {
-    if (!db.data.chats[m.chat].nsfw && m.isGroup) return m.reply('🚩 *¡Estos comandos están desactivados!*');
+    if (!db.data.chats[m.chat].modohorny && m.isGroup) return m.reply('🚩 *¡Estos comandos están desactivados!*');
 
     m.react(rwait);
 
