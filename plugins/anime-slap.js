@@ -28,6 +28,6 @@ let handler = async (msg, { conn, args, usedPrefix, command }) => {
 
 handler.help = ['pegar @usuario'];
 handler.tags = ['anime'];
-handler.command = /^(pegar|golpear)$/i;
+handler.command = /^(pegar2|golpear2)$/i;
 
 export default handler;
