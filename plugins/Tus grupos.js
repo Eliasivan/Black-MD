@@ -5,7 +5,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 
     if (command === 'pussy') {
         let xp = await conn.getFile('https://api.fgmods.xyz/api/nsfw-nime/pussy?apikey=fg_ZIKajBcu')
-        conn.sendFile(m.chat, xp.data, 'img.jpg', `✅ Aquí tienes unacommand}*`, m)
+        conn.sendFile(m.chat, xp.data, 'img.jpg', `✅ Aquí tienes una Pussy*`, m)
         m.react(xmoji)
     } else {
         throw `Comando no válido. Usa: ${usedPrefix}pussy`
