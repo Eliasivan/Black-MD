@@ -1,60 +1,41 @@
-const handler = async (m, { conn, args }) => {
-    if (!args || args.length < 2) {
-        return m.reply(`✳️ Ejemplo de uso:\n.chReact https://whatsapp.com/channel/canal/id-de-mensaje texto de reacción`);
+let handler = async (m, { args, text, command, conn }) => {
+    if (!args[0]) {
+        return m.reply(`💨 ¡Hola! Para reaccionar a un mensaje, usa el siguiente formato:\n${command} https://whatsapp.com/channel/... ¡Hola, amigos! 🎉`);
     }
 
-    const channelLinkRegex = /^https:\/\/whatsapp\.com\/channel\/([A-Za-z0-9_-]{22,})\/([A-Za-z0-9_-]+)$/;
-    const match = args[0].match(channelLinkRegex);
-
-    if (!match) {
-        return m.reply_CANAL/ID_MENSAJE");
+    if (!args[0].startsWith("https://whatsapp.com/channel/")) {
+        return m.reply("❌ Ups! No es un enlace válido. Asegúrate de que empieza con https://whatsapp.com/channel/.");
     }
 
-    const [, channelId, messageId] = match;
-
-    const styleMap = {
+    const hurufGaya = {
         a: '🅐', b: '🅑', c: '🅒', d: '🅓', e: '🅔', f: '🅕', g: '🅖',
         h: '🅗', i: '🅘', j: '🅙', k: '🅚', l: '🅛', m: '🅜', n: '🅝',
         o: '🅞', p: '🅟', q: '🅠', r: '🅡', s: '🅢', t: '🅣', u: '🅤',
         v: '🅥', w: '🅦', x: '🅧', y: '🅨', z: '🅩',
-        0: '⓿', 1: '➊', 2: '➋', 3: '➌', 4: '➍',
-        5: '➎', 6: '➏', 7: '➐', 8: '➑', 9: '➒',
-        ' ': '―'
+        '0': '⓿', '1': '➊', '2': '➋', '3': '➌', '4': '➍',
+        '5': '➎', '6': '➏', '7': '➐', '8': '➑', '9': '➒'
     };
 
-    const reactionText = args.slice(1).join(' ').toLowerCase();
-    const emojiReaction = reactionText.split('').map(c => styleMap[c] || c).join('');
+    const emojiInput = args.slice(1).join(' ').toLowerCase();
+    const emoji = emojiInput.split('').map(c => {
+        return c === '' ? "•" : (hurufGaya[c] || c);
+    }).join('');
 
     try {
-        console.log("Channel ID:", channelId);
-        console.log("Message ID:", messageId);
-        console.log("Emoji Reaction:", emojiReaction);
+        const link = args[0];
+        const channelId = link.split('/')[4];
+        const messageId = link.split('/')[5];
 
-        const channelInfo = await conn.newsletterMetadata("invite", channelId);
-        console.log("Channel Info:", channelInfo);
+        const res = await conn.newsletterMetadata("invite", channelId);
+        await conn.newsletterReactMessage(res.id, messageId, emoji);
 
-        if (!channelInfo) {
-            return m.reply("❌ No se pudo obtener información del canal. Verifica que el enlace sea correcto.");
-        }
-
-        await conn.newsletterReactMessage(channelInfo.id, messageId, emojiReaction);
-        return m.reply(`✅ Reacción *${emojiReaction}* enviada correctamente al mensaje en el canal *${channelInfo.name}*`);
-    } catch (error) {
-        console.error("Error:", error); // Registra el error completo
-
-        if (error.message.includes('not found')) {
-            return m.reply("❌ El canal o mensaje no fue encontrado. Verifica que tengas acceso al canal y que el mensaje exista.");
-        }
-        if (error.message.includes('react')) {
-            return m.reply("❌ Error al enviar la reacción. ¿Tienes permiso para reaccionar en este canal?");
-        }
-
-        return m.reply("❌ Ocurrió un error inesperado. Por favor intenta nuevamente.");
+        return m.reply(`🎉 ¡Felicidades! Se envió la reacción *${emoji}* al mensaje en el canal *${res.name}*. ¡Que comience la fiesta! 🥳`);
+    } catch (e) {
+        console.error(e);
+        return m.reply("🚫 Oh no... No se pudo enviar la reacción. Verifica que el enlace y el texto sean válidos. ¡Vamos a intentarlo de nuevo! 🤞");
     }
 };
 
-handler.help = ['chReact <enlace_canal> <texto>'];
-handler.tags = ['channel'];
-handler.command = /^(channelreact|chreact)$/i;
-
+handler.help = handler.command = ["rc"];
+handler.tags = ["tools"];
 export default handler;
