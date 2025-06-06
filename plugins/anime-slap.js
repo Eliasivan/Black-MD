@@ -9,7 +9,9 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
         target = m.chat;
     }
 
-    if (!target) throw `🚩 No mencion targetName = conn.getName(target);
+    if (!target) throw `🚩 No mencionaste a nadie.\n💡 Usa: ${usedPrefix + command} @usuario`;
+
+    let targetName = conn.getName(target);
     let senderName = conn.getName(m.sender);
     m.react('⏳');
 
@@ -17,6 +19,10 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
         let response = await fetch(`https://api.waifu.pics/sfw/slap`);
         if (!response.ok) throw `❌ Error al obtener datos de la API.`;
 
+        let jsonData = await response.json();
+        let { url } = jsonData;
+
+        let generatedSticker = await sticker(null, url, `👋 ${senderName} le ha dado una bofetada a ${targetName}`, `Golpe Anime`);
         await conn.sendFile(m.chat, generatedSticker, null, { asSticker: true }, m);
         m.react('💥');
     } catch (error) {
@@ -26,6 +32,6 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
 
 handler.help = ['bofetada @usuario'];
 handler.tags = ['anime'];
-handler.command = /^(bofetada0|slap)$/i;
+handler.command = /^(bofetada|slap)$/i;
 
 export default handler;
