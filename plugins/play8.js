@@ -7,7 +7,7 @@ let handler = async (m, { conn, command, text, usedPrefix }) => {
     let vid = res.videos[0];
     if (!vid) throw `✳️ No se encontró ningún resultado para tu búsqueda.`;
 
-   , views, ago } = vid;
+    let { title, url, timestamp, views, ago } = vid;
 
     m.react('🎧');
 
@@ -18,7 +18,10 @@ let handler = async (m, { conn, command, text, usedPrefix }) => {
 ▢ ⌚ Duración: ${timestamp}
 ▢ 📆 Subido: ${ago}
 ▢ 👀 Vistas: ${views.toLocaleString()}
- await conn.reply(m.chat, infoMessage, m);
+▢ 🔗 Enlace: ${url}
+└──────────────`;
+
+    await conn.reply(m.chat, infoMessage, m);
 };
 
 handler.help = ['play'];
