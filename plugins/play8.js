@@ -1,60 +1,44 @@
-import fetch from "node-fetch";
 import yts from 'yt-search';
+import fetch from 'node-fetch';
 
-const handler = async (m, { conn, text, command }) => {
-    try {
-        if (!text.trim()) {
-            await m.react('❌');
-            return conn.reply(m.chat, `Por favor, ingresa el nombre de la música a descargar`, m);
-        }
+let limit = 320;
 
-        let ytSearchResults = await yts(text);
-        let ytVideo = ytSearchResults.all?.[0] || ytSearchResults.videos?.[0];
+let handler = async (m, { conn, command, text, usedPrefix }) => {
+    if (!text) throw `✳️ Usa el comando de esta forma: *${usedPrefix + command} [Nombre de la canción o video]*`;
 
-        if (!ytVideo) {
-            await m.react('❌');
-            return conn.reply(m.chat, 'No se encontraron resultados para tu búsqueda.', m);
-        }
+    let res = await yts(text);
+    let vid = res.videos[0];
+    if (!vid) throw `✳️ No se encontró ningún resultado para tu búsqueda.`;
 
-        const { title, url, views, timestamp } = ytVideo;
+    let { title, url, timestamp, views, ago } = vid;
 
-        const infoMessage = `Descargando música\n\nNombre: *${title || 'Desconocido'}*\nURL: *${url || 'No disponible'}*\nVistas: *${formatViews(views)}*\nDuración: *${timestamp || 'No disponible'}*\n`;
+    m.react('🎧');
 
-        await conn.reply(m.chat, infoMessage, m, rcanal);
+    let infoMessage = `
+≡ *Descarga de Música*
+┌──────────────
+▢ 🎵 Título: ${title}
+▢ ⌚ Duración: ${timestamp}
+▢ 📆 Subido: ${ago}
+▢ 👀 Vistas: ${views.toLocaleStringfgmods', '/api/downloader/ytmp3', { url }, 'apikey'));
+        let data = await apiRes.json();
 
-        try {
-            const apiResponse = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`);
-            const apiData = await apiResponse.json();
-            const audioUrl = apiData?.result?.download?.url;
+        if (!data.result || !data.result.dl_url) throw '❌ Error al descargar el archivo de la API.';
 
-            if (!audioUrl) throw new Error('El enlace de audio no se generó correctamente.');
+        let { dl_url, size, sizeB } = data.result;
 
-            await conn.sendMessage(m.chat, { 
-                audio: { url: audioUrl }, 
-                mimetype: 'audio/mpeg' 
-            }, { quoted: m });
+        if (sizeB > limit * 1024) throw `⚠️ El archivo excede el límite permitido de ${limit} MB.`;
 
-            await m.react('✅');
-        } catch (error) {
-            await m.react('❌');
-            return conn.reply(m.chat, 'No se pudo enviar el audio. Intenta nuevamente.', m);
-        }
+        await conn.sendFile(m.chat, dl_url, `${title}.mp3`, `≡ *Descpletada*\n\n▢ 🎵 Título: ${title}\n▢ 📦 Tamaño: ${size}`, m, false, { mimetype: 'audio/mpeg', asDocument: true });
+        m.react('✅');
     } catch (error) {
-        await m.react('❌');
-        return conn.reply(m.chat, `Ocurrió un error: ${error.message}`, m);
+        throw `❌ Ocurrió un error: ${error}`;
     }
 };
 
-handler.command = ['play'];
-handler.tags = ['descargas'];
-handler.help = ['play <texto>'];
+handler.help = ['play'];
+handler.tags = ['dl'];
+handler.command = ['play', 'playvid'];
+handler.disabled = false;
 
 export default handler;
-
-function formatViews(views) {
-    if (!views) return "No disponible";
-    if (views >= 1_000_000_000) return `${(views / 1_000_000_000).toFixed(1)}B (${views.toLocaleString()})`;
-    if (views >= 1_000_000) return `${(views / 1_000_000).toFixed(1)}M (${views.toLocaleString()})`;
-    if (views >= 1_000) return `${(views / 1_000).toFixed(1)}k (${views.toLocaleString()})`;
-    return views.toString();
-}
