@@ -12,7 +12,10 @@ let handler = async (m, { conn, command, text, usedPrefix }) => {
 
     let { title, url, timestamp, views, ago } = vid;
 
-*
+    m.react('🎧');
+
+    let infoMessage = `
+≡ *Descarga de Música*
 ┌──────────────
 ▢ 🎵 Título: ${title}
 ▢ ⌚ Duración: ${timestamp}
@@ -23,12 +26,24 @@ let handler = async (m, { conn, command, text, usedPrefix }) => {
     await conn.reply(m.chat, infoMessage, m);
 
     try {
-        m.react('📥: dl_url, title: fileTitle, filesize } = data.result;
+        m.react('📥');
+        
+        let apiUrl = `https://api.vreden.my.id/api/ytmp3?url=${url}`;
+        let apiRes = await fetch(apiUrl);
+        let data = await apiRes.json();
+
+        if (!data || !data.result || !data.result.mp3) throw '❌ Error al descargar el archivo de la API.';
+
+        let { mp3: dl_url, title: fileTitle, filesize } = data.result;
 
         let sizeMB = parseFloat(filesize.replace(' MB', ''));
         if (sizeMB > limit) throw `⚠️ El archivo excede el límite permitido de ${limit} MB.`;
 
-        let audioBuffer = await fetch(dl_url).then❌ Ocurrió un error: ${error}`;
+        let audioBuffer = await fetch(dl_url).then(res => res.buffer());
+        await conn.sendMessage(m.chat, { audio: audioBuffer, mimetype: 'audio/mpeg', fileName: `${fileTitle}.mp3` }, { quoted: m });
+        m.react('✅');
+    } catch (error) {
+        throw `❌ Ocurrió un error: ${error}`;
     }
 };
 
