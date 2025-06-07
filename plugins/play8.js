@@ -20,7 +20,14 @@ let handler = async (m, { conn, command, text, usedPrefix }) => {
 ▢ 🎵 Título: ${title}
 ▢ ⌚ Duración: ${timestamp}
 ▢ 📆 Subido: ${ago}
-▢ 👀 Vistas: ${views.toLocaleStringfgmods', '/api/downloader/ytmp3', { url }, 'apikey'));
+▢ 👀 Vistas: ${views.toLocaleString()}
+└──────────────`;
+
+    await conn.reply(m.chat, infoMessage, m);
+
+    try {
+        m.react('📥');
+        let apiRes = await fetch(global.API('fgmods', '/api/downloader/ytmp3', { url }, 'apikey'));
         let data = await apiRes.json();
 
         if (!data.result || !data.result.dl_url) throw '❌ Error al descargar el archivo de la API.';
@@ -29,7 +36,7 @@ let handler = async (m, { conn, command, text, usedPrefix }) => {
 
         if (sizeB > limit * 1024) throw `⚠️ El archivo excede el límite permitido de ${limit} MB.`;
 
-        await conn.sendFile(m.chat, dl_url, `${title}.mp3`, `≡ *Descpletada*\n\n▢ 🎵 Título: ${title}\n▢ 📦 Tamaño: ${size}`, m, false, { mimetype: 'audio/mpeg', asDocument: true });
+        await conn.sendFile(m.chat, dl_url, `${title}.mp3`, `≡ *Descarga Completada*\n\n▢ 🎵 Título: ${title}\n▢ 📦 Tamaño: ${size}`, m, false, { mimetype: 'audio/mpeg', asDocument: true });
         m.react('✅');
     } catch (error) {
         throw `❌ Ocurrió un error: ${error}`;
