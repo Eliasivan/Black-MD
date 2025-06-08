@@ -1,32 +1,20 @@
-import fetch from 'node-fetch';
+import fetch from "node-fetch";
 
-var handler = async (m, { conn, text, usedPrefix, command }) => {
-    if (!text) {
-        return conn.reply(
-            m.chat,
-            `Por favor ingresa el texto que deseas transformar.\n\nEjemplo: ${usedPrefix + command} hola`,
-            m
-        );
-    }
+let handler = async (m, { conn, text }) => {
+    if (!text) throw `Por favor, ingresa el texto que deseas convertir en Pikachu.\nEjemplo: .mock GokuBlack`;
 
     try {
-        let res = await fetch(`https://api.popcat.xyz/v2/mock?text=${encodeURIComponent(text)}`);
-        if (!res.ok) {
-            return conn.reply(m.chat, 'Hubo un problema al conectar con la API.', m);
-        }
-
-        let data = await res.json();
-        if (!data || !data.text) {
-            return conn.reply(m.chat, 'No se pudo procesar el texto.', m);
-        }
-
-        await conn.reply(m.chat, data.text, m);
+        let res = await fetch(`https://api.popcat.xyz/v2/mock?text`);
+        if (!res.ok) throw `Error al obtener imagen. Código de estado: ${res.status}`;
+        let buffer = await res.buffer();
+        await conn.sendMessage(m.chat, { image: buffer}, { quoted: m });
     } catch (error) {
-        return conn.reply(m.chat, `Ocurrió un error: ${error.message}`, m);
+        throw error;
     }
-};
+}
 
-handler.command = ['mock'];
-handler.help = ['mock <texto>'];
-handler.tags = ['fun'];
-export default handler;
+handler.help = ['mock']
+handler.tags = ['tools']
+handler.command = ['mock']
+
+export default handler
