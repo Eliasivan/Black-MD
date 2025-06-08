@@ -18,19 +18,12 @@ var handler = async (m, { text, usedPrefix, command }) => {
         }
 
         const [teams, score, date] = matchData;
-
         const responseMessage = `≡ *Resultado del Partido* 
 ┌──────────────
 ▢ 🏟️ Equipos: ${teams}
 ▢ ⚽ Marcador: ${score}
 ▢ 📅 Fecha: ${date}
-└──────────────`;
-
-        await conn.reply(m.chat, responseMessage, m);
-        await m.react('✅️');
-    } catch (error) {
-        return conn.reply(m.chat, `❌ Ocurrió un error: ${error.message}`, m);
-    }
+└────────    }
 };
 
 handler.command = ['partido'];
