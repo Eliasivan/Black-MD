@@ -32,13 +32,16 @@ const handler = async (m, { conn, text, command }) => {
         await conn.reply(m.chat, infoMessage, m);
 
         try {
-            const apiResponse = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`);
+            const apiUrl = `https://api.vreden.my.id/api/ytmp3?url=${url}`;
+            const apiResponse = await fetch(apiUrl);
             const apiData = await apiResponse.json();
 
-            const audioUrl = apiData?.result?.mp3;
-            const audioSize = apiData?.result?.filesize;
+            if (!apiData?.result?.mp3) {
+                throw new Error('El enlace de audio no se generó correctamente.');
+            }
 
-            if (!audioUrl) throw new Error('El enlace de audio no se generó correctamente.');
+            const audioUrl = apiData.result.mp3;
+            const audioSize = apiData.result.filesize;
 
             await conn.sendMessage(m.chat, { 
                 audio: { url: audioUrl }, 
@@ -49,7 +52,7 @@ const handler = async (m, { conn, text, command }) => {
             await m.react('✅');
         } catch (error) {
             await m.react('❌');
-            return conn.reply(m.chat, '❌ No se pudo enviar el audio. Intenta nuevamente.', m);
+            return conn.reply(m.chat, `❌ No se pudo enviar el audio. Error: ${error.message}`, m);
         }
     } catch (error) {
         await m.react('❌');
