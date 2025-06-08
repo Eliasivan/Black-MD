@@ -5,7 +5,7 @@ const handler = async (m, { conn, text, command }) => {
     try {
         if (!text.trim()) {
             await m.react('❌');
-            return conn.reply(m.chat, `✳️ Por favor, ingresa el nombre de la música a descargar. Ejemplo: *${command} Shape of You*`, m);
+            return conn.reply(m.chat, `✳️ Por favor, ingresa el nombre de la música a descargar. Ejemplo: *${command} Shape of You*`, m, rcanal);
         }
 
         let ytSearchResults = await yts(text);
@@ -34,6 +34,11 @@ const handler = async (m, { conn, text, command }) => {
         try {
             const apiUrl = `https://api.vreden.my.id/api/ytmp3?url=${url}`;
             const apiResponse = await fetch(apiUrl);
+
+            if (!apiResponse.ok) {
+                throw new Error(`La API respondió con un estado ${apiResponse.status}`);
+            }
+
             const apiData = await apiResponse.json();
 
             if (!apiData?.result?.mp3) {
@@ -41,7 +46,6 @@ const handler = async (m, { conn, text, command }) => {
             }
 
             const audioUrl = apiData.result.mp3;
-            const audioSize = apiData.result.filesize;
 
             await conn.sendMessage(m.chat, { 
                 audio: { url: audioUrl }, 
@@ -70,6 +74,4 @@ function formatViews(views) {
     if (!views) return "No disponible";
     if (views >= 1_000_000_000) return `${(views / 1_000_000_000).toFixed(1)}B (${views.toLocaleString()})`;
     if (views >= 1_000_000) return `${(views / 1_000_000).toFixed(1)}M (${views.toLocaleString()})`;
-    if (views >= 1_000) return `${(views / 1_000).toFixed(1)}k (${views.toLocaleString()})`;
-    return views.toString();
-}
+    if (views >= 1_000)
