@@ -48,7 +48,12 @@ const handler = async (m, { conn, text, command }) => {
 
             await m.react('✅');
         } catch (error) {
-           currió un error: ${error.message}`, m);
+            await m.react('❌');
+            return conn.reply(m.chat, '❌ No se pudo enviar el audio. Intenta nuevamente.', m);
+        }
+    } catch (error) {
+        await m.react('❌');
+        return conn.reply(m.chat, `❌ Ocurrió un error: ${error.message}`, m);
     }
 };
 
