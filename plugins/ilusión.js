@@ -12,7 +12,7 @@ var handler = async (m, { text, usedPrefix, command }) => {
         if (matchData.length < 3) {
             return conn.reply(
                 m.chat,
-                `⚠️ *Formato incorrecto.*\n\nEjemplo: ${usedPrefix + command} Equipo-1 | 2025-06-08`,
+                `⚠️ *Formato incorrecto.*\n\nEjemplo: ${usedPrefix + command} Equipo1 vs Equipo2 | 2-1 | 2025-06-08`,
                 m
             );
         }
@@ -27,7 +27,9 @@ var handler = async (m, { text, usedPrefix, command }) => {
 └──────────────`;
 
         await conn.reply(m.chat, responseMessage, m);
-        await m.react(', `❌ Ocurrió un error: ${error.message}`, m);
+        await m.react('✅️');
+    } catch (error) {
+        return conn.reply(m.chat, `❌ Ocurrió un error: ${error.message}`, m);
     }
 };
 
