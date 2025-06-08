@@ -4,37 +4,30 @@ let handler = async (m, { conn, text }) => {
     if (!text) {
         return conn.reply(
             m.chat,
-            `❓ Por favor ingresa el mensaje que deseas enviar al chatbot.\n\nEjemplo: .chatbot ¿Quién te creó?`,
+            `Por favor ingresa el texto que deseas.\n\nEjemplo: .alert Ivan`,
             m
         );
     }
 
     try {
-        // Goku-Black-Bot-MD 
-        let res = await fetch(`https://api.popcat.xyz/v2/chatbot?msg=${encodeURIComponent(text)}&owner=Zero+Two&botname=Pop+Cat`);
-        
-        
+        let res = await fetch(`https://api.popcat.xyz/v2/alert?text=${encodeURIComponent(text)}`);
         if (!res.ok) {
-            return conn.reply(m.chat, `⛔ Hubo un problema al conectar con la API. Código de estado: ${res.status}`, m);
+            return conn.reply(m.chat, `Hubo un problema al conectar con la API. Código de estado: ${res.status}`, m);
         }
 
-        
         let data = await res.json();
-        
-        
-        if (!data || !data.response) {
-            return conn.reply(m.chat, `⛔ No se pudo obtener una respuesta del chatbot. Intenta nuevamente más tarde.`, m);
+        if (!data || !data.message) {
+            return conn.reply(m.chat, `No se pudo obtener una respuesta válida de la API.`, m);
         }
 
-        await conn.reply(m.chat, `🤖 ${data.response}`, m);
+        await conn.reply(m.chat, `🚨 Alerta: ${data.message}`, m);
     } catch (error) {
-        
-        return conn.reply(m.chat, `❌ Ocurrió un error: ${error.message}`, m);
+        return conn.reply(m.chat, `Ocurrió un error: ${error.message}`, m);
     }
 };
 
-handler.command = ['chatbot'];
-handler.help = ['chatbot <mensaje>'];
+handler.command = ['alert'];
+handler.help = ['alert <texto>'];
 handler.tags = ['tools'];
 handler.group = true;
 
