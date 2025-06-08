@@ -12,7 +12,7 @@ var handler = async (m, { text, usedPrefix, command }) => {
         await m.react('🕒');
         conn.sendPresenceUpdate('composing', m.chat);
 
-        var apii.app/starlight/gemini?text=${text}`);
+        var apii = await fetch(`https://apis-starlights-team.koyeb.app/starlight/gemini?text=${text}`);
         var res = await apii.json();
 
         const responseMessage = `✨ *Creador*: Ivan\n\n${res.result}\n\n≡ *Grandes de los bots en aquella época:* 
@@ -23,7 +23,7 @@ var handler = async (m, { text, usedPrefix, command }) => {
 ▢ Enzo Diabla-Bot-MD
 └──────────────`;
 
-        await conn);
+        await conn.reply(m.chat, responseMessage, m);
         await m.react('✅️');
     } catch (error) {
         return conn.reply(m.chat, 'Enseñame que responder.', m);
