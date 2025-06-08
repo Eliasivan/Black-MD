@@ -17,8 +17,12 @@ let handler = async (m, { conn, text }) => {
         }
 
         let data = await res.json();
-        if (!data || !data.response) {
-            return conn.reply(m.chat, `No se pudo obtener una respuesta válida de la IA.`, m);
+        if (!data) {
+            return conn.reply(m.chat, `No se pudo obtener una respuesta válida de la IA. La respuesta fue: ${JSON.stringify(data)}`, m);
+        }
+
+        if (!data.response) {
+            return conn.reply(m.chat, `La IA no devolvió un campo 'response' válido. Respuesta completa: ${JSON.stringify(data)}`, m);
         }
 
         await conn.reply(m.chat, `🤖 Respuesta de la IA:\n${data.response}`, m);
@@ -28,7 +32,7 @@ let handler = async (m, { conn, text }) => {
 };
 
 handler.command = ['blackai'];
-handler.help = ['blacai <texto>'];
+handler.help = ['blackai <texto>'];
 handler.tags = ['tools'];
 
 export default handler;
