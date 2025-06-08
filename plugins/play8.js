@@ -5,7 +5,7 @@ const handler = async (m, { conn, text, command }) => {
     try {
         if (!text.trim()) {
             await m.react('❌');
-            return conn.reply(m.chat, `Por favor, ingresa el nombre de la música a descargar`, m);
+            return conn.reply(m.chat, `✳️ Por favor, ingresa el nombre de la música a descargar. Ejemplo: *${command} Albirroja Te amo de verdad - Talento del barrio*`, m, rcanal);
         }
 
         let ytSearchResults = await yts(text);
@@ -13,7 +13,7 @@ const handler = async (m, { conn, text, command }) => {
 
         if (!ytVideo) {
             await m.react('❌');
-            return conn.reply(m.chat, 'No se encontraron resultados para tu búsqueda.', m);
+            return conn.reply(m.chat, '🛑 No se encontraron resultados para tu búsqueda.', m, rcanal);
         }
 
         const { title, url, views, timestamp, ago } = ytVideo;
@@ -29,7 +29,7 @@ const handler = async (m, { conn, text, command }) => {
 └──────────────
 `;
 
-        await conn.reply(m.chat, infoMessage, m);
+        await conn.reply(m.chat, infoMessage, m, rcanal);
 
         try {
             const apiResponse = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`);
