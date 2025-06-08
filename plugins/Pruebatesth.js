@@ -11,7 +11,7 @@ const handler = async (m, { conn, text }) => {
 
     try {
         const apiKey = "GataDios";
-        const apiUrl = `https://api.neoxr.eu/api/youtube?url=${url}&type=video&quality=480p&apikey=GataDios`;
+        const apiUrl = `https://api.neoxr.eu/api/youtube?url=${encodeURIComponent(text)}&type=video&quality=480p&apikey=${apiKey}`;
         
         let res = await fetch(apiUrl);
         if (!res.ok) {
@@ -19,14 +19,17 @@ const handler = async (m, { conn, text }) => {
         }
 
         let data = await res.json();
-        if (!data || !data.result || !data.result.download_url) {
+        if (!data || !data.data || !data.data.url) {
             return conn.reply(m.chat, `No se pudo obtener un enlace de descarga válido. Respuesta completa: ${JSON.stringify(data)}`, m);
         }
 
-        const { title, download_url } = data.result;
+        const { title, url: downloadUrl, thumbnail } = data.data;
+        const thumb = (await conn.getFile(thumbnail))?.data;
+
         await conn.sendMessage(m.chat, {
-            video: { url: download_url },
+            video: { url: downloadUrl },
             caption: `✎﹏Aquí tienes tu video\n🎥 Título: ${title}`,
+            thumbnail: thumb,
         }, { quoted: m });
     } catch (error) {
         return conn.reply(m.chat, `Ocurrió un error: ${error.message}`, m);
