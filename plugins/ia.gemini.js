@@ -12,17 +12,22 @@ var handler = async (m, { text, usedPrefix, command }) => {
         await m.react('🕒');
         conn.sendPresenceUpdate('composing', m.chat);
 
-        var apii = await fetch(`https://apis-starlights-team.koyeb.app/starlight/gemini?text=${text}`);
-        var res = await apii.json();
-
-        const responseMessage = `✨ *Creador*: Ivan\n\n${res.result}\n\n≡ *Grandes de los bots en aquella época:* 
-┌──────────────
-▢ Ender Lobo-Bot-MD
+        if (/creadores grandes de bot/i.test(text)) {
+            const responseMessage = `≡ *Creadores Grandes*
 ▢ Jostin Goku-Bot-MD
+▢ Ender Lobo-Bot-MD 
 ▢ Axx Baileys-Bot-MD
 ▢ Enzo Diabla-Bot-MD
 └──────────────`;
+            await conn.reply(m.chat, responseMessage, m);
+            await m.react('✅️');
+            return;
+        }
 
+        if (/qu(`https://apis-starlights-team.koyeb.app/starlight/gemini?text=${text}`);
+        var res = await apii.json();
+
+        const responseMessage = `✨ *Creador*: Ivan\n\n${res.result}`;
         await conn.reply(m.chat, responseMessage, m);
         await m.react('✅️');
     } catch (error) {
