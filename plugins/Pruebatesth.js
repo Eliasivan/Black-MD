@@ -3,7 +3,7 @@ import yts from 'yt-search';
 
 const handler = async (m, { conn, text, command }) => {
     if (!text.trim()) {
-        return conn.reply(m.chat, `✎ Ingresa el nombre o enlace del video de YouTube para descargar.`, m);
+        return conn.reply(m.chat, `𝄞 Ingresa el nombre o enlace del video de YouTube para descargar.`, m, rcanal);
     }
 
     try {
@@ -16,7 +16,8 @@ const handler = async (m, { conn, text, command }) => {
         const { title, thumbnail, url } = videoInfo;
 
         const thumb = (await conn.getFile(thumbnail))?.data;
-        const infoMessage = `☄ Descargando *${title}*\n\n🔗 Enlace: ${url}`;
+        const infoMessage = `♬ Descargando *${title}*
+⚘ Enlace: ${url}`;
         await conn.reply(m.chat, infoMessage, m);
 
         if (command === 'play2' || command === 'ytmp4') {
@@ -37,7 +38,7 @@ const handler = async (m, { conn, text, command }) => {
                 const { url: downloadUrl } = data.data;
                 await conn.sendMessage(m.chat, {
                     video: { url: downloadUrl },
-                    caption: `✎﹏Aquí tienes tu video\n🎥 Título: ${title}`,
+                    caption: `☄︎ Aquí tienes tu video\n🎥 Título: ${title}`,
                     thumbnail: thumb,
                 }, { quoted: m });
             } catch (error) {
