@@ -5,62 +5,43 @@ const handler = async (m, { conn, text, command }) => {
     try {
         if (!text.trim()) {
             await m.react('❌');
-            return conn.reply(m.chat, `✳️ Por favor, ingresa el nombre de la música a descargar. Ejemplo: *${command} Shape of You*`, m, rcanal);
+            return conn.reply(m.chat, `Por favor, ingresa el nombre de la música a descargar`, m);
         }
 
         let ytSearchResults = await yts(text);
-        let ytVideo = ytSearchResults.videos?.[0] || ytSearchResults.all?.[0];
+        let ytVideo = ytSearchResults.all?.[0] || ytSearchResults.videos?.[0];
 
         if (!ytVideo) {
             await m.react('❌');
-            return conn.reply(m.chat, '✳️ No se encontraron resultados para tu búsqueda.', m);
+            return conn.reply(m.chat, 'No se encontraron resultados para tu búsqueda.', m);
         }
 
-        const { title, url, views, timestamp, ago } = ytVideo;
+        const { title, url, views, timestamp } = ytVideo;
 
-        const infoMessage = `
-≡ *Información del Audio*
-┌──────────────
-▢ 🎵 Título: ${title || 'Desconocido'}
-▢ 🔗 URL: ${url || 'No disponible'}
-▢ 👀 Vistas: ${formatViews(views)}
-▢ ⌚ Duración: ${timestamp || 'No disponible'}
-▢ 📆 Subido: ${ago || 'No disponible'}
-└──────────────
-`;
+        const infoMessage = `Descargando música\n\nNombre: *${title || 'Desconocido'}*\nURL: *${url || 'No disponible'}*\nVistas: *${formatViews(views)}*\nDuración: *${timestamp || 'No disponible'}*\n`;
 
-        await conn.reply(m.chat, infoMessage, m);
+        await conn.reply(m.chat, infoMessage, m, rcanal);
 
         try {
-            const apiUrl = `https://api.vreden.my.id/api/ytmp3?url=${url}`;
-            const apiResponse = await fetch(apiUrl);
-
-            if (!apiResponse.ok) {
-                throw new Error(`La API respondió con un estado ${apiResponse.status}`);
-            }
-
+            const apiResponse = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`);
             const apiData = await apiResponse.json();
+            const audioUrl = apiData?.result?.download?.url;
 
-            if (!apiData?.result?.mp3) {
-                throw new Error('El enlace de audio no se generó correctamente.');
-            }
-
-            const audioUrl = apiData.result.mp3;
+            if (!audioUrl) throw new Error('El enlace de audio no se generó correctamente.');
 
             await conn.sendMessage(m.chat, { 
                 audio: { url: audioUrl }, 
-                mimetype: 'audio/mpeg', 
-                fileName: `${title || 'audio'}.mp3`
+                mimetype: 'audio/mpeg' 
             }, { quoted: m });
 
             await m.react('✅');
         } catch (error) {
             await m.react('❌');
-            return conn.reply(m.chat, `❌ No se pudo enviar el audio. Error: ${error.message}`, m);
+            return conn.reply(m.chat, 'No se pudo enviar el audio. Intenta nuevamente.', m);
         }
     } catch (error) {
         await m.react('❌');
-        return conn.reply(m.chat, `❌ Ocurrió un error: ${error.message}`, m);
+        return conn.reply(m.chat, `Ocurrió un error: ${error.message}`, m);
     }
 };
 
@@ -74,4 +55,6 @@ function formatViews(views) {
     if (!views) return "No disponible";
     if (views >= 1_000_000_000) return `${(views / 1_000_000_000).toFixed(1)}B (${views.toLocaleString()})`;
     if (views >= 1_000_000) return `${(views / 1_000_000).toFixed(1)}M (${views.toLocaleString()})`;
-    if (views >= 1_000)
+    if (views >= 1_000) return `${(views / 1_000).toFixed(1)}k (${views.toLocaleString()})`;
+    return views.toString();
+}
