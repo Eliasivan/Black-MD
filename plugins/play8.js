@@ -25,7 +25,7 @@ const handler = async (m, { conn, text, command }) => {
 ▢ 🔗 URL: ${url || 'No disponible'}
 ▢ 👀 Vistas: ${formatViews(views)}
 ▢ ⌚ Duración: ${timestamp || 'No disponible'}
-▢ 📆 Subido: ${ago || 'No disponible'}
+▢ 📆 Subido: ${ago} || 'No disponible'}
 └──────────────
 `;
 
