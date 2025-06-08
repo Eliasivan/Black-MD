@@ -16,20 +16,20 @@ const handler = async (m, { conn, text, command }) => {
             return conn.reply(m.chat, 'No se encontraron resultados para tu búsqueda.', m);
         }
 
-        const { title, url, views, timestamp } = ytVideo;
+        const { title, url, views, timestamp, ago } = ytVideo;
 
-               const infoMessage = `
+        const infoMessage = `
 ≡ *Información del Audio*
 ┌──────────────
 ▢ 🎵 Título: ${title || 'Desconocido'}
 ▢ 🔗 URL: ${url || 'No disponible'}
 ▢ 👀 Vistas: ${formatViews(views)}
 ▢ ⌚ Duración: ${timestamp || 'No disponible'}
-▢ 📆 Subido: ${ago} || 'No disponible'}
+▢ 📆 Subido: ${ago || 'No disponible'}
 └──────────────
 `;
 
-        await conn.reply(m.chat, infoMessage, m, rcanal);
+        await conn.reply(m.chat, infoMessage, m);
 
         try {
             const apiResponse = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`);
