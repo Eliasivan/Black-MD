@@ -13,8 +13,7 @@ var handler = async (m, { usedPrefix, command }) => {
             return conn.reply(m.chat, 'No se pudo obtener la imagen. Intenta nuevamente más tarde.', m);
         }
         
-        const responseMessage = `✨ Aquí tienes una imagen de Megumin:\n${data.url}`;
-        await conn.reply(m.chat, responseMessage, m);
+        await conn.sendFile(m.chat, data.url, 'megumin.jpg', '✨ Aquí tienes una imagen de Megumin', m);
         await m.react('✅️');
     } catch (error) {
         await m.react('❌');
