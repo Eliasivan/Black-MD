@@ -10,8 +10,8 @@ const handler = async (m, { conn, text }) => {
     }
 
     try {
-        const apiKey = "sylph-dc801b66a8";
-        const apiUrl = `https://api.sylphy.xyz/download/ytmp4?url=${encodeURIComponent(text)}&apikey=${apiKey}`;
+        const apiKey = "GataDios";
+        const apiUrl = `https://api.neoxr.eu/api/youtube?url=${url}&type=video&quality=480p&apikey=GataDios`;
         
         let res = await fetch(apiUrl);
         if (!res.ok) {
