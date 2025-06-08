@@ -21,7 +21,7 @@ let handler = async (m, { conn, text }) => {
             return conn.reply(m.chat, `La IA no devolvió un campo 'result' válido. Respuesta completa: ${JSON.stringify(data)}`, m);
         }
 
-        await conn.reply(m.chat, `${data.result}`, m);
+        await conn.reply(m.chat, `${data.result}`, m,  rcanal);
     } catch (error) {
         return conn.reply(m.chat, `Ocurrió un error: ${error.message}`, m);
     }
