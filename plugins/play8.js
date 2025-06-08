@@ -18,7 +18,16 @@ const handler = async (m, { conn, text, command }) => {
 
         const { title, url, views, timestamp } = ytVideo;
 
-        const infoMessage = `Descargando música\n\nNombre: *${title || 'Desconocido'}*\nURL: *${url || 'No disponible'}*\nVistas: *${formatViews(views)}*\nDuración: *${timestamp || 'No disponible'}*\n`;
+               const infoMessage = `
+≡ *Información del Audio*
+┌──────────────
+▢ 🎵 Título: ${title || 'Desconocido'}
+▢ 🔗 URL: ${url || 'No disponible'}
+▢ 👀 Vistas: ${formatViews(views)}
+▢ ⌚ Duración: ${timestamp || 'No disponible'}
+▢ 📆 Subido: ${ago || 'No disponible'}
+└──────────────
+`;
 
         await conn.reply(m.chat, infoMessage, m, rcanal);
 
