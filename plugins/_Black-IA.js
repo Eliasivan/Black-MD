@@ -4,7 +4,7 @@ let handler = async (m, { conn, text }) => {
     if (!text) {
         return conn.reply(
             m.chat,
-            `Por favor ingresa el texto para enviar a la IA.\n\nEjemplo: .ai Hola`,
+            `Por favor ingresa el texto para enviar a la IA.\n\nEjemplo: .blackai Hola`,
             m
         );
     }
@@ -28,7 +28,7 @@ let handler = async (m, { conn, text }) => {
 };
 
 handler.command = ['blackai'];
-handler.help = ['blackai <texto>'];
+handler.help = ['blacai <texto>'];
 handler.tags = ['tools'];
 
 export default handler;
