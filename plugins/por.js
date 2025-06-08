@@ -1,7 +1,6 @@
-//XD
 import fetch from 'node-fetch';
 
-var handler = async (m, { text, usedPrefix, command }) => {
+var handler = async (m, { conn, text, usedPrefix, command }) => {
     if (!text) {
         return conn.reply(
             m.chat,
@@ -15,6 +14,12 @@ var handler = async (m, { text, usedPrefix, command }) => {
         conn.sendPresenceUpdate('composing', m.chat);
 
         let res = await fetch(`https://api.popcat.xyz/v2/mock?text=${encodeURIComponent(text)}`);
+        
+        if (!res.ok) {
+            await m.react('❌');
+            return conn.reply(m.chat, 'Hubo un problema al conectar con la API. Intenta nuevamente más tarde.', m);
+        }
+
         let data = await res.json();
 
         if (!data || !data.text) {
