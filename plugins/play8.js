@@ -5,7 +5,7 @@ const handler = async (m, { conn, text, command }) => {
     try {
         if (!text.trim()) {
             await m.react('❌');
-            return conn.reply(m.chat, `✳️ Por favor, ingresa el nombre de la música a descargar. Ejemplo: *${command} Albirroja Te amo de verdad - Talento del barrio*`, m, rcanal);
+            return conn.reply(m.chat, `✳️ Por favor, ingresa el nombre de la música a descargar. Ejemplo: *.${command} Albirroja Te amo de verdad - Talento del barrio*`, m, rcanal);
         }
 
         let ytSearchResults = await yts(text);
