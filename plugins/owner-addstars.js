@@ -30,9 +30,8 @@ let handler = async (m, { conn, text }) => {
     let users = global.db.data.users;
     users[who].estrellas = (users[who].estrellas || 0) + cantidad;
 
-    m.reply(`⭐ *Estrellas añadidas:*
-» ${cantidad} estrella(s)
-🌟 @${who.split('@')[0]} ahora tiene un total de *${users[who].estrellas}* estrellas.`, null, { mentions: [who] });
+    m.reply(`*Añadido:*
+» ${estrellas} \n@${who.split('@')[0]}, recibiste ${estrellas} ⭐`, null, { mentions: [who] });
 };
 
 handler.help = ['addstars *<@user>*'];
