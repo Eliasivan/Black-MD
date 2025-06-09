@@ -1,7 +1,5 @@
+// MEJORANDO A GOKU-BLACK-BOT-MD
 import db from '../lib/database.js';
-import MessageType from '@whiskeysockets/baileys';
-
-let impts = 0;
 
 let handler = async (m, { conn, text }) => {
     let who;
@@ -15,30 +13,29 @@ let handler = async (m, { conn, text }) => {
     } else {
         who = m.chat;
     }
-    
-    if (!who) return m.reply(`${emoji} Por favor, menciona al usuario o cita un mensaje.`);
+
+    if (!who) return m.reply(`🌟 Por favor, menciona al usuario o cita un mensaje para añadir estrellas.`);
     
     let txt = text.replace('@' + who.split`@`[0], '').trim();
-    if (!txt) return m.reply(`${emoji} Por favor, ingresa la cantidad que deseas añadir.`);
-    if (isNaN(txt)) return m.reply(`${emoji2} sólo números.`);
+    if (!txt) return m.reply(`🌟 Por favor, ingresa la cantidad de estrellas que deseas añadir.`);
+    if (isNaN(txt)) return m.reply(`🚫 Sólo se permiten números.`);
     
-    let dmt = parseInt(txt);
-    let coin = dmt;
-    let pjk = Math.ceil(dmt * impts);
-    coin += pjk;
-    
-    if (coin < 1) return m.reply(`${emoji2} Mínimo es *1*`);
+    let cantidad = parseInt(txt);
+    if (cantidad < 1) return m.reply(`🚫 La cantidad mínima es *1* estrella.`);
     
     let users = global.db.data.users;
-    users[who].coin += dmt;
-    
-    m.reply(`💸 *Añadido:*
-» ${dmt} \n@${who.split('@')[0]}, recibiste ${dmt} 💸`, null, { mentions: [who] });
+    if (!users[who]) return m.reply(`🚫 El usuario no está registrado en la base de datos.`);
+
+    users[who].estrellas = (users[who].estrellas || 0) + cantidad;
+
+    m.reply(`⭐ *Estrellas añadidas:*
+» ${cantidad} estrella(s)
+🌟 @${who.split('@')[0]} ahora tiene un total de *${users[who].estrellas}* estrellas.`, null, { mentions: [who] });
 };
 
-handler.help = ['addcoins *<@user>*'];
+handler.help = ['addstars *<@user>*'];
 handler.tags = ['owner'];
-handler.command = ['añadircoin', 'addcoin', 'addcoins']; 
+handler.command = ['añadirestrella', 'addstar', 'addstars'];
 handler.rowner = true;
 
 export default handler;
