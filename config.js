@@ -81,123 +81,46 @@ global.sessions = 'Blacksesion'
 global.jadi = 'blackJadibots'
 global.blackJadibts = true
 
+//*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
+
+global.moneda = '¥enes'
+global.welcom1 = '❍ Edita Con El Comando setwelcome'
+global.welcom2 = '❍ Edita Con El Comando setbye'
+global.banner = 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1742678744381.jpeg'
+global.avatar = 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1742678797993.jpeg'
+
+//*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
+
+global.gp1 = 'https://chat.whatsapp.com/CDw7hpI30WjCyKFAVLHNhZ'
+global.comunidad1 = 'https://chat.whatsapp.com/I0dMp2fEle7L6RaWBmwlAa'
+global.channel = 'https://whatsapp.com/channel/0029VbAfPu9BqbrEMFWXKE0d'
+global.channel2 = 'https://whatsapp.com/channel/0029VbAfPu9BqbrEMFWXKE0d'
+global.md = 'https://github.com/The-King-Destroy/Yuki_Suou-Bot'
+global.correo = 'thekingdestroy507@gmail.com'
+global.cn ='https://whatsapp.com/channel/0029VapSIvR5EjxsD1B7hU3T';
+
+//*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
+
+global.catalogo = fs.readFileSync('./src/catalogo.jpg');
+global.estilo = { key: {  fromMe: false, participant: `0@s.whatsapp.net`, ...(false ? { remoteJid: "5219992095479-1625305606@g.us" } : {}) }, message: { orderMessage: { itemCount : -999999, status: 1, surface : 1, message: packname, orderTitle: 'Bang', thumbnail: catalogo, sellerJid: '0@s.whatsapp.net'}}}
 global.ch = {
-ch1: '120363276986902836@newsletter',
+ch1: '120363416409380841@newsletter',
 }
+global.multiplier = 70
 
-//• ↳ ◜𝑭𝑨𝑲𝑬 𝑬𝑺𝑻𝑰𝑳𝑶◞ • 🪩
-global.estilo = { key: {  fromMe: false, participant: `0@s.whatsapp.net`, ...(false ? { remoteJid: "5219992095479-1625305606@g.us" } : {}) }, message: { orderMessage: { itemCount : -999999, status: 1, surface : 1, message: '󠁖󠁖󠁖󠁖󠁖󠁖󠁻󠁻Goku-Black-Bot-MD', orderTitle: 'Bang', thumbnail: catalogo, sellerJid: '0@s.whatsapp.net'}}}
+//*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.fakegif2 = { key: { participant: `0@s.whatsapp.net`, ...(false ? { remoteJid: "5219992095479-1625305606@g.us" } : {}) }, message: { videoMessage: { title: 'GokuBlack', h: `Hmm`, seconds: '99999', gifPlayback: true, caption: '♡٨ﮩ٨ﮩﮩ٨ﮩﮩ٨ﮩ ᗷIEᑎᐯEᑎIᗪO ﮩ٨ﮩﮩ٨ﮩﮩ٨ﮩ٨♡', jpegThumbnail: logo5 }}};
+global.cheerio = cheerio
+global.fs = fs
+global.fetch = fetch
+global.axios = axios
+global.moment = moment   
 
-global.fakegif3 = { key: { participant: `0@s.whatsapp.net`, ...(false ? { remoteJid: "5219992095479-1625305606@g.us" } : {}) }, message: { videoMessage: { title: 'Goku-Black-Bot-MD', h: `Hmm`, seconds: '99999', gifPlayback: true, caption: '⚘݄𖠵⃕Eres un sabio 💞', jpegThumbnail: logo3 }}};
+//*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.fakegif4 = { key: { participant: `0@s.whatsapp.net`, ...(false ? { remoteJid: "5219992095479-1625305606@g.us" } : {}) }, message: { videoMessage: { title: 'GokuBlack', h: `Hmm`, seconds: '99999', gifPlayback: true, caption: 'Goku-Black-Bot-MD', jpegThumbnail: logo5 }}};
-
-global.estilo = { key: {  fromMe: false, participant: `0@s.whatsapp.net`, ...(false ? { remoteJid: "5219992095479-1625305606@g.us" } : {}) }, message: { orderMessage: { itemCount : -999999, status: 1, surface : 1, message: '󠁖󠁖󠁖󠁖󠁖󠁖󠁻󠁻Goku-Black-Bot-MD', orderTitle: 'Bang', thumbnail: catalogo, sellerJid: '0@s.whatsapp.net'}}}
-
-global.fgif2 = { key: {participant: `0@s.whatsapp.net`, ...(false ? { remoteJid: "6289643739077-1613049930@g.us" } : {})},message: {"videoMessage": { "title":'GokuBlack-Bot', "h": `Hmm`,'seconds': '99999', 'gifPlayback': 'true', 'caption': `Goku-Black-Bot-MD\n Ivan`, 'jpegThumbnail': logo4 }}}
-
-//• ↳ ◜𝑳𝑰𝑵𝑲𝑺◞ • 🌿
-global.gp4 = 'https://chat.whatsapp.com/Igsky5kNI7cDMsBJU6gcKB' //Grupo Oficial De GokuBlack 
-global.gp1 = 'https://chat.whatsapp.com/Igsky5kNI7cDMsBJU6gcKB' //Grupo 
-global.gp2 = 'https://chat.whatsapp.com/Igsky5kNI7cDMsBJU6gcKB' //Grupo
-global.comunidad1 = '' //Comunidad GokuBlack-Bot
-global.channel = '' //Canal Oficial
-global.yt = 'https://youtube.com/@Ivamods15' //Canal De Youtube
-global.md = 'https://github.com/Eliasivan' //Github Oficial
-global.correo = 'fireb5429@gmail.com'
-global.cn ='';
-
-var ase = new Date(); var hour = ase.getHours(); switch(hour){ case 0: hour = 'Linda Mañana'; break; case 1: hour = 'Linda Mañana'; break; case 2: hour = 'Linda Mañana'; break; case 3: hour = 'Linda Mañana'; break; case 4: hour = 'linda mañana'; break; case 5: hour = 'Linda Mañana'; break; case 6: hour = 'Linda Mañana'; break; case 7: hour = 'Linda Mañana'; break; case 8: hour = 'Linda Mañana'; break; case 9: hour = 'Linda Mañana'; break; case 10: hour = 'Lindo Dia'; break; case 11: hour = 'Lindo Dia'; break; case 12: hour = 'Lindo Dia'; break; case 13: hour = 'Lindo Dia'; break; case 14: hour = 'Linda Tarde'; break; case 15: hour = 'Linda Tarde'; break; case 16: hour = 'Linda Tarde'; break; case 17: hour = 'Linda Tarde'; break; case 18: hour = 'Linda Noche'; break; case 19: hour = 'Linda Noche'; break; case 20: hour = 'Linda Noche'; break; case 21: hour = 'Linda Noche'; break; case 22: hour = 'Linda Noche'; break; case 23: hour = 'Linda Noche'; break;}
-global.saludo = '🍭' + hour;
-
-global.rcanal = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: "120363307382381547@newsletter", serverMessageId: 100, newsletterName: namechannel, }, }, }
-//• ↳ ◜𝑻𝑰𝑬𝑴𝑷𝑶◞ • 🕒
-global.d = new Date(new Date + 3600000);
-global.locale = 'es';
-global.dia = d.toLocaleDateString(locale, {weekday: 'long'});
-global.fecha = d.toLocaleDateString('es', {day: 'numeric', month: 'numeric', year: 'numeric'});
-global.mes = d.toLocaleDateString('es', {month: 'long'});
-global.año = d.toLocaleDateString('es', {year: 'numeric'});
-global.tiempo = d.toLocaleString('en-US', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true});
-//* ****************************
-global.wm2 = `${dia} ${fecha}\nGoku-Black-Bot-MD`;
-global.nomorown = '59169739411';
-global.pdoc = ['application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/msword', 'application/pdf', 'text/rtf'];
-global.cmenut = '❖––––––『';
-global.cmenub = '┊✦ ';
-global.cmenuf = '╰━═┅═━––––––๑\n';
-global.cmenua = '\n⌕ ❙❘❙❙❘❙❚❙❘❙❙❚❙❘❙❘❙❚❙❘❙❙❚❙❘❙❙❘❙❚❙❘ ⌕\n     ';
-global.dmenut = '*❖─┅──┅〈*';
-global.dmenub = '*┊»*';
-global.dmenub2 = '*┊*';
-global.dmenuf = '*╰┅────────┅✦*';
-global.htjava = '⫹⫺';
-global.htki = '*⭑•̩̩͙⊱•••• ☪*';
-global.htka = '*☪ ••••̩̩͙⊰•⭑*';
-global.comienzo = '• • ◕◕════';
-global.fin = '════◕◕ • •';
-global.botdate = `${moment.tz('America/Mexico_City').format('DD/MM/YY')}`;
-global.bottime = `${moment.tz('America/Mexico_City').format('HH:mm:ss')}`;
-global.fgif = {key: {participant: '0@s.whatsapp.net'}, message: {'videoMessage': {'title': wm, 'h': `Hmm`, 'seconds': '999999999', 'gifPlayback': 'true', 'caption': bottime, 'jpegThumbnail': fs.readFileSync('./Menu.jpg')}}};
-global.multiplier = 99;
-global.flaaa = [
-  'https://flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=water-logo&script=water-logo&fontsize=90&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=100&fillTextColor=%23000&shadowGlowColor=%23000&backgroundColor=%23000&text=',
-  'https://flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=crafts-logo&fontsize=90&doScale=true&scaleWidth=800&scaleHeight=500&text=',
-  'https://flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=amped-logo&doScale=true&scaleWidth=800&scaleHeight=500&text=',
-  'https://www6.flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=sketch-name&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=100&fillTextType=1&fillTextPattern=Warning!&text=',
-  'https://www6.flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=sketch-name&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=100&fillTextType=1&fillTextPattern=Warning!&fillColor1Color=%23f2aa4c&fillColor2Color=%23f2aa4c&fillColor3Color=%23f2aa4c&fillColor4Color=%23f2aa4c&fillColor5Color=%23f2aa4c&fillColor6Color=%23f2aa4c&fillColor7Color=%23f2aa4c&fillColor8Color=%23f2aa4c&fillColor9Color=%23f2aa4c&fillColor10Color=%23f2aa4c&fillOutlineColor=%23f2aa4c&fillOutline2Color=%23f2aa4c&backgroundColor=%23101820&text=',
-];
-//* ************************
-
-//• ↳ ◜𝑨𝑷𝑰𝑺 𝑭𝑼𝑵𝑪𝑰𝑶𝑵◞ 👑
-global.openai_org_id = 'org-3';
-global.openai_key = 'sk-0';
-global.keysZens = ['LuOlangNgentot', 'c2459db922', '37CC845916', '6fb0eff124', 'hdiiofficial', 'fiktod', 'BF39D349845E', '675e34de8a', '0b917b905e6f'];
-global.keysxxx = keysZens[Math.floor(keysZens.length * Math.random())];
-global.keysxteammm = ['29d4b59a4aa687ca', '5LTV57azwaid7dXfz5fzJu', 'cb15ed422c71a2fb', '5bd33b276d41d6b4', 'HIRO', 'kurrxd09', 'ebb6251cc00f9c63'];
-global.keysxteam = keysxteammm[Math.floor(keysxteammm.length * Math.random())];
-global.keysneoxrrr = ['5VC9rvNx', 'cfALv5'];
-global.keysneoxr = keysneoxrrr[Math.floor(keysneoxrrr.length * Math.random())];
-global.lolkeysapi = ['GataDiosV2']; // ['BrunoSobrino_2']
-global.itsrose = ['4b146102c4d500809da9d1ff'];
-
-global.APIs = {
-  ApiEmpire: 'https://api-brunosobrino.zipponodes.xyz',
-  xteam: 'https://api.xteam.xyz',
-  dzx: 'https://api.dhamzxploit.my.id',
-  lol: 'https://api.lolhuman.xyz',
-  neoxr: 'https://api.neoxr.my.id',
-  zenzapis: 'https://api.zahwazein.xyz',
-  akuari: 'https://api.akuari.my.id',
-  akuari2: 'https://apimu.my.id',
-  fgmods: 'https://api-fgmods.ddns.net',
-  botcahx: 'https://api.botcahx.biz.id',
-  ibeng: 'https://api.ibeng.tech/docs',
-  rose: 'https://api.itsrose.site',
-  popcat: 'https://api.popcat.xyz',
-  xcoders: 'https://api-xcoders.site',
-  vihangayt: 'https://vihangayt.me',
-  erdwpe: 'https://api.erdwpe.com',
-  xyroinee: 'https://api.xyroinee.xyz',
-  nekobot: 'https://nekobot.xyz'
-},
-global.APIKeys = {
-  'https://api.xteam.xyz': `${keysxteam}`,
-  'https://api.lolhuman.xyz': 'GataDios',
-  'https://api.neoxr.my.id': `${keysneoxr}`,
-  'https://api.zahwazein.xyz': `${keysxxx}`,
-  'https://api-fgmods.ddns.net': 'fg-dylux',
-  'https://api.botcahx.biz.id': 'Admin',
-  'https://api.ibeng.tech/docs': 'tamvan',
-  'https://api.itsrose.site': 'Rs-Zeltoria',
-  'https://api-xcoders.site': 'Frieren',
-  'https://api.xyroinee.xyz': 'uwgflzFEh6'
-};
-
-global.cheerio = cheerio;
-global.fs = fs;
-global.fetch = fetch;
-global.axios = axios;
-global.moment = moment;
+let file = fileURLToPath(import.meta.url)
+watchFile(file, () => {
+  unwatchFile(file)
+  console.log(chalk.redBright("Update 'settings.js'"))
+  import(`${file}?update=${Date.now()}`)
+})
