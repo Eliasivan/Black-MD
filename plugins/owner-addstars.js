@@ -1,5 +1,6 @@
 // MEJORANDO A GOKU-BLACK-BOT-MD
 import db from '../lib/database.js';
+import MessageType from '@whiskeysockets/baileys';
 
 let impts = 0;
 
@@ -16,22 +17,23 @@ let handler = async (m, { conn, text }) => {
         who = m.chat;
     }
 
-    if (!who) return m.reply(`🌟 Por favor, menciona al usuario o cita un mensaje para añadir estrellas.`);
+    if (!who) return m.reply(`🌟 Por favor, menciona al usuario o cita un mensaje.`);
     
     let txt = text.replace('@' + who.split`@`[0], '').trim();
     if (!txt) return m.reply(`🌟 Por favor, ingresa la cantidad de estrellas que deseas añadir.`);
     if (isNaN(txt)) return m.reply(`🚫 Sólo se permiten números.`);
+
+    let cantidad = parseInt(txt);
+    let estrellasTotales = cantidad + Math.ceil(cantidad * impts);
     
-    let estrellas = parseInt(txt);
-    let estrellas = estrellas + Math.ceil(estrellas * impts);
-    
-    if (estrellas < 1) return m.reply(`🚫 El mínimo es *1* estrella.`);
+    if (estrellasTotales < 1) return m.reply(`🚫 El mínimo es *1* estrella.`);
 
     let users = global.db.data.users;
-    users[who].estrellas = (users[who].estrellas || 0) + estrellas;
+    users[who].estrellas = (users[who].estrellas || 0) + cantidad;
 
-    m.reply(`*Añadido:*
-» ${estrellas} \n@${who.split('@')[0]}, recibiste ${estrellas} ⭐`, null, { mentions: [who] });
+    m.reply(`⭐ *Estrellas añadidas:*
+» ${cantidad} estrella(s)
+@${who.split('@')[0]} ahora tiene más ⭐`, null, { mentions: [who] });
 };
 
 handler.help = ['addstars *<@user>*'];
