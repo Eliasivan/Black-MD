@@ -505,6 +505,7 @@ for (let key of Object.values(global.APIKeys))
 text = text.replace(new RegExp(key, 'g'), 'Admin')
 if (e.name)
 m.reply(text)
+}
 } finally {
 if (typeof plugin.after === 'function') {
 try {
