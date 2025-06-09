@@ -118,7 +118,7 @@ global.moment = moment
 
 const file = fileURLToPath(import.meta.url);
 watchFile(file, () => {
-  unwatchFile(file);
-  console.log(chalk.redBright('Update \'config.js\''));
+unwatchFile(file);
+console.log(chalk.redBright('config.js'));
   import(`${file}?update=${Date.now()}`);
 });
