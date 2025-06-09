@@ -727,16 +727,16 @@ console.error(e)
 
 global.dfail = (type, m, conn) => {
 const msg = {
-rowner: '「👑」 *Esta función solo puede ser usada por mi creador*\n\n> Ivan', 
-owner: '「👑」 *Esta función solo puede ser usada por mi desarrollador.*\n\n> (⁠￣⁠ヘ⁠￣⁠;⁠)', 
-mods: '「🤴🏻」 *Esta función solo puede ser usada por mis desarrolladores.*', 
-premium: '「🍧」 *Esta función solo es para usuarios Premiun.*', 
-group: '『✨』 *𝙴𝚜𝚝𝚊 𝚏𝚞𝚗𝚌𝚒𝚘𝚗 𝚜𝚘𝚕𝚘 𝚙𝚞𝚎𝚍𝚎 𝚜𝚎𝚛 𝚞𝚜𝚊𝚍𝚊 𝚎𝚗 𝚐𝚛𝚞𝚙𝚘𝚜.*', 
-private: '「🍭」 *Esta función solo puede ser usada en chat privado.*', 
-admin: '「👑」 *Este comando solo puede ser usado por admins.*', 
-botAdmin: '「🚩」 *Para usar esta función debo ser admin.*', 
-unreg: '「˗ˏˋ ♡ ˎˊ˗」 *¡oye tu! no estas registrado, registrese para usar esta función*\n\n*/reg nombre.edad*\n\n*_❕ Ejemplo_* : */reg GokuBlack.20*',
-restrict: '「💫」 *Esta característica esta desactivada.*'
+rowner: `『✦』El comando *${comando}* solo puede ser usado por los creadores del bot.`, 
+owner: `『✦』El comando *${comando}* solo puede ser usado por los desarrolladores del bot.`, 
+mods: `『✦』El comando *${comando}* solo puede ser usado por los moderadores del bot.`, 
+premium: `『✦』El comando *${comando}* solo puede ser usado por los usuarios premium.`, 
+group: `『✦』El comando *${comando}* solo puede ser usado en grupos.`,
+private: `『✦』El comando *${comando}* solo puede ser usado al chat privado del bot.`,
+admin: `『✦』El comando *${comando}* solo puede ser usado por los administradores del grupo.`, 
+botAdmin: `『✦』Para ejecutar el comando *${comando}* debo ser administrador del grupo.`,
+unreg: `『✦』El comando *${comando}* solo puede ser usado por los usuarios registrado, registrate usando:\n> » #${verifyaleatorio} ${user2}.${edadaleatoria}`,
+restrict: `『✦』Esta caracteristica está desactivada.`
 }[type];
 if (msg) return conn.reply(m.chat, msg, m, rcanal).then(_ => m.react('✖️'))}
 const file = global.__filename(import.meta.url, true);
