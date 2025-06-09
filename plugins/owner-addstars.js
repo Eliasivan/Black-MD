@@ -26,7 +26,7 @@ let handler = async (m, { conn, text }) => {
     let users = global.db.data.users;
     if (!users[who]) return m.reply(`🚫 El usuario no está registrado en la base de datos.`);
 
-    users[who].estrellas = (users[who].estrellas || 0) + cantidad;
+    users[who].estrellas = users[who].estrellas ? users[who].estrellas + cantidad : cantidad;
 
     m.reply(`⭐ *Estrellas añadidas:*
 » ${cantidad} estrella(s)
