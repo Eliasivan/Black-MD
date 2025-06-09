@@ -33,7 +33,7 @@ let handler = async (m, { conn, text }) => {
 
     m.reply(`⭐ *Estrellas añadidas:*
 » ${cantidad} estrella(s)
-@${who.split('@')[0]} ahora tiene más ⭐`, null, { mentions: [who] });
+@${who.split('@')[0]} ahora tiene más ${dmt}⭐`, null, { mentions: [who] });
 };
 
 handler.help = ['addstars *<@user>*'];
