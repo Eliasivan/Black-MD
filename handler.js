@@ -514,14 +514,16 @@ console.error(e)
 }}
 if (m.coin)
 conn.reply(m.chat, `❮✦❯ Utilizaste ${+m.coin} ${Ki}`, m)
+}
 break
-}}} catch (e) {
+}}
+} catch (e) {
 console.error(e)
 } finally {
 if (opts['queque'] && m.text) {
 const quequeIndex = this.msgqueque.indexOf(m.id || m.key.id)
 if (quequeIndex !== -1)
-this.msgqueque.splice(quequeIndex, 1)
+                this.msgqueque.splice(quequeIndex, 1)
 }
 //console.log(global.db.data.users[m.sender])
 let user, stats = global.db.data.stats
