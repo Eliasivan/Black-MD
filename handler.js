@@ -251,12 +251,13 @@ autobio: false,
 }} catch (e) {
 console.error(e)
 }
-
-const isROwner = [conn.decodeJid(global.conn.user.id), ...global.owner.map(([number]) => number)].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
-const isOwner = isROwner || m.fromMe
+// @lid error fixed by I'm Fz ~
+const sendNum = m.sender.replace(/[^0-9]/g, '')
+const isROwner = [conn.decodeJid(global.conn.user.id), ...global.owner.map(([number]) => number)].map(v => v.replace(/[^0-9]/g, '')).includes(sendNum)
+const isOwner = isROwner
 const isMods = isOwner || global.mods.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
-//const isPrems = isROwner || global.prems.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
 const isPrems = isROwner || global.db.data.users[m.sender].premiumTime > 0
+
 if (opts['queque'] && m.text && !(isMods || isPrems)) {
 let queque = this.msgqueque, time = 1000 * 5
 const previousID = queque[queque.length - 1]
@@ -281,14 +282,22 @@ return
 m.exp += Math.ceil(Math.random() * 10)
 let usedPrefix
 let _user = global.db.data && global.db.data.users && global.db.data.users[m.sender]
-
+// @lid error fixed by I'm Fz ~
 const groupMetadata = (m.isGroup ? ((conn.chats[m.chat] || {}).metadata || await this.groupMetadata(m.chat).catch(_ => null)) : {}) || {}
 const participants = (m.isGroup ? groupMetadata.participants : []) || []
-const user = (m.isGroup ? participants.find(u => conn.decodeJid(u.id) === m.sender) : {}) || {} // User Data
-const bot = (m.isGroup ? participants.find(u => conn.decodeJid(u.id) == this.user.jid) : {}) || {}
-const isRAdmin = user?.admin == 'superadmin' || false
-const isAdmin = isRAdmin || user?.admin == 'admin' || false //user admins? 
-const isBotAdmin = bot?.admin || false //Detecta sin el bot es admin
+const normalizeJid = jid => jid?.replace(/[^0-9]/g, '')
+const cleanJid = jid => jid?.split(':')[0] || ''
+const senderNum = normalizeJid(m.sender)
+const botNums = [this.user.jid, this.user.lid].map(j => normalizeJid(cleanJid(j)))
+const user = m.isGroup 
+  ? participants.find(u => normalizeJid(u.id) === senderNum) 
+  : {}
+const bot = m.isGroup 
+  ? participants.find(u => botNums.includes(normalizeJid(u.id))) 
+  : {}
+const isRAdmin = user?.admin === 'superadmin'
+const isAdmin = isRAdmin || user?.admin === 'admin'
+const isBotAdmin = !!bot?.admin      
 
 const ___dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), './plugins')
 for (let name in global.plugins) {
