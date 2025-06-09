@@ -468,8 +468,6 @@ continue
 if (plugin.level > _user.level) {
 conn.reply(m.chat, `❮✦❯ Se requiere el nivel: *${plugin.level}*\n\n• Tu nivel actual es: *${_user.level}*\n\n• Usa este comando para subir de nivel:\n*${usedPrefix}levelup*`, m) 
 continue
-if (m.coin)
-conn.reply(m.chat, `❮✦❯ Utilizaste ${+m.coin} ${Ki}`, m)
 }
 let extra = {
 match,
@@ -497,10 +495,9 @@ __filename
 try {
 await plugin.call(this, m, extra)
 if (!isPrems)
-m.moras = m.moras || plugin.moras || false
-m.money = m.money || plugin.money || false
+m.coin = m.coin || plugin.coin || false
 } catch (e) {
-// Error occured
+// MODIFICANDO POWER BY IVAN
 m.error = e
 console.error(e)
 if (e) {
@@ -522,11 +519,8 @@ await plugin.after.call(this, m, extra)
 } catch (e) {
 console.error(e)
 }}
-if (m.moras)
-conn.reply(m.chat, `Utilizaste *${+m.moras}* 🪙`, m, fake)
-}
-if (m.money)
-conn.reply(m.chat, `Utilizaste *${+m.money}* 💰`, m, fake)
+if (m.coin)
+conn.reply(m.chat, `❮✦❯ Utilizaste ${+m.coin} ${Ki}`, m)
 break
 }}} catch (e) {
 console.error(e)
@@ -546,8 +540,7 @@ await conn.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: false, id:
 }
 if (m.sender && (user = global.db.data.users[m.sender])) {
 user.exp += m.exp
-user.moras -= m.moras * 1
-user.money -= m.money * 1
+user.coin -= m.coin * 1
 }
 
 let stat
