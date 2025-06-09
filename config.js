@@ -116,9 +116,9 @@ global.moment = moment
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-let file = fileURLToPath(import.meta.url)
+const file = fileURLToPath(import.meta.url);
 watchFile(file, () => {
-  unwatchFile(file)
-  console.log(chalk.redBright("Update 'settings.js'"))
-  import(`${file}?update=${Date.now()}`)
-})
+  unwatchFile(file);
+  console.log(chalk.redBright('Update \'config.js\''));
+  import(`${file}?update=${Date.now()}`);
+});
