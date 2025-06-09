@@ -1,4 +1,3 @@
-// MEJORANDO A GOKU-BLACK-BOT-MD
 import db from '../lib/database.js';
 import MessageType from '@whiskeysockets/baileys';
 
@@ -16,29 +15,30 @@ let handler = async (m, { conn, text }) => {
     } else {
         who = m.chat;
     }
-
-    if (!who) return m.reply(`🌟 Por favor, menciona al usuario o cita un mensaje.`);
+    
+    if (!who) return m.reply(`${emoji} Por favor, menciona al usuario o cita un mensaje.`);
     
     let txt = text.replace('@' + who.split`@`[0], '').trim();
-    if (!txt) return m.reply(`🌟 Por favor, ingresa la cantidad de estrellas que deseas añadir.`);
-    if (isNaN(txt)) return m.reply(`🚫 Sólo se permiten números.`);
-
-    let cantidad = parseInt(txt);
-    let estrellasTotales = cantidad + Math.ceil(cantidad * impts);
+    if (!txt) return m.reply(`${emoji} Por favor, ingresa la cantidad que deseas añadir.`);
+    if (isNaN(txt)) return m.reply(`${emoji2} sólo números.`);
     
-    if (estrellasTotales < 1) return m.reply(`🚫 El mínimo es *1* estrella.`);
-
+    let dmt = parseInt(txt);
+    let coin = dmt;
+    let pjk = Math.ceil(dmt * impts);
+    coin += pjk;
+    
+    if (coin < 1) return m.reply(`${emoji2} Mínimo es *1*`);
+    
     let users = global.db.data.users;
-    users[who].estrellas = (users[who].estrellas || 0) + cantidad;
-
-    m.reply(`⭐ *Estrellas añadidas:*
-» ${cantidad} estrella(s)
-@${who.split('@')[0]} ahora tiene más ⭐`, null, { mentions: [who] });
+    users[who].coin += dmt;
+    
+    m.reply(`💸 *Añadido:*
+» ${dmt} \n@${who.split('@')[0]}, recibiste ${dmt} 💸`, null, { mentions: [who] });
 };
 
-handler.help = ['addstars *<@user>*'];
+handler.help = ['addcoins *<@user>*'];
 handler.tags = ['owner'];
-handler.command = ['añadirestrella', 'addstar', 'addstars'];
+handler.command = ['añadircoin', 'addcoin', 'addcoins']; 
 handler.rowner = true;
 
 export default handler;
