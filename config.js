@@ -41,7 +41,8 @@ global.namechannel = '𝗚𝗢𝗞𝗨-𝗕𝗟𝗔𝗖𝗞-𝗕𝗢𝗧-𝗠�
 global.vs = 'V2'
 global.vsJB = '5.0'
 
-
+// MONEY
+global.Ki = 'ki'
 //• ↳ ◜𝑰𝑴𝑨́𝑮𝑬𝑵𝑬𝑺◞ • 🌇
 global.imagen1 = fs.readFileSync('./Menu2.jpg');
 global.imagen2 = fs.readFileSync('./src/anime.jpg');
