@@ -1,2 +1,1 @@
-## NUEVO REPO 
-> Copyright (c) 2025 **[GOKU BLACK](https://whatsapp.com/channel/0029VajUPbECxoB0cYovo60W)**.
+## GOKU-BLACK-BOT-MD MEJORANDO POWER BY  RAYO-OFC 
