@@ -18,11 +18,14 @@ export async function before(m, { conn, participants, groupMetadata }) {
       img = await (await fetch(defaultImage)).buffer();
     }
 
+    let totalMembers = participants.length;
+    let userCountry = await conn.getCountry(who); 
+
     if (m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_ADD) {
-      let bienvenida = `🌱 *Bienvenido* a ${groupMetadata.subject}\n ${taguser}\n Disfruta tu estadía en el grupo!`
+      let bienvenida = `🌱 *Bienvenido* a ${groupMetadata.subject}\n ${taguser}\n 🌍 *País*: ${userCountry}\n 📋 *Ahora somos*: ${totalMembers} miembros.\n Disfruta tu estadía en el grupo!`
       await conn.sendMessage(m.chat, { image: img, caption: bienvenida, mentions: [who] })
     } else if (m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_REMOVE || m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_LEAVE) {
-      let bye = `💮 *Adiós* De ${groupMetadata.subject}\n ${taguser}\n Te esperamos pronto!`
+      let bye = `💮 *Adiós* de ${groupMetadata.subject}\n ${taguser}\n 🌍 *País*: ${userCountry}\n 📋 *Ahora somos*: ${totalMembers} miembros.\n Te esperamos pronto!`
       await conn.sendMessage(m.chat, { image: img, caption: bye, mentions: [who] })
     }
   }
