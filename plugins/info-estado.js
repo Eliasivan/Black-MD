@@ -1,70 +1,41 @@
-const handler = async (m, {conn}) => {
-  try {
-    const pp = imagen10;
-    const img = await(await fetch('https://images3.alphacoders.com/125/1251707.png')).buffer();
-    const _uptime = process.uptime() * 1000;
-    const uptime = clockString(_uptime);
-    const taguser = '@' + m.sender.split('@s.whatsapp.net')[0];
-    await conn.sendMessage(m.chat, { react: { text: '🤠', key: m.key } })
-    const str = `
-|____________________________
-|⍣ Goku-Black-Bot-MD-Lite✨️🌻
-|
-|⍣👋🏻𝘏𝘰𝘭𝘢: ${taguser}
-|
-|⍣ *ꨄ︎ ⏳️ 𝘈𝘤𝘵𝘪𝘷𝘰:* ${uptime}
-|⍣ *ꨄ︎ ✅ 𝘉𝘰𝘵 𝘜𝘴𝘰 𝘗𝘶𝘣𝘭𝘪𝘤𝘰*
-|⍣ *ꨄ︎ 🦁 𝘖𝘸𝘯𝘦𝘳: Ivan*
-|⍣ *ꨄ︎ 🔗 𝘊𝘶𝘦𝘯𝘵𝘢𝘴 𝘖𝘧𝘤:* https://whatsapp.com/channel/0029VaYh3Zm4dTnQKQ3VLT0h
-╰✧ » ◇ « ✧ » ✦ « ✧ » ◇ « ✧`.trim();
-        const doc = [
-    "pdf",
-    "zip",
-    "vnd.openxmlformats-officedocument.presentationml.presentation",
-    "vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    "vnd.openxmlformats-officedocument.wordprocessingml.document",
-  ];
-const document = doc[Math.floor(Math.random() * doc.length)];
-  const Message = {
-    document: { url: `https://whatsapp.com/channel/0029VaYh3Zm4dTnQKQ3VLT0h` },
-    mimetype: `application/${document}`,
-    fileName: `「 GokuBlack-𝘉𝘰𝘵💥 」`,
-    fileLength: 99999999999999,
-    pageCount: 200,
-    contextInfo: {
-      forwardingScore: 200,
-      isForwarded: true,
-      externalAdReply: {
-showAdAttribution: !![],
-            mediaType: 0x1,
-            previewType: "PHOTO",
-        title: "Eʟ Bᴏᴛ Mᴀs Good!",
-        thumbnail: imagen10,
-        renderLargerThumbnail: !![],
-        sourceUrl: "https://whatsapp.com/channel/0029VaYh3Zm4dTnQKQ3VLT0h",
-      },
-    },
-    caption: str,
-    footer: wm,
-    headerType: 6,
-  };
-    if (m.isGroup) {
-      conn.sendMessage(m.chat, {text: Message.trim(), mentions: [...str.matchAll(/@([0-9]{5,16}|0)/g)].map((v) => v[1] + '@s.whatsapp.net'), contextInfo: {forwardingScore: 9999999, isForwarded: true, mentionedJid: [...str.matchAll(/@([0-9]{5,16}|0)/g)].map((v) => v[1] + '@s.whatsapp.net'), "externalAdReply": {"showAdAttribution": true, "containsAutoReply": true, "renderLargerThumbnail": true, "title": global.titulowm, "containsAutoReply": true, "mediaType": 1, "thumbnail": pp, "mediaUrl": `https://whatsapp.com/channel/0029VaYh3Zm4dTnQKQ3VLT0h`, "sourceUrl": `https://whatsapp.com/channel/0029VaYh3Zm4dTnQKQ3VLT0h`}}}, {quoted: m});
-    } else {
-      const fkontak2 = {'key': {'participants': '0@s.whatsapp.net', 'remoteJid': 'status@broadcast', 'fromMe': false, 'id': 'Halo'}, 'message': {'contactMessage': {'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`}}, 'participant': '0@s.whatsapp.net'};
-      conn.sendMessage(m.chat, {text: str.trim(), mentions: [...str.matchAll(/@([0-9]{5,16}|0)/g)].map((v) => v[1] + '@s.whatsapp.net'), contextInfo: {forwardingScore: 9999999, isForwarded: true, mentionedJid: [...str.matchAll(/@([0-9]{5,16}|0)/g)].map((v) => v[1] + '@s.whatsapp.net'), "externalAdReply": {"showAdAttribution": true, "containsAutoReply": true, "renderLargerThumbnail": true, "title": global.titulowm, "containsAutoReply": true, "mediaType": 1, "thumbnail": pp, "mediaUrl": ``, "sourceUrl": `https://whatsapp.com/channel/0029VaYh3Zm4dTnQKQ3VLT0h`}}}, {quoted: fkontak2});
-    }
-  } catch {
-  }
-};
-handler.help = ['estado'];
-handler.tags = ['main'];
-handler.command = ['estado','status','estate','state','stado','stats','runtime','uptime'];
-export default handler;
+import ws from 'ws'
+let handler = async (m, { conn, usedPrefix, isRowner}) => {
+let _uptime = process.uptime() * 1000;
+let totalreg = Object.keys(global.db.data.users).length
+let totalchats = Object.keys(global.db.data.chats).length
+
+let uptime = clockString(_uptime);
+let users = [...new Set([...global.conns.filter((conn) => conn.user && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED).map((conn) => conn)])];
+const chats = Object.entries(conn.chats).filter(([id, data]) => id && data.isChats)
+const groupsIn = chats.filter(([id]) => id.endsWith('@g.us')) 
+const totalUsers = users.length;
+let old = performance.now()
+let neww = performance.now()
+let speed = neww - old
+const used = process.memoryUsage()
+let info = `ᥫ᭡ Información - ${botname} ❀\n`
+info += `ᰔᩚ  *◜Creador◞* ⇢ ${etiqueta}\n`
+info += `🜸  *◜Prefijo◞* ⇢ [ ${usedPrefix} ]\n`
+info += `✧  *◜Versión◞* ⇢ ${vs}\n`
+info += `❖  *◜Chats Privados◞* ⇢ ${chats.length - groupsIn.length}\n`
+info += `✎  *◜Total De Chats◞* ⇢ ${chats.length}\n`
+info += `❍  *◜Usuarios◞* ⇢ ${totalreg}\n`
+info += `❑  *◜Grupos◞* ⇢ ${groupsIn.length}\n`
+info += `✰  *◜Actividad◞* ⇢ ${uptime}\n`
+info += `ⴵ  *◜Velocidad◞* ⇢ ${(speed * 1000).toFixed(0) / 1000}\n`
+info += `✦  *◜Sub-Bots Activos◞* ⇢ ${totalUsers || '0'}`
+await conn.sendFile(m.chat, avatar, 'estado.jpg', info, fkontak)
+}
+handler.help = ['estado']
+handler.tags = ['info']
+handler.command = ['estado', 'status', 'estate', 'state', 'stado', 'stats']
+handler.register = true
+
+export default handler
+
 function clockString(ms) {
-  const d = isNaN(ms) ? '--' : Math.floor(ms / 86400000);
-  const h = isNaN(ms) ? '--' : Math.floor(ms / 3600000) % 24;
-  const m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60;
-  const s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60;
-  return [`\n│ *=> 💥 ` + d, ' Día(s)* ', `\n│ *=> 💫 ` + h, ' Hora(s)* ', `\n│ *=> 💠 ` + m, ' Minuto(s)* ', `\n│ *=> ♦ ` + s, ' Segundo(s)* '].map((v) => v.toString().padStart(2, 0)).join('');
+    let seconds = Math.floor((ms / 1000) % 60);
+    let minutes = Math.floor((ms / (1000 * 60)) % 60);
+    let hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+    return `${hours}h ${minutes}m ${seconds}s`;
 }
