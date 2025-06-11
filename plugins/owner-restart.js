@@ -1,18 +1,31 @@
 import { spawn } from 'child_process'
 
-var handler = async (m, { conn, isROwner, text }) => {
+let handler = async (m, { conn, isROwner, text }) => {
+    if (!process.send) throw 'Dont: node main.js\nDo: node index.js'
+    if (conn.user.jid == conn.user.jid) {
+        const { key } = await conn.sendMessage(m.chat, { text: `Reiniciando...` }, { quoted: m });
 
-if (!process.send) throw 'Dont: node mini.js\nDo: node index.js'
-if (conn.user.jid == conn.user.jid) {
-await conn.reply(m.chat, '🍟 *R E I N I C I A N D O* 🍟', m, rcanal, )
-process.send('reset')
-} else throw 'eh'
+        await delay(1000);
+        await conn.sendMessage(m.chat, { text: `Reiniciando...`, edit: key });
 
+        await delay(1000);
+        await conn.sendMessage(m.chat, { text: `Aguarde unos segundos más... 🔁`, edit: key });
+
+        await delay(1000);
+        await conn.sendMessage(m.chat, {
+            text: `Reinicio completo...☄︎`,
+            edit: key
+        });
+
+        process.send('reset');
+    } else throw 'eh'
 }
+
 handler.help = ['restart']
 handler.tags = ['owner']
-handler.command = ['restart','reiniciar'] 
-
+handler.command = ['restart', 'reiniciar']
 handler.rowner = true
 
 export default handler
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
