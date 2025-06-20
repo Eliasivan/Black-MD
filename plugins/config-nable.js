@@ -1,16 +1,26 @@
 const handler = async (m, { conn, usedPrefix, args, isOwner, isAdmin, isROwner }) => {
-    const chat = global.db.data.chats[m.chat] || {};
-    const bot = global.db.data.settings[conn.user.jid] || {}; // no existe
-    const type = (args[0] || '').toLowerCase();
+    const chat = global.db.data.chats[m.chat] || {}; // Inicializa los ajustes del chat si no existen
+    const bot = global.db.data.settings[conn.user.jid] || {}; // Configuración del bot si no existe
+    const type = (args[0] || '').toLowerCase(); // Tipo de función
     let isEnable;
 
     if (args[1]?.toLowerCase() === 'on') {
         isEnable = true; // Activar función
-    } else if (args[1]?.toLower '✗ Desactivado';
+    } else if (args[1]?.toLowerCase() === 'off') {
+        isEnable = false; // Desactivar función
+    } else {
+        const estado = chat[type] || bot[type] ? '✓ Activado' : '✗ Desactivado';
         return conn.reply(
             m.chat,
             `❌ Uso incorrecto del comando.\n\nFormato: *${usedPrefix}${type} <on/off>*\nEjemplo: *${usedPrefix}${type} on*\n\n📋 Estado actual: *${estado}*`,
-            switch (type) {
+            m
+        );
+    }
+
+    let isAll = false;
+
+    // Verificación de permisos y activación/desactivación según el tipo
+    switch (type) {
         case 'welcome':
         case 'bienvenida':
             if (!m.isGroup) {
@@ -25,7 +35,14 @@ const handler = async (m, { conn, usedPrefix, args, isOwner, isAdmin, isROwner }
             chat.welcome = isEnable;
             break;
 
-        case 'detect) {
+        case 'detect':
+        case 'avisos':
+            if (!m.isGroup) {
+                if (!isOwner) {
+                    global.dfail('group', m, conn);
+                    throw false;
+                }
+            } else if (!isAdmin) {
                 global.dfail('admin', m, conn);
                 throw false;
             }
@@ -37,7 +54,11 @@ const handler = async (m, { conn, usedPrefix, args, isOwner, isAdmin, isROwner }
         case 'delete':
             if (!m.isGroup) {
                 if (!isOwner) {
-                    global.dfailfail('admin', m, conn);
+                    global.dfail('group', m, conn);
+                    throw false;
+                }
+            } else if (!isAdmin) {
+                global.dfail('admin', m, conn);
                 throw false;
             }
             chat.delete = isEnable;
@@ -52,7 +73,20 @@ const handler = async (m, { conn, usedPrefix, args, isOwner, isAdmin, isROwner }
                 }
             } else if (!isAdmin) {
                 global.dfail('admin', m, conn);
-                throw false) {
+                throw false;
+            }
+            chat.antiLink = isEnable;
+            break;
+
+        case 'modohorny':
+        case 'modocaliente':
+        case 'modehorny':
+            if (!m.isGroup) {
+                if (!isOwner) {
+                    global.dfail('group', m, conn);
+                    throw false;
+                }
+            } else if (!isAdmin) {
                 global.dfail('admin', m, conn);
                 throw false;
             }
@@ -159,6 +193,6 @@ const handler = async (m, { conn, usedPrefix, args, isOwner, isAdmin, isROwner }
 
 handler.help = ['<función> on', '<función> off'];
 handler.tags = ['settings'];
-handler.command = ['welcome', 'detect', 'antidelete', 'antilink', 'modohorny', 'autolevelup', 'reaction', 'antitoxic', 'audios', 'modoadmin', 'antifake'];
+handler.command = ['welcome', 'detect', 'antidelete', 'antilink', 'modohorny', 'autolevelup', 'reaction', 'antitoxic', 'audios', 'modoadmin', 'antifake']; // Lista de funciones
 
 export default handler;
