@@ -23,7 +23,7 @@ Disfruta tu estadía en el grupo!`
   }
   
   if (chat.welcome && (m.messageStubType == 28 || m.messageStubType == 32)) {
-    let bye = `❀ *Adiós* de ${groupMetadata.subject}\n✰ @${m.messageStubParameters[0].split`@`[0]}\n${global.welcom2}\n✦ Ahora somos ${groupSize} Miembros.
+    let bye = `*Adiós* de ${groupMetadata.subject}\n✰ @${m.messageStubParameters[0].split`@`[0]}\n${global.welcom2}\n✦ Ahora somos ${groupSize} Miembros.
 Te esperamos pronto!`
     await conn.sendMini(m.chat, txt1, dev, bye, img, img, redes, fkontak)
   }}
