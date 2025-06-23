@@ -1,5 +1,5 @@
 import yts from "yt-search";
-import { yta } from "./_ytdl.js";
+import { yta } from "./lib/ytdl.js";
 
 const handler = async (m, { conn, text }) => {
   if (!text) return m.reply("🌴 Ingresa el nombre de un video o una URL de YouTube.");
