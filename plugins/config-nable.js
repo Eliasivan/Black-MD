@@ -33,19 +33,18 @@ const handler = async (m, { conn, usedPrefix, args, isOwner, isAdmin }) => {
     return conn.reply(m.chat, `❌ Uso incorrecto del comando.\n\nFormato: *${usedPrefix}${type} <on/off>*\nEjemplo: *${usedPrefix}${type} on*\n\n📋 Estado actual: *${estado}*`, m);
   }
 
-  // Solo admin/owner pueden cambiar en grupos, solo owner en privados
   if (m.isGroup ? !isAdmin : !isOwner) {
     global.dfail(m.isGroup ? 'admin' : 'owner', m, conn);
     throw false;
   }
 
-  // Cambia la bandera
   const chat = global.db.data.chats[m.chat] || {};
   chat[flag] = isEnable;
   global.db.data.chats[m.chat] = chat;
+
   if (global.db.write) await global.db.write();
 
-  conn.reply(m.chat, `💫 *La función ${type} se ha ${isEnable ? 'activado' : 'desactivado'} correctamente.*`, m);
+  conn.reply(m.chat, `💫 *La función "${type}" se ha ${isEnable ? 'activado' : 'desactivado'} correctamente.*`, m);
 };
 
 handler.help = ['<función> on', '<función> off'];
