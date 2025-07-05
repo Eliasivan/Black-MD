@@ -9,7 +9,11 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
   let eleccionUsuario = text?.toLowerCase()?.trim();
 
   if (!opciones.includes(eleccionUsuario)) {
-    let menu = `*Juguemos Piedra, Papel o Tijera*\n\nElige una opción escribiendo:\n${usedPrefix + command} piedra\n${usedPrefix + command} papel\n${usedPrefix        text: menu,
+    let menu = `*Juguemos Piedra, Papel o Tijera*\n\nElige una opción escribiendo:\n${usedPrefix + command} piedra\n${usedPrefix + command} papel\n${usedPrefix + command} tijera\n\n¡O toca un botón!`;
+    return await conn.sendMessage(
+      m.chat,
+      {
+        text: menu,
         buttons: [
           { buttonId: `${usedPrefix + command} piedra`, buttonText: { displayText: `${emojis.piedra} Piedra` } },
           { buttonId: `${usedPrefix + command} papel`, buttonText: { displayText: `${emojis.papel} Papel` } },
