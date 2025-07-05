@@ -1,69 +1,61 @@
-import fetch from "node-fetch";
-import yts from 'yt-search';
+import fetch from 'node-fetch';
 
-const handler = async (m, { conn, text, command }) => {
-    try {
-        if (!text.trim()) {
-            await m.react('❌');
-            return conn.reply(m.chat, `✳️ Por favor, ingresa el nombre de la música a descargar. Ejemplo: *.${command} Albirroja Te amo de verdad - Talento del barrio*`, m, rcanal);
-        }
+let handler = async (m, { conn, args, command, usedPrefix}) => {
+  const text = args.join(" ");
+  if (!text) {
+    return m.reply(
+      `│ ≡◦ 🎧 *Uso correcto del comando:*
+│ ≡◦ ${usedPrefix + command} shakira soltera`
+);
+}
+  await m.react('⌛');
 
-        let ytSearchResults = await yts(text);
-        let ytVideo = ytSearchResults.all?.[0] || ytSearchResults.videos?.[0];
+  try {
+    const res = await fetch(`https://api.nekorinn.my.id/downloader/spotifyplay?q=${encodeURIComponent(text)}`);
+    const json = await res.json();
 
-        if (!ytVideo) {
-            await m.react('❌');
-            return conn.reply(m.chat, '🛑 No se encontraron resultados para tu búsqueda.', m, rcanal);
-        }
+    if (!json.status ||!json.result?.downloadUrl) {
+      return m.reply(
+        `│ ≡◦ ❌ *No se encontró resultado para:* ${text}
+╰─⬣`
+);
+}
 
-        const { title, url, views, timestamp, ago } = ytVideo;
+    const { title, artist, duration, cover, url} = json.result.metadata;
+    const audio = json.result.downloadUrl;
 
-        const infoMessage = `
-≡ *Información del Audio*
-┌──────────────
-▢ 🎵 Título: ${title || 'Desconocido'}
-▢ 🔗 URL: ${url || 'No disponible'}
-▢ 👀 Vistas: ${formatViews(views)}
-▢ ⌚ Duración: ${timestamp || 'No disponible'}
-▢ 📆 Subido: ${ago || 'No disponible'}
-└──────────────
-`;
+    await conn.sendMessage(m.chat, {
+      image: { url: cover},
+      caption: `╭─⬣「 *MÚSICA SPOTIFY* 」⬣
+│ ≡◦ 🎵 *Título:* ${title}
+│ ≡◦ 👤 *Artista:* ${artist}
+│ ≡◦ ⏱️ *Duración:* ${duration}
+│ ≡◦ 🌐 *Spotify:* ${url}
+╰─⬣`
+}, { quoted: m});
 
-        await conn.reply(m.chat, infoMessage, m, rcanal);
+    await conn.sendMessage(m.chat, {
+      audio: { url: audio},
+      mimetype: 'audio/mp4',
+      ptt: false,
+      fileName: `${title}.mp3`
+}, { quoted: m});
 
-        try {
-            const apiResponse = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`);
-            const apiData = await apiResponse.json();
-            const audioUrl = apiData?.result?.download?.url;
+    await m.react('✅');
 
-            if (!audioUrl) throw new Error('El enlace de audio no se generó correctamente.');
-
-            await conn.sendMessage(m.chat, { 
-                audio: { url: audioUrl }, 
-                mimetype: 'audio/mpeg' 
-            }, { quoted: m });
-
-            await m.react('✅');
-        } catch (error) {
-            await m.react('❌');
-            return conn.reply(m.chat, 'No se pudo enviar el audio. Intenta nuevamente.', m);
-        }
-    } catch (error) {
-        await m.react('❌');
-        return conn.reply(m.chat, `Ocurrió un error: ${error.message}`, m);
-    }
+} catch (e) {
+    console.error(e);
+    return m.reply(
+      `│ ≡◦ ⚠️ *Error al procesar la solicitud.*
+│ ≡◦ Intenta nuevamente más tarde.
+╰─⬣`
+);
+}
 };
 
-handler.command = ['play'];
+handler.help = ['play <nombre>'];
 handler.tags = ['descargas'];
-handler.help = ['play <texto>'];
+handler.command = /^play$/i;
+handler.register = true;
 
 export default handler;
-
-function formatViews(views) {
-    if (!views) return "No disponible";
-    if (views >= 1_000_000_000) return `${(views / 1_000_000_000).toFixed(1)}B (${views.toLocaleString()})`;
-    if (views >= 1_000_000) return `${(views / 1_000_000).toFixed(1)}M (${views.toLocaleString()})`;
-    if (views >= 1_000) return `${(views / 1_000).toFixed(1)}k (${views.toLocaleString()})`;
-    return views.toString();
-}
