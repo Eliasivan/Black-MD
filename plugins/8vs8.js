@@ -1,46 +1,35 @@
-import fetch from 'node-fetch';
-import { gifToMp4 } from '../lib/converter.js';
-
-let handler = async (m, { conn, participants }) => {
-  try {
-    const who = m.quoted ? m.quoted.sender
-      : (m.mentionedJid && m.mentionedJid[0])
-        ? m.mentionedJid[0]
-        : m.sender;
-
-    const isGroup = m.isGroup || !!participants;
-    const group_db = isGroup && global.db && global.db.data && global.db.data.chats
-      ? global.db.data.chats[m.chat] || { nsfw: true }
-      : { nsfw: true };
-
-    if (isGroup && group_db.nsfw === false)
-      return m.reply('🚩 Los comandos NSFW están desactivados en este grupo. Pide a un admin que los active.');
-
-    const res = await fetch('https://api.waifu.pics/sfw/slap');
-    const json = await res.json();
-    const buff = await getBuffer(json.url);
-    const mp4 = await gifToMp4(buff);
-
-    let name = conn.getName ? await conn.getName(who) : who.split('@')[0];
-    let caption = who !== m.sender
-      ? `👋 *${conn.getName(m.sender)}* le dio una bofetada a *${name}*`
-      : `👋 *${conn.getName(m.sender)}* se dio una bofetada a sí mismo/a`;
-
-    await conn.sendMessage(m.chat, {
-      video: mp4,
-      gifPlayback: true,
-      caption,
-      mentions: who !== m.sender ? [m.sender, who] : [m.sender],
-    }, { quoted: m });
-  } catch (e) {
-    console.error(e);
-    m.reply('❌ Ocurrió un error al ejecutar el comando, intenta de nuevo.');
+let handler = async (m, { conn }) => {
+  let who;
+  if (m.mentionedJid.length > 0) {
+    who = m.mentionedJid[0];
+  } else if (m.quoted) {
+    who = m.quoted.sender;
+  } else {
+    who = m.sender;
   }
-};
 
-handler.help = ['slap'];
+  let name = await conn.getName(who);
+  let name2 = await conn.getName(m.sender);
+
+  let str;
+  if (m.mentionedJid.length > 0) {
+    str = `\`${name2}\` *golpeó a* \`${name || who}\`.`;
+  } else if (m.quoted) {
+    str = `\`${name2}\` *golpeó a*  \`${name || who}\`.`;
+  } else {
+    str = `\`${name2}\` *se golpeó a sí mismo*.`.trim();
+  }
+
+  let res = await fetch('https://api.waifu.pics/sfw/slap');
+  let json = await res.json();
+
+  let mentions = [who];
+  await conn.sendMessage(m.chat, { video: { url: json.url }, gifPlayback: true, caption: str, mentions }, { quoted: m });
+}
+
+handler.help = ['slap @tag', 'bofetada @tag'];
 handler.tags = ['anime'];
-handler.command = /^slap$/i;
+handler.command = ['slap', 'bofetada'];
 handler.group = true;
 
 export default handler;
