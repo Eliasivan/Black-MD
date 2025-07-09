@@ -1,112 +1,29 @@
-function _0x373a(_0x2a4f0d, _0x1e2583) {
-    const _0x1eacf3 = _0x2f98();
-    return _0x373a = function (_0x5d58d3, _0x4c408e) {
-        _0x5d58d3 = _0x5d58d3 - (-0x82a + 0x67 * -0x7 + 0xbc4);
-        let _0x48331f = _0x1eacf3[_0x5d58d3];
-        return _0x48331f;
-    }, _0x373a(_0x2a4f0d, _0x1e2583);
-}
-(function (_0xcce4e5, _0x13a60d) {
-    const _0x531464 = _0x373a, _0x279ded = _0xcce4e5();
-    while (!![]) {
-        try {
-            const _0x701acd = parseInt(_0x531464(0xe0)) / (0xfce + 0x2ce * -0xb + -0x1 * -0xf0d) + -parseInt(_0x531464(0xe8)) / (0x6e5 * 0x5 + -0x1976 + -0x901 * 0x1) + parseInt(_0x531464(0xdb)) / (0x1 * 0xc3 + 0x273 + -0x15 * 0x27) + parseInt(_0x531464(0xcd)) / (0x15e1 + 0x137 * -0x6 + 0x5b * -0x29) * (-parseInt(_0x531464(0xd4)) / (-0xde5 * -0x1 + -0x1 * -0xe33 + 0x1c13 * -0x1)) + parseInt(_0x531464(0xe6)) / (-0x2074 + -0x17cd + -0x1 * -0x3847) + -parseInt(_0x531464(0xec)) / (-0x1192 + -0x1 * 0x4e1 + 0x1 * 0x167a) * (-parseInt(_0x531464(0xce)) / (0x145e + 0x1 * 0xab4 + -0x1f0a)) + -parseInt(_0x531464(0xe7)) / (0x519 + -0x7d * 0x1d + 0x1 * 0x919);
-            if (_0x701acd === _0x13a60d)
-                break;
-            else
-                _0x279ded['push'](_0x279ded['shift']());
-        } catch (_0x78d77a) {
-            _0x279ded['push'](_0x279ded['shift']());
-        }
+export async function before(message) {
+  if (!message.text || !global.prefix.test(message.text)) return;
+
+  const prefixUsed = global.prefix.exec(message.text)[0];
+  const commandName = message.text.slice(prefixUsed.length).trim().split(" ")[0].toLowerCase();
+
+  const commandExists = (cmd, plugins) => {
+    for (let plugin of Object.values(plugins)) {
+      if (plugin.command) {
+        const commands = Array.isArray(plugin.command) ? plugin.command : [plugin.command];
+        if (commands.includes(cmd)) return true;
+      }
     }
-}(_0x2f98, 0x38dd * 0x65 + 0x25 * -0x289d + -0x1ee6f));
-function _0x2f98() {
-    const _0x39250e = [
-        'data',
-        '5335986maZxFS',
-        '2577699UYGSQI',
-        '2068710viTDSi',
-        'text',
-        'users',
-        'values',
-        '10972087ReONPv',
-        'sender',
-        '⏤͟͟͞͞El\x20comando\x20*',
-        'isArray',
-        'trim',
-        '14284otkeuM',
-        '8BJsmLS',
-        'isBanned',
-        'command',
-        'oVtJj',
-        'split',
-        '*\x20no\x20existe.\x0aPara\x20ver\x20la\x20lista\x20de\x20comandos\x20usa:\x0a»\x20*',
-        '1790otOsVB',
-        'BDlgO',
-        'XxoxC',
-        'LykMa',
-        'FmhuK',
-        'chats',
-        'nFsIP',
-        '2570457fhAJgp',
-        'commands',
-        'prefix',
-        'GjFxe',
-        'slice',
-        '244586PPKrFA',
-        'length',
-        'chat',
-        'reply',
-        'YvLrk'
-    ];
-    _0x2f98 = function () {
-        return _0x39250e;
-    };
-    return _0x2f98();
-}
-export async function before(_0x36e3ff) {
-    const _0x453166 = _0x373a, _0x2d772a = {
-            'FmhuK': function (_0x105715, _0x496c67, _0x5b91f5) {
-                return _0x105715(_0x496c67, _0x5b91f5);
-            },
-            'oVtJj': function (_0x5d784d, _0xdab974) {
-                return _0x5d784d !== _0xdab974;
-            },
-            'TrncI': _0x453166(0xda),
-            'XxoxC': _0x453166(0xd7),
-            'GjFxe': _0x453166(0xd5),
-            'BdmTs': _0x453166(0xe4)
-        };
-    if (!_0x36e3ff['text'] || !global[_0x453166(0xdd)]['test'](_0x36e3ff[_0x453166(0xe9)]))
-        return;
-    const _0x59c403 = global[_0x453166(0xdd)]['exec'](_0x36e3ff[_0x453166(0xe9)])[-0x20d9 + 0xfeb + 0x10ee], _0x5c68e8 = _0x36e3ff['text'][_0x453166(0xdf)](_0x59c403[_0x453166(0xe1)])['trim']()[_0x453166(0xd2)]('\x20')[-0xc80 + 0x1814 + 0x4c * -0x27]['toLowerCase'](), _0x445dcc = (_0xcf5341, _0x50ba02) => {
-            const _0x5063ab = _0x453166;
-            for (let _0x2d6ada of Object[_0x5063ab(0xeb)](_0x50ba02)) {
-                if (_0x2d6ada['command'] && (Array[_0x5063ab(0xcb)](_0x2d6ada[_0x5063ab(0xd0)]) ? _0x2d6ada['command'] : [_0x2d6ada[_0x5063ab(0xd0)]])['includes'](_0xcf5341))
-                    return !![];
-            }
-            return ![];
-        };
-    if (_0x2d772a[_0x453166(0xd8)](_0x445dcc, _0x5c68e8, global['plugins'])) {
-        let _0x49c44e = global['db'][_0x453166(0xe5)][_0x453166(0xd9)][_0x36e3ff[_0x453166(0xe2)]], _0x3bfdc0 = global['db'][_0x453166(0xe5)][_0x453166(0xea)][_0x36e3ff[_0x453166(0xc9)]];
-        if (_0x49c44e[_0x453166(0xcf)])
-            return;
-        if (!_0x3bfdc0[_0x453166(0xdc)]) {
-            if (_0x2d772a[_0x453166(0xd1)](_0x2d772a['TrncI'], _0x2d772a[_0x453166(0xd6)]))
-                _0x3bfdc0[_0x453166(0xdc)] = -0x144e + 0x1c6 * 0xb + 0xcc;
-            else {
-                let _0x3372e0 = _0x18ed7f['db'][_0x453166(0xe5)][_0x453166(0xd9)][_0x280b23[_0x453166(0xe2)]], _0x3df3ba = _0x22c960['db'][_0x453166(0xe5)][_0x453166(0xea)][_0x536acb[_0x453166(0xc9)]];
-                if (_0x3372e0[_0x453166(0xcf)])
-                    return;
-                !_0x3df3ba[_0x453166(0xdc)] && (_0x3df3ba[_0x453166(0xdc)] = 0x7 * -0x11d + -0x141 * -0x13 + -0x1008), _0x3df3ba[_0x453166(0xdc)] += -0x43 * -0x65 + 0x236 * 0x4 + -0x2346;
-            }
-        }
-        _0x3bfdc0[_0x453166(0xdc)] += 0x1be5 * 0x1 + -0x219d + 0x5b9;
-    } else {
-        if (_0x2d772a[_0x453166(0xd1)](_0x2d772a[_0x453166(0xde)], _0x2d772a['BdmTs'])) {
-            const _0x1da814 = _0x36e3ff[_0x453166(0xe9)][_0x453166(0xcc)]()[_0x453166(0xd2)]('\x20')[-0x2114 * 0x1 + -0x92d + 0x2a41];
-            await _0x36e3ff[_0x453166(0xe3)](_0x453166(0xca) + _0x59c403 + _0x5c68e8 + _0x453166(0xd3) + _0x59c403 + 'Menu*');
-        } else
-            return !![];
-    }
+    return false;
+  };
+
+  if (commandExists(commandName, global.plugins)) {
+    let chatData = global.db.data.chats[message.chat];
+    let userData = global.db.data.users[message.sender];
+    if (chatData.isBanned) return;
+    if (!userData.commands) userData.commands = 0;
+    userData.commands += 1;
+  } else {
+    let som = 0;
+    await message.reply(
+      `⏤͟͟͞͞El comando *${prefixUsed}${commandName}* no existe.\nPara ver la lista de comandos usa:\n» *${prefixUsed}Menu*\n❕ *Similitud:* _${parseInt(som)}%_`
+    );
+  }
 }
