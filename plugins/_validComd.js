@@ -64,7 +64,7 @@ export async function before(message) {
     }
 
     await message.reply(
-      `⏤͟͟͞͞El comando *${prefixUsed}${commandName}* no existe.\n>Quizás quisiste decir: *${prefixUsed}${bestMatch}*\nPara ver la lista de comandos usa:\n» *${prefixUsed}Menu*\n☄ *Similitud:* _${bestSimilarity}%_`
+      `⏤͟͟͞͞El comando *${prefixUsed}${commandName}* no existe.\n> Quizás quisiste decir: *${prefixUsed}${bestMatch}*\nPara ver la lista de comandos usa:\n» *${prefixUsed}Menu*\n☄ *Similitud:* _${bestSimilarity}%_`
     );
   }
 }
