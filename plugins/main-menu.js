@@ -31,10 +31,10 @@ let tags = {
 }
 
 const defaultMenu = {
-  before: `Hola! Soy *${global.botname || 'Goku-Black-Bot-MD'}*
+  before: `Hola! @${userId.split('@')[0]} Soy *${global.botname || 'Goku-Black-Bot-MD'}*
 > Aquí tienes la lista de comandos
 %readmore`.trimStart(),
-  header: '╭⬪ %category ⬪╮',
+  header: '╭✰ %category ✰╮',
   body: '├ %cmd',
   footer: '╰──────',
   after: `> ${global.dev || 'By Goku-Black-Bot'}`
