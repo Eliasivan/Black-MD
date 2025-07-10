@@ -1,94 +1,137 @@
-//GataNina-Li
+import { canLevelUp } from '../lib/levelling.js'
+
 const roles = {
-'*𝗡𝗼𝘃𝗮𝘁𝗼 V* 🍷': 0,
-'*𝗡𝗼𝘃𝗮𝘁𝗼 IV* 🍷': 2,
-'*𝗡𝗼𝘃𝗮𝘁𝗼 III* 🍷': 4,
-'*𝗡𝗼𝘃𝗮𝘁𝗼 II* 🍷': 6,
-'*𝗡𝗼𝘃𝗮𝘁𝗼 I* 🍷': 8,
-'*𝗘𝘀𝘁𝘂𝗱𝗶𝗮𝗻𝘁𝗲 V* 🍹': 10,
-'*𝗘𝘀𝘁𝘂𝗱𝗶𝗮𝗻𝘁𝗲 IV* 🍹': 12,
-'*𝗘𝘀𝘁𝘂𝗱𝗶𝗮𝗻𝘁𝗲 III* 🍹': 14,
-'*𝗘𝘀𝘁𝘂𝗱𝗶𝗮𝗻𝘁𝗲 II* 🍹': 16,
-'*𝗘𝘀𝘁𝘂𝗱𝗶𝗮𝗻𝘁𝗲 I* 🍹': 18,
-'*𝗥𝗮𝗻𝗴𝗼 𝗺𝗲𝗱𝗶𝗼 V* 🥃': 20,
-'*𝗥𝗮𝗻𝗴𝗼 𝗺𝗲𝗱𝗶𝗼 IV* 🥃': 22,
-'*𝗥𝗮𝗻𝗴𝗼 𝗺𝗲𝗱𝗶𝗼 III* 🥃': 24,
-'*𝗥𝗮𝗻𝗴𝗼 𝗺𝗲𝗱𝗶𝗼 II* 🥃': 26,
-'*𝗥𝗮𝗻𝗴𝗼 𝗺𝗲𝗱𝗶𝗼 I* 🥃': 28,
-'*𝗠𝗮𝗲𝘀𝘁𝗿𝗼 V* ☁️': 30,
-'*𝗠𝗮𝗲𝘀𝘁𝗿𝗼 IV* ☁️': 32,
-'*𝗠𝗮𝗲𝘀𝘁𝗿𝗼 III* ☁️': 34,
-'*𝗠𝗮𝗲𝘀𝘁𝗿𝗼 II* ☁️': 36,
-'*𝗠𝗮𝗲𝘀𝘁𝗿𝗼 I* ☁️': 38,
-'*𝗘𝘅𝗽𝗲𝗿𝘁𝗼 V* 🪐': 40,
-'*𝗘𝘅𝗽𝗲𝗿𝘁𝗼 IV* 🪐': 42,
-'*𝗘𝘅𝗽𝗲𝗿𝘁𝗼 III* 🪐': 44,
-'*𝗘𝘅𝗽𝗲𝗿𝘁𝗼 II* 🪐': 46,
-'*𝗘𝘅𝗽𝗲𝗿𝘁𝗼 I* 🪐': 48,
-'*𝗚𝗲𝗻𝗶𝗼 V* 💧': 50,
-'*𝗚𝗲𝗻𝗶𝗼 IV* 💧': 52,
-'*𝗚𝗲𝗻𝗶𝗼 III* 💧': 54,
-'*𝗚𝗲𝗻𝗶𝗼 II* 💧': 56,
-'*𝗚𝗲𝗻𝗶𝗼 I* 💧': 58,
-'*𝗦𝘂𝗽𝗲𝗿𝗶𝗼𝗿 V* 🍿': 60,
-'*𝗦𝘂𝗽𝗲𝗿𝗶𝗼𝗿 IV* 🍿': 62,
-'*𝗦𝘂𝗽𝗲𝗿𝗶𝗼𝗿 III* 🍿': 64,
-'*𝗦𝘂𝗽𝗲𝗿𝗶𝗼𝗿 II* 🍿': 66,
-'*𝗦𝘂𝗽𝗲𝗿𝗶𝗼𝗿 I* 🍿': 68,
-'*𝗘𝘅𝗽𝗲𝗿𝘁𝗼 𝗱𝗲𝗹 𝗯𝗼𝘁 V* 🌐': 70,
-'*𝗘𝘅𝗽𝗲𝗿𝘁𝗼 𝗱𝗲𝗹 𝗯𝗼𝘁 IV* 🌐': 72,
-'*𝗘𝘅𝗽𝗲𝗿𝘁𝗼 𝗱𝗲𝗹 𝗯𝗼𝘁 III* 🌐': 74,
-'*𝗘𝘅𝗽𝗲𝗿𝘁𝗼 𝗱𝗲𝗹 𝗯𝗼𝘁 II* 🌐': 76,
-'*𝗘𝘅𝗽𝗲𝗿𝘁𝗼 𝗱𝗲𝗹 𝗯𝗼𝘁 I* 🌐': 78,
-'*𝗣𝗿𝗼 V* 💰': 80,
-'*𝗣𝗿𝗼 IV* 💰': 82,
-'*𝗣𝗿𝗼 III* 💰': 84,
-'*𝗣𝗿𝗼 II* 💰': 86,
-'*𝗣𝗿𝗼 I* 💰': 88,
-'*𝗣𝗿𝗼 𝗦𝘂𝗽𝗲𝗿𝗶𝗼𝗿 V* 🎁': 90,
-'*𝗣𝗿𝗼 𝗦𝘂𝗽𝗲𝗿𝗶𝗼𝗿 IV* 🎁': 92,
-'*𝗣𝗿𝗼 𝗦𝘂𝗽𝗲𝗿𝗶𝗼𝗿 III* 🎁': 94,
-'*𝗣𝗿𝗼 𝗦𝘂𝗽𝗲𝗿𝗶𝗼𝗿 II* 🎁': 96,
-'*𝗣𝗿𝗼 𝗦𝘂𝗽𝗲𝗿𝗶𝗼𝗿 I* 🎁': 98,
-'*𝗥𝗲𝘆 V* 💻': 100,
-'*𝗥𝗲𝘆 IV* 💻': 102,
-'*𝗥𝗲𝘆 III* 💻': 104,
-'*𝗥𝗲𝘆 II* 💻': 106,
-'*𝗥𝗲𝘆 I* 💻': 108,
-'*𝗥𝗲𝘆 𝗣𝗿𝗼 V* 🎒': 110,
-'*𝗥𝗲𝘆 𝗣𝗿𝗼 IV* 🎒': 112,
-'*𝗥𝗲𝘆 𝗣𝗿𝗼 III* 🎒': 114,
-'*𝗥𝗲𝘆 𝗣𝗿𝗼 II* 🎒': 116,
-'*𝗥𝗲𝘆 𝗣𝗿𝗼 I* 🎒': 118,
-'*𝗜𝗻𝘃𝗲𝗻𝘀𝗶𝗯𝗹𝗲 V* 🔔': 120,
-'*𝗜𝗻𝘃𝗲𝗻𝘀𝗶𝗯𝗹𝗲 IV* 🔔': 122,
-'*𝗜𝗻𝘃𝗲𝗻𝘀𝗶𝗯𝗹𝗲 III* 🔔': 124,
-'*𝗜𝗻𝘃𝗲𝗻𝘀𝗶𝗯𝗹𝗲 II* 🔔': 126,
-'*𝗜𝗻𝘃𝗲𝗻𝘀𝗶𝗯𝗹𝗲 I* 🔔': 128,
-'*𝗠𝗶𝗻𝗶 V* 🌌': 130,
-'*𝗠𝗶𝗻𝗶 IV* 🌌': 132,
-'*𝗠𝗶𝗻𝗶 III* 🌌': 134,
-'*𝗠𝗶𝗻𝗶 II* 🌌': 136,
-'*𝗠𝗶𝗻𝗶 I* 🌌': 138,
-'*𝗣𝗿𝗲𝗺𝗶𝘂𝗺 V* 🏆': 140,
-'*𝗣𝗿𝗲𝗺𝗶𝘂𝗺 IV* 🏆': 145,
-'*𝗣𝗿𝗲𝗺𝗶𝘂𝗺 III* 🏆': 150,
-'*𝗣𝗿𝗲𝗺𝗶𝘂𝗺 II* 🏆': 155,
-'*𝗣𝗿𝗲𝗺𝗶𝘂𝗺 I* 🏆': 160,
-'*𝗥𝗲𝘆 𝗠𝗶𝗻𝗶 V* 👑': 170,
-'*𝗥𝗲𝘆 𝗠𝗶𝗻𝗶 IV* 👑': 185,
-'*𝗥𝗲𝘆 𝗠𝗶𝗻𝗶 III* 👑': 200,
-'*𝗥𝗲𝘆 𝗠𝗶𝗻𝗶 II* 👑': 250,
-'*𝗥𝗲𝘆 𝗠𝗶𝗻𝗶 I* 👑': 300
+'*Aventurero(a) - Novato(a) V*': 0,
+'*Aventurero(a) - Novato(a) IV*': 2,
+'*Aventurero(a) - Novato(a) III*': 4,
+'*Aventurero(a) - Novato(a) II*': 6,
+'*Aventurero(a) - Novato(a) I*': 8,
+'*Aprendiz del Camino V*': 10,
+'*Aprendiz del Camino IV*': 12,
+'*Aprendiz del Camino III*': 14,
+'*Aprendiz del Camino II*': 16,
+'*Aprendiz del Camino I*': 18,
+'*Explorador(a) del Valle V*': 20,
+'*Explorador(a) del Valle IV*': 22,
+'*Explorador(a) del Valle III*': 24,
+'*Explorador(a) del Valle II*': 26,
+'*Explorador(a) del Valle I*': 28,
+'*Guerrero(a) del Alba V*': 30,
+'*Guerrero(a) del Alba IV*': 32,
+'*Guerrero(a) del Alba III*': 34,
+'*Guerrero(a) del Alba II*': 36,
+'*Guerrero(a) del Alba I*': 38,
+'*Guardián(a) de los Bosques V*': 40,
+'*Guardián(a) de los Bosques IV*': 42,
+'*Guardián(a) de los Bosques III*': 44,
+'*Guardián(a) de los Bosques II*': 46,
+'*Guardián(a) de los Bosques I*': 48,
+'*Mago(a) del Crepúsculo V*': 50,
+'*Mago(a) del Crepúsculo IV*': 52,
+'*Mago(a) del Crepúsculo III*': 54,
+'*Mago(a) del Crepúsculo II*': 56,
+'*Mago(a) del Crepúsculo I*': 58,
+'*Héroe(a) de la Corona V*': 60,
+'*Héroe(a) de la Corona IV*': 62,
+'*Héroe(a) de la Corona III*': 64,
+'*Héroe(a) de la Corona II*': 66,
+'*Héroe(a) de la Corona I*': 68,
+'*Paladín(a) de Diamante V*': 70,
+'*Paladín(a) de Diamante IV*': 72,
+'*Paladín(a) de Diamante III*': 74,
+'*Paladín(a) de Diamante II*': 76,
+'*Paladín(a) de Diamante I*': 78,
+'*Maestro(a) de las Estrellas V*': 80,
+'*Maestro(a) de las Estrellas IV*': 85,
+'*Maestro(a) de las Estrellas III*': 90,
+'*Maestro(a) de las Estrellas II*': 95,
+'*Maestro(a) de las Estrellas I*': 99,
+'*Leyenda del Valle V*': 100,
+'*Leyenda del Valle IV*': 110,
+'*Leyenda del Valle III*': 120,
+'*Leyenda del Valle II*': 130,
+'*Leyenda del Valle I*': 140,
+'*Soberano(a) del Reino V*': 150,
+'*Soberano(a) del Reino IV*': 160,
+'*Soberano(a) del Reino III*': 170,
+'*Soberano(a) del Reino II*': 180,
+'*Soberano(a) del Reino I*': 199,
+'*Titán(a) del Norte V*': 200,
+'*Titán(a) del Norte IV*': 225,
+'*Titán(a) del Norte III*': 250,
+'*Titán(a) del Norte II*': 275,
+'*Titán(a) del Norte I*': 299,
+'*Guardían(a) de la Luz V*': 300,
+'*Guardían(a) de la Luz IV*': 325,
+'*Guardían(a) de la Luz III*': 350,
+'*Guardían(a) de la Luz II*': 375,
+'*Guardían(a) de la Luz I*': 399,
+'*Maestro(a) de la Magia V*': 400,
+'*Maestro(a) de la Magia IV*': 425,
+'*Maestro(a) de la Magia III*': 450,
+'*Maestro(a) de la Magia II*': 475,
+'*Maestro(a) de la Magia I*': 499,
+'*Señor(a) de la Guerra V*': 500,
+'*Señor(a) de la Guerra IV*': 525,
+'*Señor(a) de la Guerra III*': 550,
+'*Señor(a) de la Guerra II*': 575,
+'*Señor(a) de la Guerra I*': 599,
+'*Héroe(a) Inmortal V*': 600,
+'*Héroe(a) Inmortal IV*': 625,
+'*Héroe(a) Inmortal III*': 650,
+'*Héroe(a) Inmortal II*': 675,
+'*Héroe(a) Inmortal I*': 699,
+'*Maestro(a) de la Realidad V*': 700,
+'*Maestro(a) de la Realidad IV*': 725,
+'*Maestro(a) de la Realidad III*': 750,
+'*Maestro(a) de la Realidad II*': 775,
+'*Maestro(a) de la Realidad I*': 799,
+'*Sabio(a) Eterno(a) V*': 800,
+'*Sabio(a) Eterno(a) IV*': 825,
+'*Sabio(a) Eterno(a) III*': 850,
+'*Sabio(a) Eterno(a) II*': 875,
+'*Sabio(a) Eterno(a) I*': 899,
+'*Viajero(a) del Multiverso V*': 900,
+'*Viajero(a) del Multiverso IV*': 925,
+'*Viajero(a) del Multiverso III*': 950,
+'*Viajero(a) del Multiverso II*': 975,
+'*Viajero(a) del Multiverso I*': 999,
+'*Deidad de la Eternidad V*': 1000,
+'*Deidad de la Eternidad IV*': 2000,
+'*Deidad de la Eternidad III*': 3000,
+'*Deidad de la Eternidad II*': 4000,
+'*Deidad de la Eternidad I*': 5000,
+'*Gran Monarca de las Sombras*': 10000,
 }
 
 let handler = m => m
 handler.before = async function (m, { conn }) {
-        let user = db.data.users[m.sender]
-        let level = user.level
-        let role = (Object.entries(roles).sort((a, b) => b[1] - a[1]).find(([, minLevel]) => level >= minLevel) || Object.entries(roles)[0])[0]
-        user.role = role
-        return !0
 
+    let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
+    let user = global.db.data.users[m.sender]
+
+    let level = user.level
+    let before = user.level * 1
+
+    while (canLevelUp(user.level, user.exp, global.multiplier)) 
+        user.level++
+
+    if (before !== user.level) {
+        let especial = 'coin'
+        let especial2 = 'exp'
+        let especialCant = Math.floor(Math.random() * (100 - 10 + 1)) + 10
+        let especialCant2 = Math.floor(Math.random() * (100 - 10 + 1)) + 10
+
+        if (user.level % 5 === 0) {
+            user[especial] += especialCant
+            user[especial2] += especialCant2
+        }
+    }
+
+    let role = (Object.entries(roles).sort((a, b) => b[1] - a[1]).find(([, minLevel]) => level >= minLevel) || Object.entries(roles)[0])[0]
+    user.role = role
+
+    return !0
 }
-export default handler 
+
+export default handler
