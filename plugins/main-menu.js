@@ -31,22 +31,28 @@ let tags = {
 }
 
 const defaultMenu = {
-  before: `Hola! Soy *${botname}* (｡•̀ᴗ-)✧
+  before: `Hola! Soy *${global.botname || 'Goku-Black-Bot-MD'}* (｡•̀ᴗ-)✧
 Aquí tienes la lista de comandos...
 %readmore`.trimStart(),
   header: '╭⬪ %category ⬪╮',
   body: '├ %cmd',
   footer: '╰──────',
-  after: `> ${dev}`
+  after: `> ${global.dev || 'By Goku-Black-Bot'}`
 }
+
+// VARIABLES GLOBALES (modifica estos con tus datos)
+const greeting = '¡Bienvenido!'
+const dev = global.dev || 'By Goku Black'
+const icono = global.icono || 'https://telegra.ph/file/327f6ad853cb4f405aa80.jpg' // icono del menú
+const redes = global.redes || 'https://github.com/Eliasivan/Goku-Black-Bot-MD' // link de tus redes/github
+const fkontak = { key : { remoteJid: 'status@broadcast', fromMe: false, id: 'GokuBlackBot', participant: '0@s.whatsapp.net' }, message: { contactMessage: { displayName: 'GokuBlackBot', vcard: 'BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:GokuBlackBot\nitem1.TEL;waid=1234567890:1234567890\nitem1.X-ABLabel:Mobile\nEND:VCARD' } } }
 
 let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
   try {
-    // test
     let userId = m.sender
 
     let _package = JSON.parse(await promises.readFile(join(__dirname, '../package.json')).catch(_ => ({}))) || {}
-    let { exp, estrellas, level, role } = global.db.data.users[userId]
+    let { exp = 0, estrellas = 0, level = 0, role = '' } = global.db.data.users[userId]
     let { min, xp, max } = xpRange(level, global.multiplier)
     let name = await conn.getName(userId)
 
@@ -89,11 +95,11 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
       }
     }
 
-    let before = conn.menu.before || defaultMenu.before
-    let header = conn.menu.header || defaultMenu.header
-    let body = conn.menu.body || defaultMenu.body
-    let footer = conn.menu.footer || defaultMenu.footer
-    let after = conn.menu.after || (conn.user.jid == conn.user.jid ? '' : `Powered by https://wa.me/${conn.user.jid.split`@`[0]}`) + defaultMenu.after
+    let before = conn.menu?.before || defaultMenu.before
+    let header = conn.menu?.header || defaultMenu.header
+    let body = conn.menu?.body || defaultMenu.body
+    let footer = conn.menu?.footer || defaultMenu.footer
+    let after = conn.menu?.after || (conn.user.jid == conn.user.jid ? '' : `Powered by https://wa.me/${conn.user.jid.split`@`[0]}`) + defaultMenu.after
 
     let _text = [
       before,
@@ -117,7 +123,7 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
       '%': '%',
       p: _p,
       uptime, muptime,
-      me: conn.getName(conn.user.jid),
+      me: await conn.getName(conn.user.jid),
       taguser: '@' + userId.split("@s.whatsapp.net")[0],
       npmname: _package.name,
       npmdesc: _package.description,
@@ -126,7 +132,7 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
       maxexp: xp,
       totalexp: exp,
       xp4levelup: max - exp,
-      github: _package.homepage ? _package.homepage.url || _package.homepage : '[unknown github url]',
+      github: _package.homepage ? (_package.homepage.url || _package.homepage) : '[unknown github url]',
       botofc: (conn.user.jid == global.conn.user.jid ? '🚩 𝙴𝚂𝚃𝙴 𝙴𝚂 𝙴𝙻 𝙱𝙾𝚃 𝙾𝙵𝙲' : `🚩 𝚂𝚄𝙱-𝙱𝙾𝚃 𝙳𝙴: Wa.me/${global.conn.user.jid.split`@`[0]}`),
       greeting, level, estrellas, name, weton, week, date, dateIslamic, time, totalreg, rtotalreg, role,
       readmore: readMore
@@ -135,7 +141,7 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
     let text = _text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), (_, name) => '' + replace[name])
 
     const who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : userId
-    const pp = await conn.profilePictureUrl(who, 'image').catch(_ => 'https://telegra.ph/file/327f6ad853cb4f405aa80.jpg')
+    const pp = await conn.profilePictureUrl(who, 'image').catch(_ => icono)
 
     const db = './media/database/db.json'
     const db_ = JSON.parse(fs.readFileSync(db))
@@ -143,14 +149,14 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
     const random = Math.floor(Math.random() * db_.links[category].length)
     const rlink = db_.links[category][random]
     global.vid = rlink
-    const response = await fetch(vid)
+    const response = await fetch(global.vid)
     const gif = await response.buffer()
 
     await m.react('🫧')
     await conn.sendMessage(
       m.chat,
       {
-        video: { url: vid },
+        video: { url: global.vid },
         caption: text.trim(),
         contextInfo: {
           mentionedJid: [userId],
@@ -177,7 +183,7 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
     )
 
   } catch (e) {
-    conn.reply(m.chat, '🔵 Lo sentimos, el menú tiene un error', m)
+    await conn.reply(m.chat, '🔵 Lo sentimos, el menú tiene un error', m)
     throw e
   }
 }
@@ -192,6 +198,9 @@ const more = String.fromCharCode(8206)
 const readMore = more.repeat(4001)
 
 function clockString(ms) {
-  let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000)
-  let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
-  let s = is
+  if (isNaN(ms)) return '--:--:--'
+  let h = Math.floor(ms / 3600000)
+  let m = Math.floor(ms / 60000) % 60
+  let s = Math.floor(ms / 1000) % 60
+  return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':')
+}
