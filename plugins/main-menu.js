@@ -50,6 +50,7 @@ const defaultMenu = {
 ├ׁ̟̇❍✎ *🄶ᴀʟʟᴇᴛᴀs:* $money
 ├ׁ̟̇❍✎ *🄽ɪᴠᴇʟ:* %level
 ├ׁ̟̇❍✎ *🅁ᴀɴɢᴏ:* %role
+│✧ Comandos » ${totalCommands}
 ╚▭࣪▬ִ▭࣪▬ִ▭࣪▬ִ▭࣪▬ִ▭࣪▬ִ▭࣪▬▭╝
 > Aquí tienes la lista de comandos
 %readmore`.trimStart(),
