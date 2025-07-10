@@ -5,7 +5,7 @@ import { xpRange } from '../lib/levelling.js'
 import fs from 'fs'
 
 let tags = {
-  'main': '𝙄𝙉𝙁𝙊-𝘽𝙊𝙏',
+  'main': '`𝙄𝙉𝙁𝙊-𝘽𝙊𝙏`',
   'buscador': '𝘽𝙐𝙎𝘾𝘼𝘿𝙊𝙍𝙀𝙎',
   'fun': '𝙅𝙐𝙀𝙂𝙊𝙎',
   'jadibot': '𝙎𝙀𝙍𝘽𝙊𝙏',
