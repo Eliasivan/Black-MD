@@ -31,7 +31,7 @@ let tags = {
 }
 
 const defaultMenu = {
-  before: `Hola! @${userId.split('@')[0]} Soy *${global.botname || 'Goku-Black-Bot-MD'}*
+  before: `Hola! %name Soy *${global.botname || 'Goku-Black-Bot-MD'}*
 > Aquí tienes la lista de comandos
 %readmore`.trimStart(),
   header: '╭✰ %category ✰╮',
