@@ -31,8 +31,8 @@ let tags = {
 }
 
 const defaultMenu = {
-  before: `Hola! Soy *${global.botname || 'Goku-Black-Bot-MD'}* (｡•̀ᴗ-)✧
-Aquí tienes la lista de comandos...
+  before: `Hola! Soy *${global.botname || 'Goku-Black-Bot-MD'}*
+> Aquí tienes la lista de comandos
 %readmore`.trimStart(),
   header: '╭⬪ %category ⬪╮',
   body: '├ %cmd',
@@ -40,11 +40,11 @@ Aquí tienes la lista de comandos...
   after: `> ${global.dev || 'By Goku-Black-Bot'}`
 }
 
-// VARIABLES GLOBALES (modifica estos con tus datos)
+// power by rayo
 const greeting = '¡Bienvenido!'
 const dev = global.dev || 'By Goku Black'
-const icono = global.icono || 'https://telegra.ph/file/327f6ad853cb4f405aa80.jpg' // icono del menú
-const redes = global.redes || 'https://github.com/Eliasivan/Goku-Black-Bot-MD' // link de tus redes/github
+const icono = global.icono || 'https://telegra.ph/file/327f6ad853cb4f405aa80.jpg' // iconos
+const redes = global.redes || 'https://github.com/Eliasivan/Goku-Black-Bot-MD' // repo oficial del bot
 const fkontak = { key : { remoteJid: 'status@broadcast', fromMe: false, id: 'GokuBlackBot', participant: '0@s.whatsapp.net' }, message: { contactMessage: { displayName: 'GokuBlackBot', vcard: 'BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:GokuBlackBot\nitem1.TEL;waid=1234567890:1234567890\nitem1.X-ABLabel:Mobile\nEND:VCARD' } } }
 
 let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
