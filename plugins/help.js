@@ -4,7 +4,7 @@ let handler = async (m, { conn, usedPrefix }) => {
   let coin = global.db.data.users[userId].coin || 0
   let moneda = 'Yenes'
 
-  let menu = `¡Hola, @${userId.split('@')[0]}! tienes ${moneda} *${coin}*`.trim()
+  let menu = `¡Hola, @${userId.split('@')[0]}! tienes ${coin} *${moneda}*`.trim()
 
   await conn.sendMessage(m.chat, {
     text: menu,
