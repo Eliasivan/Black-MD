@@ -33,7 +33,7 @@ const defaultMenu = {
   before: `Hola! Soy *${botname}* (｡•̀ᴗ-)✧
 Aquí tienes la lista de comandos
 ╭┈ ↷
-│ᰔᩚ Cliente » @${userId.split('@')[0]}
+│ᰔᩚ Cliente » %name
 │❀ Modo » Publico
 │✦ Bot » ${(conn.user.jid == global.conn.user.jid ? 'Principal 🅥' : 'Prem Bot 🅑')}
 │ⴵ Activada » ${uptime}
