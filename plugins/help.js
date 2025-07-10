@@ -2,18 +2,10 @@ let handler = async (m, { conn, usedPrefix }) => {
   let userId = m.sender
   let bot = global.conn.user
   let coin = global.db.data.users[userId].coin || 0
-  let moneda = '💸'
+  let moneda = 'Yenes'
 
-  let menu = `
-╭━━〔 *Menú Principal* 〕━━⬣
-┃ ¡Hola, @${userId.split('@')[0]}!
-┃ Monedas: ${moneda} *+${coin}*
-┃
-┃ *Comandos principales:*
-┃ ➤ ${usedPrefix}menu
-┃ ➤ ${usedPrefix}infobot
-╰━━━━━━━〔 Goku Black 〕━━━━⬣
-`.trim()
+  let menu = `> info Yenes
+¡Hola, @${userId.split('@')[0]}! tienes ${moneda} *+${coin}*`.trim()
 
   await conn.sendMessage(m.chat, {
     text: menu,
@@ -21,8 +13,8 @@ let handler = async (m, { conn, usedPrefix }) => {
   }, { quoted: m })
 }
 
-handler.help = ['menu']
-handler.tags = ['main']
-handler.command = ['help']
+handler.help = ['info']
+handler.tags = ['info']
+handler.command = ['infoyenes']
 
 export default handler
