@@ -12,7 +12,7 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
   let user = global.db.data.users[m.sender] || {}
   let name2 = await conn.getName(m.sender)
   let dev = 'Desarrollador: Rayo-ofc'
-  let channel = 'https://github.com/Eliasivan/Goku-Black-Bot-MD' // Puedes poner tu canal o link
+  let channel = 'https://github.com/Eliasivan/Goku-Black-Bot-MD' // whaos
   let textbot = '¡Bienvenido, estás verificado y registrado!'
 
   if (user.registered === true) return m.reply(`『✦』Ya estás registrado.\n\n¿Quieres volver a registrarte?\nUsa este comando para eliminar tu registro:\n*${usedPrefix}unreg*`)
