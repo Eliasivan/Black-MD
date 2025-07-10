@@ -30,26 +30,17 @@ let tags = {
 }
 
 const defaultMenu = {
-  before: `╭══════════════ ⪩
-“ Hola *Humano* mi nombre es *Goku-Black-Bot-MD*, %greeting ”
-
-╔══✦「 Info del Bot 」✦══╗
-║ ✧ 👨🏻‍💻 Creador: Ivan
-║ ✧ 🌀 Tipo Bot: Goku-Black-Bot-MD
-║ ✧ 🚩 Modo: Público
-║ ✧ 📚 Baileys: Multi Device
-║ ✧ ⏱️ Tiempo Activo: %uptime
-║ ✧ 👤 Usuarios registrados: %totalreg
-╚═════════════════════✦
-%readmore
-╔══✦「 Info del Usuario 」✦══╗
-║ ✧ 💌 Cliente: %name
-║ ✧ ⚡ Experiencia: %exp
-║ ✧ 🍪 cookies: %estrellas
-║ ✧ 🫧 Nivel: %level
-║ ✧ 🛡️ Rango: %role
-╚═════════════════════✦
-
+  before: `Hola! Soy *${botname}* (｡•̀ᴗ-)✧
+Aquí tienes la lista de comandos
+╭┈ ↷
+│ᰔᩚ Cliente » @${userId.split('@')[0]}
+│❀ Modo » Publico
+│✦ Bot » ${(conn.user.jid == global.conn.user.jid ? 'Principal 🅥' : 'Prem Bot 🅑')}
+│ⴵ Activada » ${uptime}
+│✰ Usuarios » ${totalreg}
+│✧ Comandos » ${totalCommands}
+│🜸 Baileys » Multi Device
+╰─────────────────
 %readmore
 *☆─ׅ─ׄ★─ׅ─ׄ✮─ׅ─ׄ★─ׅ─ׄ☆─ׅ─ׄ☆─ׅ─ׄ★─ׅ─ׄ✮─ׅ─ׄ★─ׅ─ׄ☆*
 
