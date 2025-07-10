@@ -25,7 +25,7 @@ let handler = async (m, { conn, text }) => {
 }
 
 handler.help = ['pinterest']
-handler.command = ['pinterest', 'pin']
+handler.command = ['pin']
 handler.tags = ['dl']
 
 export default handler
