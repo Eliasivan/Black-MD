@@ -46,7 +46,7 @@ const defaultMenu = {
 ┃֪࣪  ╰─ׅ─ׅ┈ ─๋︩︪─☪︎︎︎̸⃘̸࣭ٜ࣪࣪࣪۬◌⃘۪֟፝֯۫۫︎⃪𐇽۫۬🍨⃘⃪۪֟፝֯۫۫۫۬◌⃘࣭ٜ࣪࣪࣪۬☪︎︎︎︎̸─ׅ─ׅ┈ ─๋︩︪─╯
 ├ׁ̟̇❍✎ *🄲ʟɪᴇɴᴛᴇ:* %name
 ├ׁ̟̇❍✎ *🄴xᴘ:* %exp
-├ׁ̟̇❍✎ 💸 %moneda : *%coin*
+├ׁ̟̇❍✎ %moneda : *%coin*
 ├ׁ̟̇❍✎ *🄽ɪᴠᴇʟ:* %level
 ├ׁ̟̇❍✎ *🅁ᴀɴɢᴏ:* %role
 ╚▭࣪▬ִ▭࣪▬ִ▭࣪▬ִ▭࣪▬ִ▭࣪▬ִ▭࣪▬▭╝
@@ -73,7 +73,7 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
     let userData = global.db.data.users[userId] || {}
     let { exp = 0, estrellas = 0, level = 0, role = '' } = userData
     let coin = (userData.coin !== undefined) ? userData.coin : (userData.money !== undefined ? userData.money : 0)
-    let moneda = userData.moneda || '💸'
+    let moneda = userData.moneda || 'Yenes'
     let { min, xp, max } = xpRange(level, global.multiplier)
     let name = await conn.getName(userId)
 
