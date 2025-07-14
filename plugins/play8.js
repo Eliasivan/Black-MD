@@ -4,7 +4,7 @@ import { ogmp3 } from '../lib/youtubedl.js';
 
 const SIZE_LIMIT_MB = 100;
 const newsletterJid = '120363335626706839@newsletter';
-const newsletterName = 'GokuBlack-Bot';
+const newsletterName = 'Goku-Black-Bot';
 
 const handler = async (m, { conn, text, command }) => {
   const name = conn.getName(m.sender);
