@@ -451,8 +451,8 @@ let xp = 'exp' in plugin ? parseInt(plugin.exp) : 10
 if (xp > 2000)
 m.reply('Exp limit') 
 else               
-if (!isPrems && plugin.money && global.db.data.users[m.sender].money < plugin.money * 1) {
-conn.reply(m.chat, `❮💰❯ 𝗡𝗼 𝘁𝗶𝗲𝗻𝗲𝘀 𝘀𝘂𝗳𝗶𝗰𝗶𝗲𝗻𝘁𝗲𝘀 𝗖𝗼𝗶𝗻𝘀 𝗽𝗮𝗿𝗮 𝘂𝘀𝗮𝗿 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼.`, m, rcanal)       
+if (!isPrems && plugin.yenes && global.db.data.users[m.sender].yenes < plugin.yenes * 1) {
+conn.reply(m.chat, `𝗡𝗼 𝘁𝗶𝗲𝗻𝗲𝘀 𝘀𝘂𝗳𝗶𝗰𝗶𝗲𝗻𝘁𝗲𝘀 ${moneda} 𝗽𝗮𝗿𝗮 𝘂𝘀𝗮𝗿 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼.`, m)       
 continue     
 }
 
@@ -519,7 +519,7 @@ await plugin.after.call(this, m, extra)
 console.error(e)
 }}
 if (m.moras)
-conn.reply(m.chat, `Utilizaste *${+m.moras}* 🪙`, m, fake)
+conn.reply(m.chat, `Utilizaste *${+m.moras}*`, m, fake)
 }
 if (m.yenes)
 conn.reply(m.chat, `Utilizaste *${+m.yenes}*`, m)
