@@ -47,7 +47,7 @@ if (!isNumber(user.exp)) user.exp = 0
 if (!('premium' in user)) user.premium = false
 if (!('muto' in user)) user.muto = false
 if (!isNumber(user.joincount)) user.joincount = 1
-if (!isNumber(user.money)) user.money = 150
+if (!isNumber(user.yenes)) user.yenes = 150
 if (!isNumber(user.moras)) user.moras = 10
 if (!('registered' in user)) user.registered = false
 
@@ -101,7 +101,7 @@ lastpago: 0,
 lastrob: 0,
 level: 0,
 moras: 10,
-money: 100,
+yenes: 100,
 muto: false,
 premium: false,
 premiumTime: 0,
@@ -494,7 +494,7 @@ try {
 await plugin.call(this, m, extra)
 if (!isPrems)
 m.moras = m.moras || plugin.moras || false
-m.money = m.money || plugin.money || false
+m.yenes = m.yenes || plugin.yenes || false
 } catch (e) {
 // Error occured
 m.error = e
@@ -521,8 +521,8 @@ console.error(e)
 if (m.moras)
 conn.reply(m.chat, `Utilizaste *${+m.moras}* 🪙`, m, fake)
 }
-if (m.money)
-conn.reply(m.chat, `Utilizaste *${+m.money}* 💰`, m, fake)
+if (m.yenes)
+conn.reply(m.chat, `Utilizaste *${+m.yenes}*`, m)
 break
 }}} catch (e) {
 console.error(e)
@@ -542,7 +542,7 @@ for(let i = 0; i < 5; i++){try{await conn.sendMessage(m.chat, { delete: { remote
 if (m.sender && (user = global.db.data.users[m.sender])) {
 user.exp += m.exp
 user.moras -= m.moras * 1
-user.money -= m.money * 1
+user.yenes -= m.yenes * 1
 }
 
 let stat
@@ -582,7 +582,7 @@ if (settingsREAD.autoread2) await this.readMessages([m.key])
 //await conn.sendPresenceUpdate('composing', m.chat);
 //this.sendPresenceUpdate('recording', m.chat);
 
-if (db.data.chats[m.chat].reaction && m.text.match(/(ción|dad|aje|oso|izar|mente|pero|tion|age|ous|ate|and|but|ify|ai|hutao|huta|a|s)/gi)) {
+if (db.data.chats[m.chat].reaction && m.text.match(/(ción|dad|aje|oso|izar|mente|pero|tion|age|ous|ate|and|but|ify|ai|Gokublack|black|a|s)/gi)) {
 let emot = pickRandom(["🚩", "🍟", "🔥","✨️", "🌸", "💥", "⭐️", "🌟", "🍂", "🫂", "🍁", "💖", "💞", "💕", "💋"])
 if (!m.fromMe) return this.sendMessage(m.chat, { react: { text: emot, key: m.key }})
 }
