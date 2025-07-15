@@ -1,82 +1,122 @@
+import { readdirSync, statSync, unlinkSync, existsSync, readFileSync, watch, rmSync, promises as fsPromises } from "fs";
+const fs = { ...fsPromises, existsSync };
+import path, { join } from 'path';
+import ws from 'ws';
 
-import { readdirSync, statSync, unlinkSync, existsSync, readFileSync, watch, rmSync, promises as fsPromises } from 'fs'
-const fs = { ...fsPromises, existsSync }
-import path, { join } from 'path' 
-import ws from 'ws'
-// import fs from 'fs'
 
-let handler = async (m, { conn: _envio, command, usedPrefix, args, text, isOwner}) => {
-const isCommand1 = /^(deletesesion|deletebot|deletesession|deletesesaion)$/i.test(command)  
-const isCommand2 = /^(stop|pausargokublack|pausarbot)$/i.test(command)   
-const isCommand3 = /^(subs|listjadibots|subbots)$/i.test(command)  
+let handler = async (m, { conn: _envio, command, usedPrefix, args, text, isOwner }) => {
+  const isDeleteSession = /^(deletesesion|deletebot|deletesession|deletesesaion)$/i.test(command);
+  const isPauseBot = /^(stop|pausarai|pausarbot)$/i.test(command);
+  const isShowBots = /^(bots|sockets|socket)$/i.test(command);
 
-async function reportError(e) {
-await m.reply(`❌️ Ocurrió un error.`)
-console.log(e)
-}
+  const reportError = async (e) => {
+    await m.reply(`⚠️ Ocurrió un error inesperado, lo siento mucho...`);
+    console.error(e);
+  };
 
-switch (true) {       
-case isCommand1:
-let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
-let uniqid = `${who.split`@`[0]}`
-const path = `./${jadi}/${uniqid}`
+  switch (true) {
+    case isDeleteSession: {
+      const who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender;
+      const uniqid = `${who.split('@')[0]}`;
+      const dirPath = `./${jadi}/${uniqid}`;
 
-if (!await fs.existsSync(path)) {
-await conn.sendMessage(m.chat, { text: ` Usted no tiene una sesión, puede crear una usando:\n${usedPrefix + command}\n\nSi tiene una *(ID)* puede usar para saltarse el paso anterior usando:\n*${usedPrefix + command}* \`\`\`(ID)\`\`\`` }, { quoted: m })
-return
-}
-if (global.conn.user.jid !== conn.user.jid) return conn.sendMessage(m.chat, {text: ` Use este comando al *Bot* principal.\n\n*https://api.whatsapp.com/send/?phone=${global.conn.user.jid.split`@`[0]}&text=${usedPrefix + command}&type=phone_number&app_absent=0*`}, { quoted: m }) 
-else {
-await conn.sendMessage(m.chat, { text: ` Tu sesión como *Sub-Bot* se ha eliminado` }, { quoted: m })}
-try {
-fs.rmdir(`./${jadi}/` + uniqid, { recursive: true, force: true })
-await conn.sendMessage(m.chat, { text : `Ha cerrado sesión y borrado todo rastro.` } , { quoted: m })
-} catch (e) {
-reportError(e)
-}  
-break
+      if (!await fs.existsSync(dirPath)) {
+        await conn.sendMessage(m.chat, {
+          text: `🚫 *Sesión no encontrada*\n\n✨ No tienes una sesión activa.\n\n🔰 Puedes crear una con:\n*${usedPrefix + command}*\n\n📦 ¿Tienes un ID?\nUsa este comando seguido del ID:\n*${usedPrefix + command}* \`\`\`(ID)\`\`\``
+        }, { quoted: m });
+        return;
+      }
 
-case isCommand2:
-if (global.conn.user.jid == conn.user.jid)
-conn.reply(m.chat, ` El Bot principal no se puede apagar.`, m, fake)
-else {
-await conn.reply(m.chat, ` Adiós GokuBlack`, m, fake)
-conn.ws.close()}
-break
+      if (global.conn.user.jid !== conn.user.jid) {
+        await conn.sendMessage(m.chat, {
+          text: `💬 Este comando solo puede usarse desde el *Bot Principal*.\n\n🔗 Accede desde aquí:\nhttps://api.whatsapp.com/send/?phone=${global.conn.user.jid.split`@`[0]}&text=${usedPrefix + command}&type=phone_number&app_absent=0`
+        }, { quoted: m });
+        return;
+      }
 
-case isCommand3:
-//if (global.db.data.settings[conn.user.jid].jadibotmd) return m.reply(`🚩 Este comando está desactivado por mi creador.`)
-const users = [...new Set([...global.conns.filter((conn) => conn.user && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED).map((conn) => conn)])];
-function convertirMsADiasHorasMinutosSegundos(ms) {
-var segundos = Math.floor(ms / 1000);
-var minutos = Math.floor(segundos / 60);
-var horas = Math.floor(minutos / 60);
-var días = Math.floor(horas / 24);
-segundos %= 60;
-minutos %= 60;
-horas %= 24;
-var resultado = "";
-if (días !== 0) {
-resultado += días + " días, ";
-}
-if (horas !== 0) {
-resultado += horas + " horas, ";
-}
-if (minutos !== 0) {
-resultado += minutos + " minutos, ";
-}
-if (segundos !== 0) {
-resultado += segundos + " segundos";
-}
-return resultado;
-}
-const message = users.map((v, index) => `• 「 ${index + 1} 」\n📎 Wa.me/${v.user.jid.replace(/[^0-9]/g, '')}?text=${usedPrefix}estado\n👤 Usuario: ${v.user.name || 'Sub-Bot'}\n🕑 Online: ${ v.uptime ? convertirMsADiasHorasMinutosSegundos(Date.now() - v.uptime) : 'Desconocido'}`).join('\n\n__________________________\n\n');
-const replyMessage = message.length === 0 ? `No hay Sub-Bots disponible por el momento, verifique mas tarde.` : message;
-const totalUsers = users.length;
-const responseMessage = `*ᎪϘႮᏆ ͲᏆᎬΝᎬՏ ᏞᎪ ᏞᏆՏͲᎪ ᎠᎬ ՏႮᏴ ᏴϴͲՏ*\n\n habla con el propietario del sub bot y pidele permiso de entrar a tu grupo\n\n\`\`\`Cada sub bot es diferente y cada usuario/propietario usa el sub como quiera, El equipo de Goku-Black-Bot-MD no se hace responsable del uso que le den al mismo sub-bot \`\`\`\n\nSUBBOT CONECTADO: ${totalUsers || '0'}\n\n${replyMessage.trim()}`.trim();
-await _envio.sendMessage(m.chat, {text: responseMessage, mentions: _envio.parseMention(responseMessage)}, {quoted: m})
-break   
-}}
+      await conn.sendMessage(m.chat, {
+        text: `🗑️ Tu sesión como *Sub-Bot* ha sido eliminada con éxito.`
+      }, { quoted: m });
 
-handler.command = ['deletesesion', 'deletebot', 'deletesession', 'deletesession', 'stop', 'pausarblack', 'pausarbot', 'subs', 'lisgokublacksito', 'bots']
-export default handler
+      try {
+        fs.rmdir(`./${jadi}/${uniqid}`, { recursive: true, force: true });
+        await conn.sendMessage(m.chat, {
+          text: `🌈 ¡Todo limpio! Tu sesión y sus rastros han sido borrados por completo.`
+        }, { quoted: m });
+      } catch (e) {
+        reportError(e);
+      }
+      break;
+    }
+
+    case isPauseBot: {
+      if (global.conn.user.jid == conn.user.jid) {
+        conn.reply(m.chat, `🚫 No puedes pausar el bot principal.\n🛟 Si deseas ser un *Sub-Bot*, contacta con el número principal.`, m);
+      } else {
+        await conn.reply(m.chat, `🔕 *${botname} ha sido pausada.*`, m);
+        conn.ws.close();
+      }
+      break;
+    }
+
+    case isShowBots: {
+      try {
+        const allConnections = [...new Set([...global.conns.filter(conn => conn.user && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED)])];
+        const cantidadSubBots = allConnections.length;
+
+        const metadata = await _envio.groupMetadata(m.chat);
+        const participantes = metadata.participants || [];
+        const botsEnEsteGrupo = participantes.filter(p => global.db.data.users[p.id]?.isBot).length;
+
+        const convertirMsADiasHorasMinutosSegundos = (ms) => {
+          let segundos = Math.floor(ms / 1000);
+          let minutos = Math.floor(segundos / 60);
+          let horas = Math.floor(minutos / 60);
+          segundos %= 60;
+          minutos %= 60;
+          horas %= 24;
+          return `${horas} horas, ${minutos} minutos, ${segundos} segundos`;
+        };
+
+        const detallesBots = allConnections.map((connBot) => {
+          const numero = connBot.user?.jid?.split('@')[0] || 'Desconocido';
+          const nombre = connBot.user?.name || 'Sub-Bot';
+          const uptime = connBot.uptime ? convertirMsADiasHorasMinutosSegundos(Date.now() - connBot.uptime) : 'Desconocido';
+          return `
+✧ Bot » ${nombre}
+> 🜸 Uptime » ${uptime}`.trim();
+        }).join('\n\n');
+
+        const textoFinal = `
+*ꕥ Números de Sockets Activos*
+
+❀ Principal » *1*
+✿ Subs » *${cantidadSubBots}*
+
+❏ En este grupo » *${botsEnEsteGrupo}* bots
+
+${detallesBots}
+
+> ${dev}`.trim();
+
+        await _envio.sendMessage(m.chat, {
+          text: textoFinal,
+          mentions: [...allConnections.map(v => v.user?.jid), m.sender].filter(Boolean)
+        }, { quoted: m });
+      } catch (e) {
+        reportError(e);
+      }
+      break;
+    }
+  }
+};
+
+handler.tags = ['serbot'];
+handler.help = ['sockets', 'deletesesion', 'pausarai'];
+handler.command = [
+  'deletesesion', 'deletebot', 'deletesession', 'deletesesaion',
+  'stop', 'pausarai', 'pausarbot',
+  'bots', 'sockets', 'socket'
+];
+
+export default handler;
