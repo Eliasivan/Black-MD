@@ -1,36 +1,36 @@
-/* 
-- Kickall By Angel-OFC  
-- elimina todos de un grupo con un comando 
-- https://whatsapp.com/channel/0029VaJxgcB0bIdvuOwKTM2Y
-- Mejorado Por WillZek🗿🍷
-*/
 import axios from 'axios';
 
-let handler = async (m, { conn, text, participants }) => {
-
+let handler = async (m, { conn, participants }) => {
     const groupAdmins = participants.filter(p => p.admin);
     const botId = conn.user.jid;
-    const groupOwner = groupAdmins.find(p => p.isAdmin)?.id;
-    const groupNoAdmins = participants.filter(p => p.id !== botId && p.id !== groupOwner && !p.admin).map(p => p.id);
 
-    if (groupNoAdmins.length === 0) throw '*⚠️ No hay usuarios para eliminar.*'; 
+    // test del fix
+    const groupOwner = participants.find(p => p.isSuperAdmin || p.isOwner)?.id;
 
-    const stickerUrl = 'https://files.catbox.moe/agx2sc.webp'; 
-m.react('💫')
-    await conn.sendFile(m.chat, stickerUrl, 'sticker.webp', '', m, null);
+    // SIGUEME EN MI CHANNELS O ERES GAY
+    const groupNoAdmins = participants.filter(p => 
+        p.id !== botId && 
+        p.id !== groupOwner && 
+        !p.admin
+    ).map(p => p.id);
+
+    if (groupNoAdmins.length === 0) {
+        throw '*⚠️ No hay usuarios para eliminar.*'; 
+    }
+
+    await conn.reply(m.chat, '*Loading......*', m);
 
     for (let userId of groupNoAdmins) {
         await conn.groupParticipantsUpdate(m.chat, [userId], 'remove');
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        await new Promise(resolve => setTimeout(resolve, 3000)); // Delay entre eliminaciones
     }
 
-    conn.reply(m.chat, '*⚔️ Eliminación Exitosa.*', m, rcanal);
-m.react('✅')
-}
+    await conn.reply(m.chat, '*⚔️ Eliminación exitosa.*', m);
+};
 
-handler.help = ['kickall']
+handler.help = ['kickall'];
 handler.tags = ['grupo'];
-handler.command = /^(kickall)$/i;
+handler.command = /^kickall$/i;
 handler.group = true;
 handler.admin = true;
 handler.botAdmin = true;
