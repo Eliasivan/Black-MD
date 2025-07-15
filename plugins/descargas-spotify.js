@@ -94,6 +94,6 @@ handler.help = ["play", "play2", "playvid"];
 handler.tags = ["descargas"];
 handler.command = ["play"];
 handler.register = true;
-handler.money = 20;
+handler.yenes = 10;
 
 export default handler;
