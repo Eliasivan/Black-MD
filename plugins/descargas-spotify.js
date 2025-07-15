@@ -1,6 +1,6 @@
 import yts from "yt-search";
 import fetch from "node-fetch";
-import { ogmp3 } from "../lib/youtubedl.js";
+import { ogmp3 } from "../lib/uploadAudio.js";
 
 const SIZE_LIMIT_MB = 100;
 
