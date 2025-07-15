@@ -33,9 +33,7 @@ const ogmp3 = {
 
   utils: {
     hash: () => {
-      const array = new Uint8Array(16);
-      crypto.getRandomValues(array);
-      return Array.from(array, byte => byte.toString(16).padStart(2, "0")).join("");
+      return crypto.randomBytes(16).toString("hex"); // ✅ Compatible con Node.js
     },
 
     encoded: (str) => {
@@ -83,22 +81,18 @@ const ogmp3 = {
 
   request: async (endpoint, data = {}, method = 'post') => {
     try {
-      const ae = Object.values(ogmp3.api.endpoints);
-      const be = ae[Math.floor(Math.random() * ae.length)];
-
-      const fe = endpoint.startsWith('http') ? endpoint : `${be}${endpoint}`;
+      const endpoints = Object.values(ogmp3.api.endpoints);
+      const selected = endpoints[Math.floor(Math.random() * endpoints.length)];
+      const url = endpoint.startsWith('http') ? endpoint : `${selected}${endpoint}`;
 
       const { data: response } = await axios({
         method,
-        url: fe,
+        url,
         data: method === 'post' ? data : undefined,
         headers: ogmp3.headers
       });
-      return {
-        status: true,
-        code: 200,
-        data: response
-      };
+
+      return { status: true, code: 200, data: response };
     } catch (error) {
       return {
         status: false,
@@ -135,7 +129,6 @@ const ogmp3 = {
 
       while (attempts < maxAttempts) {
         attempts++;
-
         const res = await this.checkStatus(data.i);
         if (!res.status) {
           await new Promise(resolve => setTimeout(resolve, 2000));
@@ -143,10 +136,7 @@ const ogmp3 = {
         }
 
         const stat = res.data;
-        if (stat.s === "C") {
-          return stat;
-        }
-
+        if (stat.s === "C") return stat;
         if (stat.s === "P") {
           await new Promise(resolve => setTimeout(resolve, 2000));
           continue;
@@ -162,19 +152,13 @@ const ogmp3 = {
   },
 
   download: async (link, format, type = 'video') => {
-    if (!link) {
-      return {
-        status: false,
-        code: 400,
-        error: "¿Que es lo que descarga? ingresa en link idiota"
-      };
-    }
+    if (!link) return { status: false, code: 400, error: "Falta el enlace." };
 
     if (!ogmp3.isUrl(link)) {
       return {
         status: false,
         code: 400,
-        error: "Ese link es invalido pon en link de un video de youtube valido idiotas 🗿"
+        error: "Enlace inválido. Asegúrate de que sea un video de YouTube."
       };
     }
 
@@ -182,7 +166,7 @@ const ogmp3 = {
       return {
         status: false,
         code: 400,
-        error: "Elejir video o audio?"
+        error: "Debes especificar 'video' o 'audio'."
       };
     }
 
@@ -190,12 +174,12 @@ const ogmp3 = {
       format = type === 'audio' ? ogmp3.default_fmt.audio : ogmp3.default_fmt.video;
     }
 
-    const valid_fmt = type === 'audio' ? ogmp3.formats.audio : ogmp3.formats.video;
-    if (!valid_fmt.includes(format)) {
+    const validFormats = type === 'audio' ? ogmp3.formats.audio : ogmp3.formats.video;
+    if (!validFormats.includes(format)) {
       return {
         status: false,
         code: 400,
-        error: `Formato ${format} no es valido para ${type} pero puedes elegir unos de estos: ${valid_fmt.join(', ')}`
+        error: `Formato ${format} inválido. Usa uno de: ${validFormats.join(', ')}`
       };
     }
 
@@ -204,7 +188,7 @@ const ogmp3 = {
       return {
         status: false,
         code: 400,
-        error: "Donde pito esta la ID del video? no puedo extraerlo hdp"
+        error: "No se pudo extraer la ID del video."
       };
     }
 
@@ -214,6 +198,7 @@ const ogmp3 = {
 
       while (retries < maxRetries) {
         retries++;
+
         const c = ogmp3.utils.hash();
         const d = ogmp3.utils.hash();
         const req = {
@@ -236,20 +221,20 @@ const ogmp3 = {
         }
 
         const data = resx.data;
+
         if (data.le) {
           return {
             status: false,
             code: 400,
-            error: "La duración del video es demasiado larga, amigo. El máximo es de 3 horas, no puedes superar eso, ¿entendido? 👍🏻"
+            error: "El video es demasiado largo (máx. 3 horas)."
           };
         }
 
         if (data.i === "blacklisted") {
-          const limit = ogmp3.restrictedTimezones.has(new Date().getTimezoneOffset().toString()) ? 5 : 100;
           return {
             status: false,
             code: 429,
-            error: `Limite de descargas diarias (${limit}) alcanzados, intente de nuevo mas tardes.`
+            error: "Límite de descargas alcanzado. Intenta más tarde."
           };
         }
 
@@ -257,7 +242,7 @@ const ogmp3 = {
           return {
             status: false,
             code: 400,
-            error: "El video no existe, idiota. No sé si fue eliminado o si YouTube lo restringió... no tengo idea 🤷🏻"
+            error: "El video no existe o fue restringido."
           };
         }
 
@@ -266,12 +251,12 @@ const ogmp3 = {
             status: true,
             code: 200,
             result: {
-              title: data.t || "Kagak tau",
-              type: type,
-              format: format,
+              title: data.t || "Desconocido",
+              type,
+              format,
               thumbnail: `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`,
               download: `${ogmp3.api.base}/${ogmp3.utils.hash()}/download/${ogmp3.utils.encoded(data.i)}/${ogmp3.utils.hash()}/`,
-              id: id,
+              id,
               quality: format
             }
           };
@@ -283,12 +268,12 @@ const ogmp3 = {
             status: true,
             code: 200,
             result: {
-              title: prod.t || "Kagak tau",
-              type: type,
-              format: format,
+              title: prod.t || "Desconocido",
+              type,
+              format,
               thumbnail: `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`,
               download: `${ogmp3.api.base}/${ogmp3.utils.hash()}/download/${ogmp3.utils.encoded(prod.i)}/${ogmp3.utils.hash()}/`,
-              id: id,
+              id,
               quality: format
             }
           };
@@ -298,9 +283,8 @@ const ogmp3 = {
       return {
         status: false,
         code: 500,
-        error: "Estoy exhausto, idiota... Ya intenté hacer la solicitud varias veces y sigue sin funcionar, así que dejaré la solicitud para más tarde, ¡hasta luego! 😂"
+        error: "Se agotaron los intentos de descarga."
       };
-
     } catch (error) {
       return {
         status: false,
