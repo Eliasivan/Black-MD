@@ -23,7 +23,7 @@ noadmingp = `❀ @${m.messageStubParameters[0].split`@`[0]} Deja de ser admin de
 
 if (chat.detect && m.messageStubType == 2) {
 const uniqid = (m.isGroup ? m.chat : m.sender)
-const sessionPath = './Sessions/'
+const sessionPath = './Blacksesion/'
 for (const file of await fs.readdir(sessionPath)) {
 if (file.includes(uniqid)) {
 await fs.unlink(path.join(sessionPath, file))
