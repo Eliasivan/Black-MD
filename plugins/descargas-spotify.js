@@ -8,29 +8,28 @@ const handler = async (m, { conn, text, command }) => {
   if (!text) {
     return conn.reply(
       m.chat,
-      `🎵 Escribe el nombre de un video o pega un enlace de YouTube.\n\n📌 Ejemplos:\n.play Imagine Dragons\n.play https://youtu.be/abc123`,
+      `> Escribe el nombre de una canción`,
       m
     );
   }
 
-  await m.react("🔍");
+  await m.react("☄");
 
   try {
     const search = await yts(text);
     if (!search?.all || search.all.length === 0) {
-      return conn.reply(m.chat, `⚠️ No se encontraron resultados para: "${text}"`, m);
+      return conn.reply(m.chat, `> No se encontraron resultados para: "${text}"`, m);
     }
 
     const video = search.all[0];
 
     const caption = `
-🎬 *Video encontrado:*
-• 🎧 *Título:* ${video.title}
-• ⏱️ *Duración:* ${video.duration.timestamp}
-• 👁️ *Vistas:* ${video.views.toLocaleString()}
-• 👤 *Autor:* ${video.author.name}
-• 🔗 *Enlace:* ${video.url}
-`.trim();
+• 🎧 `Título:` ${video.title}
+• ⏱️ `Duración:` ${video.duration.timestamp}
+• 👁️ `Vistas:` ${video.views.toLocaleString()}
+• 👤 `Autor:` ${video.author.name}
+• 🔗 `Enlace:` ${video.url}
+> SIGUENOS EN NUESTRAS REDES O CANAL OFICIAL DEL BOT`.trim();
 
     await conn.sendMessage(
       m.chat,
@@ -97,7 +96,7 @@ const handler = async (m, { conn, text, command }) => {
 
 handler.help = ["play", "play2", "playvid"];
 handler.tags = ["descargas"];
-handler.command = ["play", "play2", "playvid"];
+handler.command = ["play"];
 handler.register = true;
 handler.money = 20;
 
