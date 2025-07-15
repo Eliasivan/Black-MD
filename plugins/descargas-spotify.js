@@ -24,7 +24,7 @@ const handler = async (m, { conn, text, command }) => {
     const video = search.all[0];
 
     const caption = `
-乂  Y O U T U B E  -  M P 3\n\n` + `    ✔   *Título* : ${video.title}\n` + `    ✔   *Duración* : ${video.duration.timestamp}\n` + `    ✔   *Calidad* : ${selectedQuality}kbps\n\n` + `> *- ✎ Audio listo, enviando...*
+乂  Y O U T U B E  -  M P 3\n\n` + `    ✔   *Título* : ${video.title}\n` + `    ✔   *Duración* : ${video.duration.timestamp}\n` + `    ✔   *Link* : ${video.url}\n\n` + `> *- ✎ Audio listo, enviando...*
 > SIGUENOS EN NUESTRAS REDES O CANAL OFICIAL DEL BOT`.trim();
 
     await conn.sendMessage(
