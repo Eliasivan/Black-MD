@@ -7,19 +7,13 @@ import fs from 'fs';
 import chalk from 'chalk';
 import ws from 'ws';
 
-/**
- * @type {import('@adiwajshing/baileys')}  
- */
 const isNumber = x => typeof x === 'number' && !isNaN(x)
 const delay = ms => isNumber(ms) && new Promise(resolve => setTimeout(function () {
 clearTimeout(this)
 resolve()
 }, ms))
 
-/**
- * Handle messages upsert
- * @param {import('@adiwajshing/baileys').BaileysEventMap<unknown>['messages.upsert']} groupsUpdate 
- */
+
 export async function handler(chatUpdate) {
 this.msgqueque = this.msgqueque || []
 this.uptime = this.uptime || Date.now()
@@ -27,87 +21,128 @@ if (!chatUpdate)
 return
 this.pushMessage(chatUpdate.messages).catch(console.error)
 let m = chatUpdate.messages[chatUpdate.messages.length - 1]
-try{m = smsg(this, m) || m;}catch{ if(!m) return };
+if (!m)
+return;
+if (global.db.data == null)
+await global.loadDatabase()       
+try {
+m = smsg(this, m) || m
 if (!m)
 return
-let groupMetadata = {};
-for(let o = 0; o < 10; o++){try{ groupMetadata = await this.groupMetadata(m.chat); break;}catch{}};
-if (global.db.data == null)
-await global.loadDatabase();
-try {
 m.exp = 0
-m.moras = false
+m.coin = false
 try {
 let user = global.db.data.users[m.sender]
-//if (typeof user !== 'object')
-if (typeof user !== 'object')
+if (typeof user !== 'object')  
 global.db.data.users[m.sender] = {}
 if (user) {
-if (!isNumber(user.exp)) user.exp = 0
-if (!('premium' in user)) user.premium = false
-if (!('muto' in user)) user.muto = false
-if (!isNumber(user.joincount)) user.joincount = 1
-if (!isNumber(user.yenes)) user.yenes = 150
-if (!isNumber(user.moras)) user.moras = 10
-if (!('registered' in user)) user.registered = false
-
+if (!isNumber(user.exp))
+user.exp = 0
+if (!isNumber(user.coin))
+user.coin = 10
+if (!isNumber(user.joincount))
+user.joincount = 1
+if (!isNumber(user.diamond))
+user.diamond = 3
+if (!isNumber(user.lastadventure))
+user.lastadventure = 0
+if (!isNumber(user.lastclaim))
+user.lastclaim = 0
+if (!isNumber(user.health))
+user.health = 100
+if (!isNumber(user.crime))
+user.crime = 0
+if (!isNumber(user.lastcofre))
+user.lastcofre = 0
+if (!isNumber(user.lastdiamantes))
+user.lastdiamantes = 0
+if (!isNumber(user.lastpago))
+user.lastpago = 0
+if (!isNumber(user.lastcode))
+user.lastcode = 0
+if (!isNumber(user.lastcodereg))
+user.lastcodereg = 0
+if (!isNumber(user.lastduel))
+user.lastduel = 0
+if (!isNumber(user.lastmining))
+user.lastmining = 0
+if (!('muto' in user))
+user.muto = false
+if (!('premium' in user))
+user.premium = false
+if (!user.premium)
+user.premiumTime = 0
+if (!('registered' in user))
+user.registered = false
+if (!('genre' in user))
+user.genre = ''
+if (!('birth' in user))
+user.birth = ''
+if (!('marry' in user))
+user.marry = ''
+if (!('description' in user))
+user.description = ''
+if (!('packstickers' in user))
+user.packstickers = null
 if (!user.registered) {
-if (!('name' in user)) user.name = m.name
-if (!('age' in user)) user.age = 0
-if (!isNumber(user.regTime)) user.regTime = -1
+if (!('name' in user))
+user.name = m.name
+if (!isNumber(user.age))
+user.age = -1
+if (!isNumber(user.regTime))
+user.regTime = -1
 }
-
-if (!isNumber(user.afk)) user.afk = -1
-if (!('role' in user)) user.role = 'Novato'
-if (!isNumber(user.bank)) user.bank = 0
-if (!isNumber(user.coin)) user.coin = 0
-if (!isNumber(user.diamond)) user.diamond = 3
-if (!isNumber(user.exp)) user.exp = 0
-if (!isNumber(user.lastadventure)) user.lastadventure = 0
-if (!isNumber(user.lastcoins)) user.lastcoins = 0    
-if (!isNumber(user.lastclaim)) user.lastclaim = 0
-if (!isNumber(user.lastcode)) user.lastcode = 0
-if (!isNumber(user.lastcofre)) user.lastcofre = 0
-if (!isNumber(user.lastcodereg)) user.lastcodereg = 0
-if (!isNumber(user.lastdiamantes)) user.lastdiamantes = 0    
-if (!isNumber(user.lastduel)) user.lastduel = 0
-if (!isNumber(user.crime)) user.crime = 0
-if (!isNumber(user.lastmining)) user.lastmining = 0
-if (!isNumber(user.lastpago)) user.lastpago = 0 
-if (!isNumber(user.level)) user.level = 0
-if (!isNumber(user.warn)) user.warn = 0
-if (!user.premium) user.premiumTime = 0
+if (!isNumber(user.afk))
+user.afk = -1
+if (!('afkReason' in user))
+user.afkReason = ''
+if (!('role' in user))
+user.role = 'Nuv'
+if (!('banned' in user))
+user.banned = false
+if (!('useDocument' in user))
+user.useDocument = false
+if (!isNumber(user.level))
+user.level = 0
+if (!isNumber(user.bank))
+user.bank = 0
+if (!isNumber(user.warn))
+user.warn = 0
 } else
 global.db.data.users[m.sender] = {
-afk: -1,
-afkReason: '',
-name: m.name,
-age: 0,
-bank: 0,
-banned: false,
-BannedReason: '',
-Banneduser: false,
-coin: 0,
-diamond: 3,
+exp: 0,
+coin: 10,
 joincount: 1,
+diamond: 3,
 lastadventure: 0,
-lastcoins: 0,
+health: 100,
 lastclaim: 0,
-lastcode: 0,
 lastcofre: 0,
 lastdiamantes: 0,
+lastcode: 0,
 lastduel: 0,
 lastpago: 0,
-lastrob: 0,
-level: 0,
-moras: 10,
-yenes: 100,
+lastmining: 0,
+lastcodereg: 0,
 muto: false,
+registered: false,
+genre: '',
+birth: '',
+marry: '',
+description: '',
+packstickers: null,
+name: m.name,
+age: -1,
+regTime: -1,
+afk: -1,
+afkReason: '',
+banned: false,
+useDocument: false,
+bank: 0,
+level: 0,
+role: 'Nuv',
 premium: false,
 premiumTime: 0,
-registered: false,
-regTime: -1,
-rendang: 0, 
 }
 let akinator = global.db.data.users[m.sender].akinator
 if (typeof akinator !== 'object')
@@ -448,20 +483,15 @@ continue
 
 m.isCommand = true
 let xp = 'exp' in plugin ? parseInt(plugin.exp) : 10
-if (xp > 2000)
-m.reply('Exp limit') 
-else               
-if (!isPrems && plugin.yenes && global.db.data.users[m.sender].yenes < plugin.yenes * 1) {
-conn.reply(m.chat, `𝗡𝗼 𝘁𝗶𝗲𝗻𝗲𝘀 𝘀𝘂𝗳𝗶𝗰𝗶𝗲𝗻𝘁𝗲𝘀 ${moneda} 𝗽𝗮𝗿𝗮 𝘂𝘀𝗮𝗿 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼.`, m)       
-continue     
-}
-
 m.exp += xp
-if (!isPrems && plugin.moras && global.db.data.users[m.sender].moras < plugin.moras * 1) {
-conn.reply(m.chat, `❮🪙❯ 𝗡𝗼 𝘁𝗶𝗲𝗻𝗲𝘀 𝘀𝘂𝗳𝗶𝗰𝗶𝗲𝗻𝘁𝗲𝘀 𝗠𝗼𝗿𝗮𝘀 𝗽𝗮𝗿𝗮 𝘂𝘀𝗮𝗿 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼. 𝗣𝗮𝗿𝗮 𝗰𝗼𝗺𝗽𝗿𝗮𝗿 𝗺𝗮𝘀 𝗠𝗼𝗿𝗮𝘀, 𝘂𝘀𝗲 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼.\n\n• 𝗣𝗼𝗿 𝗘𝗷𝗲𝗺𝗽𝗹𝗼:\n\n*${usedPrefix}buyall*\n*${usedPrefix}buy*`, m, rcanal) 
+if (!isPrems && plugin.coin && global.db.data.users[m.sender].coin < plugin.coin * 1) {
+conn.reply(m.chat, `❮✦❯ Se agotaron tus ${moneda}`, m)
 continue
 }
-
+if (plugin.level > _user.level) {
+conn.reply(m.chat, `❮✦❯ Se requiere el nivel: *${plugin.level}*\n\n• Tu nivel actual es: *${_user.level}*\n\n• Usa este comando para subir de nivel:\n*${usedPrefix}levelup*`, m)
+continue
+}
 
 if (plugin.level > _user.level) {
 conn.reply(m.chat, `❮📣❯ 𝗥𝗲𝗾𝘂𝗶𝗲𝗿𝗲 𝗲𝗹 𝗻𝗶𝘃𝗲𝗹: *${plugin.level}*\n\n• 𝗧𝘂 𝗻𝗶𝘃𝗲𝗹 𝗮𝗰𝘁𝘂𝗮𝗹 𝗲𝘀: *${_user.level}*\n\n• 𝗨𝘀𝗮 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼 𝗽𝗮𝗿𝗮 𝘀𝘂𝗯𝗶𝗿 𝗱𝗲 𝗻𝗶𝘃𝗲𝗹:\n*${usedPrefix}levelup*`, m, rcanal)       
@@ -518,12 +548,8 @@ await plugin.after.call(this, m, extra)
 } catch (e) {
 console.error(e)
 }}
-if (m.moras)
-conn.reply(m.chat, `Utilizaste *${+m.moras}*`, m, fake)
-}
-if (m.yenes)
-conn.reply(m.chat, `Utilizaste *${+m.yenes}*`, m)
-break
+if (m.coin)
+conn.reply(m.chat, `❮✦❯ Utilizaste ${+m.coin} ${moneda}`, m)
 }}} catch (e) {
 console.error(e)
 } finally {
