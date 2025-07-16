@@ -22,7 +22,7 @@ let handler = async (m, { args, conn }) => {
     }
 }
 
-handler.yenes = 2
+handler.coin = 2
 handler.command = ['ig', 'igdl', 'instagram'];
 handler.tags = ['dl'];
 handler.help = ['ig *<link>*'];
