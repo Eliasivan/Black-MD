@@ -26,7 +26,7 @@ const handler = async (msg, { conn }) => {
     try {
       dataPrefijos = JSON.parse(fs.readFileSync(prefixPath, "utf-8"));
     } catch (e) {
-      console.error("❌ Error al leer prefixes.json:", e);
+      console.error("❌ Error al leer ts.json:", e);
     }
   }
 
@@ -40,10 +40,11 @@ const handler = async (msg, { conn }) => {
     const prefijo = dataPrefijos[fullJid] || ".";
     const sensurado = `+${jid.slice(0, 3)}*****${jid.slice(-2)}`;
 
-    return `╭➤ *Subbot ${i + 1}*
-│ Número: ${sensurado}
-│ Prefijo: *${prefijo}*
-╰───────────────`;
+    return `*⪨Subbot⪩ ${i + 1}*
+│ ⪨Número⪩: ${sensurado}
+│ ⪨Prefijo⪩: *${prefijo}*
+╞═════Ꮺ═══════
+`;
   });
 
   const menu = `
