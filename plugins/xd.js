@@ -14,16 +14,20 @@ const handler = async (msg, { conn }) => {
     : [];
 
   if (subDirs.length === 0) {
-    return await conn.sendMessage2(
+    return await conn.sendMessage(
       msg.key.remoteJid,
-      "⚠️ No hay subbots conectados actualmente.",
-      msg
+      { text: "⚠️ No hay subbots conectados actualmente." },
+      { quoted: msg }
     );
   }
 
   let dataPrefijos = {};
   if (fs.existsSync(prefixPath)) {
-    dataPrefijos = JSON.parse(fs.readFileSync(prefixPath, "utf-8"));
+    try {
+      dataPrefijos = JSON.parse(fs.readFileSync(prefixPath, "utf-8"));
+    } catch (e) {
+      console.error("❌ Error al leer prefixes.json:", e);
+    }
   }
 
   const total = subDirs.length;
@@ -33,7 +37,6 @@ const handler = async (msg, { conn }) => {
   const lista = subDirs.map((dir, i) => {
     const jid = dir.split("@")[0];
     const fullJid = `${jid}@s.whatsapp.net`;
-
     const prefijo = dataPrefijos[fullJid] || ".";
     const sensurado = `+${jid.slice(0, 3)}*****${jid.slice(-2)}`;
 
@@ -50,13 +53,14 @@ const handler = async (msg, { conn }) => {
 
 ${lista.join("\n\n")}`;
 
-  await conn.sendMessage2(
+  await conn.sendMessage(
     msg.key.remoteJid,
     { text: menu },
-    msg
+    { quoted: msg }
   );
 };
 
+// Propiedades del comando
 handler.command = ['subs'];
 handler.tags = ['owner'];
 handler.help = ['bots'];
