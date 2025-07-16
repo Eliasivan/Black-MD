@@ -492,11 +492,6 @@ if (plugin.level > _user.level) {
 conn.reply(m.chat, `❮✦❯ Se requiere el nivel: *${plugin.level}*\n\n• Tu nivel actual es: *${_user.level}*\n\n• Usa este comando para subir de nivel:\n*${usedPrefix}levelup*`, m)
 continue
 }
-
-if (plugin.level > _user.level) {
-conn.reply(m.chat, `❮📣❯ 𝗥𝗲𝗾𝘂𝗶𝗲𝗿𝗲 𝗲𝗹 𝗻𝗶𝘃𝗲𝗹: *${plugin.level}*\n\n• 𝗧𝘂 𝗻𝗶𝘃𝗲𝗹 𝗮𝗰𝘁𝘂𝗮𝗹 𝗲𝘀: *${_user.level}*\n\n• 𝗨𝘀𝗮 𝗲𝘀𝘁𝗲 𝗰𝗼𝗺𝗮𝗻𝗱𝗼 𝗽𝗮𝗿𝗮 𝘀𝘂𝗯𝗶𝗿 𝗱𝗲 𝗻𝗶𝘃𝗲𝗹:\n*${usedPrefix}levelup*`, m, rcanal)       
-continue
-}
 let extra = {
 match,
 usedPrefix,
@@ -524,7 +519,7 @@ try {
 await plugin.call(this, m, extra)
 if (!isPrems)
 m.moras = m.moras || plugin.moras || false
-m.yenes = m.yenes || plugin.yenes || false
+m.coin = m.yenes || plugin.coin || false
 } catch (e) {
 // Error occured
 m.error = e
@@ -541,7 +536,6 @@ m.reply(`⧋〘📕 𝗘𝗥𝗥𝗢𝗥 │ 𝗙𝗔𝗟𝗟𝗢 📕〙⧋\n\n
 }*/
 m.reply(text)
 }} finally {
-
 if (typeof plugin.after === 'function') {
 try {
 await plugin.after.call(this, m, extra)
@@ -550,7 +544,10 @@ console.error(e)
 }}
 if (m.coin)
 conn.reply(m.chat, `❮✦❯ Utilizaste ${+m.coin} ${moneda}`, m)
-}}} catch (e) {
+}
+break
+}}
+} catch (e) {
 console.error(e)
 } finally {
 if (opts['queque'] && m.text) {
