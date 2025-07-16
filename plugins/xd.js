@@ -46,10 +46,10 @@ const handler = async (msg, { conn }) => {
 ╰───────────────`;
   });
 
-  const menu = `╭━〔 *SUBBOTS CONECTADOS* 〕━⬣
-│ 🤖 Total conectados: *${total}/${maxSubbots}*
-│ 🟢 Sesiones libres: *${disponibles}*
-╰━━━━━━━━━━━━⬣
+  const menu = `
+> *SUBBOTS CONECTADOS*
+> ✦ Total conectados: *${total}/${maxSubbots}*
+> ✦ Sesiones libres: *${disponibles}*
 
 ${lista.join("\n\n")}`;
 
@@ -60,7 +60,6 @@ ${lista.join("\n\n")}`;
   );
 };
 
-// Propiedades del comando
 handler.command = ['subs'];
 handler.tags = ['owner'];
 handler.help = ['bots'];
