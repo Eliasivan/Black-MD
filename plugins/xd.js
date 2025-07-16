@@ -5,7 +5,7 @@ import path from "path";
 const handler = async (msg, { conn }) => {
   const jadi = "blackJadibots";
   const subbotsFolder = `./${jadi}`;
-  const prefixPath = path.join(process.cwd(), "prefixes.json");
+  const prefixPath = path.join(process.cwd(), "ts.json");
 
   const subDirs = fs.existsSync(subbotsFolder)
     ? fs.readdirSync(subbotsFolder).filter(d =>
