@@ -177,7 +177,8 @@ if (chat) {
 if (!('isBanned' in chat)) chat.isBanned = false         
 if (!('welcome' in chat)) chat.welcome = true           
 if (!('detect' in chat)) chat.detect = true               
-if (!('sWelcome' in chat)) chat.sWelcome = ''          
+if (!('sWelcome' in chat)) chat.sWelcome = ''
+if (!('primaryBot' in chat)) chat.primaryBot = null          
 if (!('sBye' in chat)) chat.sBye = ''                    
 if (!('sPromote' in chat)) chat.sPromote = ''     
 if (!('sAutoresponder' in chat)) chat.sAutoresponder = ''         
@@ -220,6 +221,7 @@ welcome: true,
 detect: true,
 sWelcome: '',
 sAutoresponder: '',
+primaryBot: null,
 sBye: '',
 sPromote: '',
 sDemote: '', 
