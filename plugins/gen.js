@@ -1,3 +1,0 @@
-/*
-DEJEN SU ESTRELLITA
-*/
