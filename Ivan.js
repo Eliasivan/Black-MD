@@ -22,7 +22,7 @@ import {makeWASocket, protoType, serialize} from './lib/simple.js'
 import {Low, JSONFile} from 'lowdb'
 import {mongoDB, mongoDBV2} from './lib/mongoDB.js'
 import store from './lib/store.js'
-import { blackJadiBot } from './plugins/jadibot-serbot.js';
+import { sanJadiBot } from './plugins/jadibot-serbot.js';
 const {proto} = (await import('@whiskeysockets/baileys')).default
 import pkg from 'google-libphonenumber'
 const { PhoneNumberUtil } = pkg
