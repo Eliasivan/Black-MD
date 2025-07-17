@@ -73,11 +73,10 @@ global.photoSity = [imagen8, imagen1, imagen4, imagen6]
 
 global.libreria = 'Baileys'
 global.baileys = 'V 6.7.16'
-global.languaje = 'Español'
-global.nameqr = 'GokuBlack-Bot'
-global.sessions = 'Blacksesion'
-global.jadi = 'blackJadibots'
-global.blackJadibts = true
+global.languaje = 'Es'
+global.nameqr = 'GokuBlack'
+global.sessions = 'Session/GokuBlack'
+global.jadi = 'Session/SubBot'
 
 global.ch = {
 ch1: '120363276986902836@newsletter',
