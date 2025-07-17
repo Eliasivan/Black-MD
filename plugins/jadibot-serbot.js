@@ -94,8 +94,9 @@ generateHighQualityLinkPreview: true
 
 let sock = makeWASocket(connectionOptions)
 sock.isInit = false
-let isInit = true
-commandFlags[m.sender] = true
+if (!m || !m.sender) return m.reply('Error: No se pudo identificar el usuario.');
+let user = global.db.data.users[m.sender]
+user.jadibot = true
 
 async function connectionUpdate(update) {
 const { connection, lastDisconnect, isNewLogin, qr } = update
