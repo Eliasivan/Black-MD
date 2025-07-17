@@ -39,7 +39,7 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
 『✨️』𝗘𝗱𝗮𝗱: ${age} años
 •━━━━━━━━━━━━━━•
 『🎁』𝗥𝗲𝗰𝗼𝗺𝗽𝗲𝗻𝘀𝗮𝘀:
-• 10 Estrellas 🌟
+• 30 ${moneda} 💴
 • 5 Coins 🪙
 • 245 Experiencia 💸
 • 12 Tokens 💰
@@ -50,7 +50,8 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
     contextInfo: {
       externalAdReply: {
         title: '✅ Registro exitoso',
-        body: '¡Bienvenido!',
+        body: 'Gracias por usar Goku-Black-Bot-MD 💥',
+        thumbnailUrl: 'https://telegra.ph/file/0bb7e9e7c8cb4e820f1fe.jpg', 
         mediaType: 1,
         showAdAttribution: false,
         renderLargerThumbnail: true,
