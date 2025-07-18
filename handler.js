@@ -573,7 +573,8 @@ user.yenes -= m.yenes * 1
 let stat
 if (m.plugin) {
 let now = +new Date
-if (m.plugin in stats) {
+}}}
+
 stat = stats[m.plugin]
 if (!isNumber(stat.total))
 stat.total = 1
