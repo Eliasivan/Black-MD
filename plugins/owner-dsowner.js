@@ -11,7 +11,7 @@ return conn.reply(m.chat, `${emoji} Utiliza este comando directamente en el núm
 await conn.reply(m.chat, `${emoji2} Iniciando proceso de eliminación de todos los archivos de sesión, excepto el archivo creds.json...`, m)
 m.react(rwait)
 
-let sessionPath = `./${Rubysessions}/`
+let sessionPath = `./${Session}/`
 
 try {
 
