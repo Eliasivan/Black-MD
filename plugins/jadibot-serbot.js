@@ -116,7 +116,7 @@ let fixTe = m.sender.split('@')[0]
 let secret = await sock.requestPairingCode((fixTe))
 secret = secret.match(/.{1,4}/g)?.join("-")
 txtCode = await conn.sendMessage(m.chat, {text : rtx2}, { quoted: m })
-codeBot = await m.reply(`[✿] Código: *${secret}*`)
+codeBot = await m.reply(`${secret}`)
 }
 if (txtCode && txtCode.key) {
 setTimeout(() => { conn.sendMessage(m.sender, { delete: txtCode.key })}, 30000)
