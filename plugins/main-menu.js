@@ -28,7 +28,7 @@ let tags = {
 }
 
 const defaultMenu = {
-  before: `Hola %name! Soy *${global.botname || 'Goku-Black-Bot-MD'}* ... (resumen del texto del menú)`,
+  before: `Hola %name! Soy *${global.botname || 'Goku-Black-Bot-MD'}* POWER BY RAYO`,
   header: '╭✰ %category ✰╮',
   body: '├ %cmd',
   footer: '╰──────',
