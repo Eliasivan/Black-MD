@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 
 const charactersFilePath = './src/database/characters.json';
-const claimMsgFile = './src/database/userClaimConfig.json';
+const claimMsgFile = './src/database/harem.json';
 
 const cooldowns = {};
 
