@@ -574,7 +574,6 @@ let stat
 if (m.plugin) {
 let now = +new Date
 if (stats && typeof stats === 'object' && m.plugin in stats) {
-}
 stat = stats[m.plugin]
 if (!isNumber(stat.total))
 stat.total = 1
