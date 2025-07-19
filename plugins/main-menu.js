@@ -17,7 +17,7 @@ let tags = {
   'nable': '`𝙊𝙉 / 𝙊𝙁𝙁`', 
   'descargas': '`𝘿𝙚𝙨𝙘𝙖𝙧𝙜𝙖𝙨`',
   'youtube': '`𝙔𝙊𝙐𝙏𝙐𝘽𝙀`',
-  'tools': '`𝙃𝙀𝙍𝙍𝘼𝙈𝙄𝙀𝙉𝙏𝘼𝙎`',
+  'tools': '`𝙃𝙀𝙍𝙍𝘼𝙈𝙀𝙉𝙏𝘼𝙎`',
   'info': '`𝙄𝙉𝙁𝙊𝙍𝙈𝘼𝘾𝙄𝙊́𝙉`',
   'nsfw': '`𝙉𝙎𝙁𝙒`', 
   'owner': '`𝘾𝙍𝙀𝘼𝘿𝙊𝙍`', 
@@ -28,17 +28,36 @@ let tags = {
 }
 
 const defaultMenu = {
-  before: `Hola %name! Soy *${global.botname || 'Goku-Black-Bot-MD'}* POWER BY RAYO`,
-  header: '╭✰ %category ✰╮',
-  body: '├ %cmd',
-  footer: '╰──────',
-  after: `> ${global.dev || 'Rayo'}`
-}
+  before: `*╭═━═━═━─ [ ＵＳＵＡＲＩＯＳ ] ─━═━═━═╮*
+*〣*╭──────────────
+*〣*├⫹⫺ *Nombre :* %name
+*〣*├⫹⫺ %moneda : *%coin*
+*〣*├⫹⫺ *Nivel :* %level
+*〣*├⫹⫺ *Rango :* %role
+*〣*├⫹⫺ *Exp :* %exp
+*〣*╰──────────────
+꒷︶꒷꒥꒷‧₊˚૮꒰˵•ᵜ•˵꒱ა‧₊˚꒷₊˚૮꒰˵•ᵜ•˵꒱ა‧₊˚꒷︶꒷꒥꒷
 
-const greeting = '¡Bienvenido!'
-const dev = global.dev || 'By Rayo'
-const icono = global.icono || 'https://telegra.ph/file/327f6ad853cb4f405aa80.jpg'
-const redes = global.redes || 'https://github.com/Eliasivan/Goku-Black-Bot-MD'
+*╭═━═━═━─ [ ＩＮＦＯＢＯＴ ] ─━═━═━═╮*
+*〣*╭──────────────
+*〣*├⫹⫺ *Creador :* Rayo
+*〣*├⫹⫺ *Numero:* wa.me/59169739411
+*〣*├⫹⫺ *Tiempo Activo:* %uptime
+*〣*├⫹⫺ *Registrado :* %rtotalreg de %totalreg usuarios
+*〣*╰──────────────
+꒷︶꒷꒥꒷‧₊˚૮꒰˵•ᵜ•˵꒱ა‧₊˚꒷₊˚૮꒰˵•ᵜ•˵꒱ა‧₊˚꒷︶꒷꒥꒷
+
+*╭═━═━═━─「 ＨＯＹ 」─━═━═━═╮*
+*〣* *Fecha :* %date
+꒷︶꒷꒥꒷‧₊˚૮꒰˵•ᵜ•˵꒱ა‧₊˚꒷₊˚૮꒰˵•ᵜ•˵꒱
+
+`.trimStart(),
+  header: '*╭═━═━═━─「 %category 」─━═━═━═╮*',
+  body: '*〣* ├⫹⫺  %cmd',
+  footer: '꒷︶꒷꒥꒷‧₊˚૮꒰˵•ᵜ•˵꒱ა‧₊˚꒷₊˚૮꒰˵•ᵜ•˵꒱ა‧',
+  after: `
+`,
+}
 
 const fkontak = {
   key: { remoteJid: 'status@broadcast', fromMe: false, id: 'GokuBlackBot', participant: '0@s.whatsapp.net' },
@@ -60,6 +79,8 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
 
     let uptime = clockString(process.uptime() * 1000)
     let totalreg = Object.keys(global.db.data.users).length
+    let rtotalreg = Object.values(global.db.data.users).filter(user => user.registered).length
+    let fecha = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
 
     let help = Object.values(global.plugins).filter(p => !p.disabled).map(plugin => ({
       help: Array.isArray(plugin.tags) ? plugin.help : [plugin.help],
@@ -96,9 +117,15 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
     ].join('\n')
 
     let text = _text.replace(/%name/g, name)
-      .replace(/%level/g, level).replace(/%exp/g, exp - min)
-      .replace(/%coin/g, coin).replace(/%moneda/g, moneda)
-      .replace(/%uptime/g, uptime).replace(/%totalreg/g, totalreg)
+      .replace(/%level/g, level)
+      .replace(/%exp/g, exp - min)
+      .replace(/%coin/g, coin)
+      .replace(/%moneda/g, moneda)
+      .replace(/%role/g, role)
+      .replace(/%uptime/g, uptime)
+      .replace(/%totalreg/g, totalreg)
+      .replace(/%rtotalreg/g, rtotalreg)
+      .replace(/%date/g, fecha)
 
     await conn.sendMessage(
       m.chat,
