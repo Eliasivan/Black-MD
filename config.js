@@ -5,11 +5,13 @@ import axios from 'axios';
 import moment from 'moment-timezone';
 
 global.owner = [
-  ['59169739411', 'Creador 🧑‍💻', true],
+//whatsApp.net 
+['59169739411', 'Creador 🧑‍💻', true],
   ['18294868853', 'Asistente', true],
   ['595992667005'],
   ['595972314588', 'Asistencia',  true],
-  ['5351524614'], 
+  ['5351524614'],
+//lid 
   ['186397822587042']
 ];
 
