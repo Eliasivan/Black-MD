@@ -69,14 +69,13 @@ const fkontak = {
   }
 }
 
-let handler = async (m, { conn, usedPrefix: _p }) => {
+let handler = async (m, { conn, usedPrefix: _p, command }) => {
   try {
     let userId = m.sender
     let userData = global.db.data.users[userId] || {}
     let { exp = 0, estrellas = 0, level = 0, role = '', coin = 0, moneda = 'Yenes' } = userData
     let { min, xp, max } = xpRange(level, global.multiplier)
     let name = await conn.getName(userId)
-
     let uptime = clockString(process.uptime() * 1000)
     let totalreg = Object.keys(global.db.data.users).length
     let rtotalreg = Object.values(global.db.data.users).filter(user => user.registered).length
@@ -96,18 +95,7 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
       }
     }
 
-    let before = defaultMenu.before
-    let header = defaultMenu.header
-    let body = defaultMenu.body
-    let footer = defaultMenu.footer
-    let after = defaultMenu.after
-
-    let _text = [
-      before,
-      ...Object.keys(tags).map(tag =>
-        header.replace(/%category/g, tags[tag]) + '\n' +
-        help.filter(menu => menu.tags.includes(tag)).map(menu =>
-          menu.help.map(cmd =>
+.map(cmd =>
             body.replace(/%cmd/g, menu.prefix ? cmd : _p + cmd)
           ).join('\n')
         ).join('\n') +
@@ -127,14 +115,19 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
       .replace(/%rtotalreg/g, rtotalreg)
       .replace(/%date/g, fecha)
 
-    await conn.sendMessage(
+    let pp = './src/menus/Menu.jpg'
+
+    await conn.sendButton(
       m.chat,
-      {
-        image: { url: './src/menus/Menu.jpg' },
-        caption: text.trim(),
-        mentions: [userId]
-      },
-      { quoted: fkontak }
+      text.trim(),
+      '▢ Goku-Black-Bot-MD\n▢ Síguenos en nuestro channel\nhttps://whatsapp.com/channel/0029VaYh3Zm4dTnQKQ3VLT0h',
+      pp,
+      [
+        ['☄ Apoyar', `${_p}donate`],
+        ['⏍ Info', `${_p}botinfo`],
+        ['⌬ Grupos', `${_p}grupos`]
+      ],
+      m
     )
 
   } catch (e) {
