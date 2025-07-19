@@ -116,7 +116,6 @@ let handler = async (m, { conn, usedPrefix: _p, command }) => {
       .replace(/%date/g, fecha)
 
     let pp = './src/menus/Menu.jpg'
-
     await conn.sendButton(
       m.chat,
       text.trim(),
