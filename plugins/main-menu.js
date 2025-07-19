@@ -1,4 +1,5 @@
 import { xpRange } from '../lib/levelling.js'
+import { generateWAMessageFromContent, proto } from '@whiskeysockets/baileys'
 import fs from 'fs'
 
 let tags = {
@@ -40,8 +41,7 @@ const defaultMenu = {
 
 *╭═━═━═━─ [ ＩＮＦＯＢＯＴ ] ─━═━═━═╮*
 *〣*╭──────────────
-*〣*├⫹⫺ *Creador :* Rayo
-*〣*├⫹⫺ *Numero:* wa.me/59169739411
+*〣├⫹⫺ *Numero:* wa.me/59169739411
 *〣*├⫹⫺ *Tiempo Activo:* %uptime
 *〣*├⫹⫺ *Registrado :* %rtotalreg de %totalreg usuarios
 *〣*╰──────────────
@@ -59,17 +59,15 @@ const defaultMenu = {
 `,
 }
 
-const fkontak = {
-  key: { remoteJid: 'status@broadcast', fromMe: false, id: 'GokuBlackBot', participant: '0@s.whatsapp.net' },
-  message: {
-    contactMessage: {
-      displayName: 'GokuBlackBot',
-      vcard: 'BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:GokuBlackBot\nitem1.TEL;waid=1234567890:1234567890\nitem1.X-ABLabel:Mobile\nEND:VCARD'
-    }
-  }
+function clockString(ms) {
+  if (isNaN(ms)) return '--:--:--'
+  let h = Math.floor(ms / 3600000)
+  let m = Math.floor(ms / 60000) % 60
+  let s = Math.floor(ms / 1000) % 60
+  return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':')
 }
 
-let handler = async (m, { conn, usedPrefix: _p, command }) => {
+const handler = async (m, { conn, usedPrefix: _p, command }) => {
   try {
     let userId = m.sender
     let userData = global.db.data.users[userId] || {}
@@ -79,14 +77,12 @@ let handler = async (m, { conn, usedPrefix: _p, command }) => {
     let uptime = clockString(process.uptime() * 1000)
     let totalreg = Object.keys(global.db.data.users).length
     let rtotalreg = Object.values(global.db.data.users).filter(user => user.registered).length
-    let fecha = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
-
-    let help = Object.values(global.plugins).filter(p => !p.disabled).map(plugin => ({
+    let fecha = new Date.plugins).filter(p => !p.disabled).map(plugin => ({
       help: Array.isArray(plugin.tags) ? plugin.help : [plugin.help],
       tags: Array.isArray(plugin.tags) ? plugin.tags : [plugin.tags],
       prefix: 'customPrefix' in plugin,
       premium: plugin.premium,
-      enabled: !plugin.disabled,
+      enabled.disabled,
     }))
 
     for (let plugin of help) {
@@ -95,7 +91,18 @@ let handler = async (m, { conn, usedPrefix: _p, command }) => {
       }
     }
 
-.map(cmd =>
+    let before = defaultMenu.before
+    let header = defaultMenu.header
+    let body = defaultMenu.body
+    let footer = defaultMenu.footer
+    let after = defaultMenu.after
+
+    let _text = [
+      before,
+      ...Object.keys(tags).map(tag =>
+        header.replace(/%category/g, tags[tag]) + '\n' +
+        help.filter(menu => menu.tags.includes(tag)).map(menu =>
+          menu.help.map(cmd =>
             body.replace(/%cmd/g, menu.prefix ? cmd : _p + cmd)
           ).join('\n')
         ).join('\n') +
@@ -115,19 +122,45 @@ let handler = async (m, { conn, usedPrefix: _p, command }) => {
       .replace(/%rtotalreg/g, rtotalreg)
       .replace(/%date/g, fecha)
 
-    let pp = './src/menus/Menu.jpg'
-    await conn.sendButton(
-      m.chat,
-      text.trim(),
-      '▢ Goku-Black-Bot-MD\n▢ Síguenos en nuestro channel\nhttps://whatsapp.com/channel/0029VaYh3Zm4dTnQKQ3VLT0h',
-      pp,
-      [
-        ['☄ Apoyar', `${_p}donate`],
-        ['⏍ Info', `${_p}botinfo`],
-        ['⌬ Grupos', `${_p}grupos`]
-      ],
-      m
-    )
+    const messageContent = {
+      viewOnceMessage: {
+        message: {
+          messageContextInfo: {
+            deviceListMetadata: {},
+            deviceListMetadataVersion: 2
+          },
+          interactiveMessage: proto.Message.InteractiveMessage.create({
+            body: proto.Message.InteractiveMessage.Body.create({ text: text }),
+            footer: proto.Message.InteractiveMessage.Footer.create({ text: 'Goku-Black-Bot-MD by Rayo' }),
+            header: proto.Message.InteractiveMessage.Header.create({ hasMediaAttachment: false }),
+            nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
+              buttons: [
+                {
+                  name: 'cta_url',
+                  buttonParamsJson: JSON.stringify({
+                    display_text: '✐ Canal oficial',
+                    url: 'https://whatsapp.com/channel/0029VawF8fBBvvsktcInIz3m',
+                    merchant_url: 'https://whatsapp.com/channel/0029VawF8fBBvvsktcInIz3m'
+                  })
+                },
+                {
+                  buttonId: '.creador',
+                  buttonText: { displayText: 'Creador' },
+                  type: 1
+                }
+              ]
+            })
+          })
+        }
+      }
+    }
+
+    const msg = generateWAMessageFromContent(m.chat, messageContent, {
+      userJid: m.sender,
+      quoted: m
+    })
+
+    await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
 
   } catch (e) {
     await conn.reply(m.chat, '🔵 Lo sentimos, el menú tiene un error', m)
@@ -140,12 +173,4 @@ handler.tags = ['main']
 handler.command = ['menu', 'menú', 'menuall', 'allmenú', 'allmenu', 'menucompleto']
 handler.register = true
 
-export default handler
-
-function clockString(ms) {
-  if (isNaN(ms)) return '--:--:--'
-  let h = Math.floor(ms / 3600000)
-  let m = Math.floor(ms / 60000) % 60
-  let s = Math.floor(ms / 1000) % 60
-  return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':')
-}
+export
