@@ -153,7 +153,7 @@ const handler = async (m, { conn, usedPrefix: _p, command }) => {
           })
         }
       }
-    }/*
+    }*/
 
     const msg = generateWAMessageFromContent(m.chat, messageContent, {
       userJid: m.sender,
