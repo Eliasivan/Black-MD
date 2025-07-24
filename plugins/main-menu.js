@@ -122,7 +122,7 @@ const handler = async (m, { conn, usedPrefix: _p, command }) => {
       .replace(/%rtotalreg/g, rtotalreg)
       .replace(/%date/g, fecha)
 
-    const messageContent = {
+   /* const messageContent = {
       viewOnceMessage: {
         message: {
           messageContextInfo: {
@@ -153,7 +153,7 @@ const handler = async (m, { conn, usedPrefix: _p, command }) => {
           })
         }
       }
-    }
+    }/*
 
     const msg = generateWAMessageFromContent(m.chat, messageContent, {
       userJid: m.sender,
