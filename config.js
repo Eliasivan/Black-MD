@@ -12,7 +12,7 @@ global.owner = [
   ['595972314588', 'Asistencia',  true],
   ['5351524614'],
 //lid 
-  ['174560573964411']
+  ['70639914369141', 'Sayan', true]
 ];
 
 global.mods = []
