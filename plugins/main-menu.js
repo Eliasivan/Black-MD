@@ -555,29 +555,22 @@ Crea un *Sub-Bot* con tu número utilizando *#qr* o *#code*
   `.trim()
 
   await conn.sendMessage(m.chat, { 
-      text: txt,
-      contextInfo: {
-          mentionedJid: [m.sender, userId],
-          isForwarded: true,
-          forwardedNewsletterMessageInfo: {
-              newsletterJid: channelRD.id,
-              newsletterName: channelRD.name,
-              serverMessageId: -1,
-          },
-          forwardingScore: 999,
-          externalAdReply: {
-              title: botname,
-              body: textbot,
-              thumbnailUrl: banner,
-              sourceUrl: redes,
-              mediaType: 1,
-              showAdAttribution: true,
-              renderLargerThumbnail: true,
-          },
-      },
-  }, { quoted: m })
-
-}
+    text: txt,
+    contextInfo: {
+        mentionedJid: [m.sender, userId],
+        isForwarded: true,
+        forwardingScore: 999,
+        externalAdReply: {
+            title: botname,
+            body: textbot,
+            thumbnailUrl: banner,
+            sourceUrl: redes,
+            mediaType: 1,
+            showAdAttribution: true,
+            renderLargerThumbnail: true,
+        },
+    },
+}, { quoted: m })
 
 handler.help = ['menu']
 handler.tags = ['main']
