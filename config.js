@@ -11,9 +11,7 @@ global.owner = [
   ['522431268546'],
   ['212770245767', 'Asistencia',  true],
   ['5351524614'],
-
-
-// <-- Número @lid -->
+// Número @lid 
   ['200141197844495@lid', 'Dioneibi', true],
   ['24580450156657@lid', 'Tesis', true]
   ['174560573964411@lid', 'Rayo', true]
