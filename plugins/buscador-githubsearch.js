@@ -1,36 +1,33 @@
-/* Github Search By WillZek 
-- Free Codes Titan  
-- https://whatsapp.com/channel/0029ValMlRS6buMFL9d0iQ0S
-*/
-
-// 𝗚𝗶𝘁𝗵𝘂𝗯 𝗦𝗲𝗮𝗿𝗰𝗵
-
 import fetch from 'node-fetch';
 
-let handler = async(m, { conn, text, usedPrefix, command }) => {
+let handler = async (m, { text, command }) => {
+    if (!text) throw '🔍 Ingresa un texto para buscar repositorios en GitHub.\n\nEjemplo: .githubsearch whatsapp bot';
 
-if (!text) return conn.reply(m.chat, `${emoji} Por favor ingresa un nombre de un repositorio GitHub.`, m);
+    let url = `https://dark-core-api.vercel.app/api/search/github?key=api&text=${encodeURIComponent(text)}`;
 
-try {
-let api = `https://dark-core-api.vercel.app/api/search/github?key=api&text=${text}`;
+    try {
+        let res = await fetch(url);
+        if (!res.ok) throw '🌐 Error al contactar con la API';
 
-let response = await fetch(api);
-let json = await response.json();
-let result = json.results[0];
+        let json = await res.json();
 
-let txt = `🍬 *Nombre:* ${result.name}\n👑 *Owner:* ${result.creator}\n🌟 *Estrellas:* ${result.stars}\n🔖 *Bifurcaciones:* ${result.forks}\n📜 *Descripcion:* ${result.description}\n📆 *Creado:* ${result.createdAt}\n🔗 *Link:* ${result.cloneUrl}`;
+        if (!json.data || json.data.length === 0) {
+            throw '❌ No se encontraron resultados.';
+        }
 
-let img = 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745610598914.jpeg';
+        let resultados = json.data.map((repo, index) => {
+            return `*${index + 1}.* ${repo.name}\n🔗 ${repo.url}\n📄 ${repo.description || 'Sin descripción'}\n`;
+        }).join('\n');
 
-conn.sendMessage(m.chat, { image: { url: img }, caption: txt }, { quoted: fkontak });
-
-} catch (error) {
-console.error(error)
-m.reply(`Error: ${error.message}`);
-m.react('✖️');
- }
+        m.reply(`🔎 *Resultados para:* ${text}\n\n${resultados}`);
+    } catch (e) {
+        console.error(e);
+        throw '❌ Error al buscar en GitHub.';
+    }
 };
 
-handler.command = ['githubsearch', 'gbsearch'];
+handler.command = /^githubsearch$/i;
+handler.help = ['githubsearch <texto>'];
+handler.tags = ['internet'];
 
 export default handler;
