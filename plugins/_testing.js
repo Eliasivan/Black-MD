@@ -9,8 +9,8 @@ var handler = async (m, { conn }) => {
         const filesToCheck = [
             './index.js', 
             './handler.js',
-            './lib/index.js',
-            './lib/handler.js'
+            './lib/store.js',
+            './lib/Simple.js'
         ].filter(fs.existsSync);
 
         if (filesToCheck.length === 0) {
