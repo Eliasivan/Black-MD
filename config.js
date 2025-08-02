@@ -12,7 +12,7 @@ global.owner = [
   ['212770245767', 'Asistencia',  true],
   ['5351524614'],
 //lid
-  ['200141197844495@lid', 'Dioneibi', true],
+  ['200141197844495@lid', 'Dioneibi', true]
   ['24580450156657@lid', 'Tesis', true]
   ['174560573964411@lid', 'Rayo', true]
 ];
