@@ -1,42 +1,36 @@
+/* Github Search By WillZek 
+- Free Codes Titan  
+- https://whatsapp.com/channel/0029ValMlRS6buMFL9d0iQ0S
+*/
+
+// 𝗚𝗶𝘁𝗵𝘂𝗯 𝗦𝗲𝗮𝗿𝗰𝗵
+
 import fetch from 'node-fetch';
 
-let handler = async (m, { text, command, usedPrefix }) => {
-  if (!text) return conn.reply(m.chat, `🚩 Usa: ${usedPrefix + command} <término>`, m);
-  await m.react('⏳');
+let handler = async(m, { conn, text, usedPrefix, command }) => {
 
-  try {
-    console.log('Buscando:', text);
-    const url = `https://dark-core-api.vercel.app/api/search/github?key=api&text=${encodeURIComponent(text)}`;
-    console.log('URL:', url);
+if (!text) return conn.reply(m.chat, `${emoji} Por favor ingresa un nombre de un repositorio GitHub.`, m);
 
-    const res = await fetch(url);
-    console.log('Status:', res.status);
-    const json = await res.json();
-    console.log('JSON rec:', json);
+try {
+let api = `https://dark-core-api.vercel.app/api/search/github?key=api&text=${text}`;
 
-    const arr = json.data || json.items;
-    if (!arr || !Array.isArray(arr) || arr.length === 0) {
-      await m.react('❌');
-      return m.reply('❌ No se encontraron resultados.', m);
-    }
+let response = await fetch(api);
+let json = await response.json();
+let result = json.results[0];
 
-    let txt = '```Resultados GitHub – Dark‑Core``` \n\n';
-    arr.slice(0,10).forEach((repo, i) => {
-      txt += `📌 *${i+1}* ${repo.name}\n🔗 ${repo.url || repo.html_url}\n📝 ${repo.description || 'Sin descripción'}\n\n`;
-    });
+let txt = `🍬 *Nombre:* ${result.name}\n👑 *Owner:* ${result.creator}\n🌟 *Estrellas:* ${result.stars}\n🔖 *Bifurcaciones:* ${result.forks}\n📜 *Descripcion:* ${result.description}\n📆 *Creado:* ${result.createdAt}\n🔗 *Link:* ${result.cloneUrl}`;
 
-    await m.reply(txt.trim());
-    await m.react('✅');
-  } catch (err) {
-    console.error('Catch final:', err);
-    await m.react('⚠️');
-    await m.reply(`⚠️ Error: ${err}`, m);
-  }
+let img = 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745610598914.jpeg';
+
+conn.sendMessage(m.chat, { image: { url: img }, caption: txt }, { quoted: fkontak });
+
+} catch (error) {
+console.error(error)
+m.reply(`Error: ${error.message}`);
+m.react('✖️');
+ }
 };
 
-handler.tags = ['internet'];
-handler.help = ['githubsearch <texto>', 'dark-core <texto>'];
-handler.command = ['githubsearch', 'dark-core'];
-handler.register = true;
+handler.command = ['githubsearch', 'gbsearch'];
 
 export default handler;
