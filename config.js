@@ -14,7 +14,7 @@ global.owner = [
 //lid 
   ['70639914369141@lid', 'Sayan', true,
   ['174560573964411@lid', 'Rayo', true]
-];
+]
 
 global.mods = []
 global.suittag = []
