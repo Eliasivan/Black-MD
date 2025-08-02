@@ -3,46 +3,50 @@ import path from 'path';
 
 var handler = async (m, { usedPrefix, command }) => {
     try {
-        await m.react('🔎'); 
+        await m.react('🕒'); 
         conn.sendPresenceUpdate('composing', m.chat);
 
-        const dirs = ['./plugins'];
-        let response = `${emoji} *Revisión de Syntax Errors:*\n\n`;
+        const pluginsDir = './plugins';
+        if (!fs.existsSync(pluginsDir)) {
+            await conn.reply(m.chat, '🚩 *El directorio de plugins no existe.*', m);
+            return;
+        }
+
+        const files = fs.readdirSync(pluginsDir).filter(file => file.endsWith('.js'));
+        let response = `📂 *Revisión de Errores:*\n\n`;
         let hasErrors = false;
 
-        for (const pluginsDir of dirs) {
-            const files = fs.readdirSync(pluginsDir).filter(file => file.endsWith('.js'));
-
-            for (const file of files) {
-                try {
-                    await import(path.resolve(pluginsDir, file));
-                } catch (error) {
-                    hasErrors = true;
-                    response += `${emoji} *Error en:* ${file} (${pluginsDir})\n`;
-                    if (error.loc) {
-                        response += `*Línea:* ${error.loc.line}, *Columna:* ${error.loc.column}\n`;
-                    }
-                    response += `${error.message}\n\n`;
-                }
+        for (const file of files) {
+            try {
+                await import(path.resolve(pluginsDir, file));
+            } catch (error) {
+                hasErrors = true;
+                response += `🚩 *Plugin:* ${file}\n`;
+                response += `🔍 *Error:* ${error.name}\n`;
+                
+                const lineMatch = error.stack.match(/eval.*:(\d+):\d+/);
+                const lineNumber = lineMatch ? lineMatch[1] : 'Desconocida';
+                
+                response += `📌 *Línea:* ${lineNumber}\n`;
+                response += `💬 *Mensaje:* ${error.message}\n\n`;
             }
         }
 
         if (!hasErrors) {
-            response += `${emoji} ¡Todo está en orden! No se detectaron errores de sintaxis.`;
+            response = '✅ *No se encontraron errores en los plugins*';
         }
 
         await conn.reply(m.chat, response, m);
-        await m.react('🔥');
+        await m.react(hasErrors ? '⚠️' : '✅');
     } catch (err) {
-        await m.react('✖️'); 
+        await m.react('✖️');
         console.error(err);
-        conn.reply(m.chat, '🚩 *Ocurrió un fallo al verificar los plugins.*', m);
+        conn.reply(m.chat, '🚩 *Error al verificar los plugins*', m);
     }
 };
 
-handler.command = ['errores'];
-handler.help = ['errores'];
+handler.command = ['errores', 'checkerrors'];
+handler.help = ['errores (Revisa errores en plugins)'];
 handler.tags = ['tools'];
-handler.register = true;
 
 export default handler;
