@@ -26,7 +26,7 @@ let handler = async (m, { text, command }) => {
     }
 };
 
-handler.command = /^githubsearch$/i;
+handler.command = ['githubsearch'];
 handler.help = ['githubsearch <texto>'];
 handler.tags = ['internet'];
 
