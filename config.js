@@ -13,7 +13,7 @@ global.owner = [
   ['5351524614'],
 //lid 
   ['70639914369141@lid', 'Sayan', true,
-  ['174560573964411@lid', 'Sayan', true,
+  ['17456057396411@lid', 'Sayan', true,
 ];
 
 global.mods = []
