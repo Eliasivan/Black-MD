@@ -6,13 +6,13 @@ import moment from 'moment-timezone';
 
 global.owner = [
 //whatsApp.net 
-['59169739411', 'Creador 🧑‍💻', true],
+['595972157130', 'Creador 🧑‍💻', true],
   ['18294868853', 'Asistente', true],
   ['595992667005'],
   ['595972314588', 'Asistencia',  true],
   ['5351524614'],
 //lid 
-  ['70639914369141', 'Sayan', true]
+  ['70639914369141@lid', 'Sayan', true]
 ];
 
 global.mods = []
