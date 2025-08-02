@@ -62,7 +62,7 @@ global.imgurl2 = "https://telegra.ph/file/465c19aff6901c8f6e57f.jpg";
 
 global.moneda = '¥enes'
 global.banner = 'https://sylphy.xyz/download/XYmJwC.jpeg'
-global.avatar = 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1742678797993.jpeg'
+global.avatar = 'https://sylphy.xyz/download/XYmJwC.jpeg'
 
 global.vs = '2.0.2'
 global.languaje = 'Es'
