@@ -10,7 +10,7 @@ var handler = async (m, { conn }) => {
             './index.js', 
             './handler.js',
             './lib/store.js',
-            './lib/Simple.js'
+            './lib/simple.js'
         ].filter(fs.existsSync);
 
         if (filesToCheck.length === 0) {
