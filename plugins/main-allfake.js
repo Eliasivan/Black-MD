@@ -34,7 +34,7 @@ global.namechannel2 = '=͟͟͞g᥆kᥙ-ᑲᥣᥲᥴk-ᑲ᥆𝗍-mძ - ᥴһᥲ�
 global.namegrupo = 'ᰔᩚ g᥆kᥙ-ᑲᥣᥲᥴk-ᑲ᥆𝗍-mძ • ᥆𝖿іᥴіᥲᥣ ❀'
 global.namecomu = 'ᰔᩚ g᥆kᥙ-ᑲᥣᥲᥴk-ᑲ᥆𝗍-mძ • ᥴ᥆mᥙᥒі𝗍ᥡ ❀'
 global.listo = '❀ *Aquí tienes ฅ^•ﻌ•^ฅ*'
-global.fotoperfil = await conn.profilePictureUrl(m.sender, 'image').catch(_ => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
+global.fotoperfil = await conn.profilePictureUrl(m.sender, 'image').catch(_ => 'https://sylphy.xyz/download/XYmJwC.jpeg')
 
 global.canalIdM = ["120363276986902836@newsletter", "120363276986902836@newsletter"]
 global.canalNombreM = ["g᥆kᥙ-ᑲᥣᥲᥴk-ᑲ᥆𝗍-mძ - ᥙ⍴ძᥲ𝗍ᥱs 💫", "g᥆kᥙ-ᑲᥣᥲᥴk-ᑲ᥆𝗍-mძ - ᥴһᥲᥒᥒᥱᥣ 💥"]
@@ -98,7 +98,7 @@ global.fake = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo
 }}, { quoted: m }
 
 global.icono = [
-'https://telegra.ph/file/218bb0ab792902a57d7ae.jpg',
+'https://sylphy.xyz/download/XYmJwC.jpeg',
 ].getRandom()
 
 global.rcanal = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: channelRD.id, serverMessageId: 100, newsletterName: channelRD.name, }, externalAdReply: { showAdAttribution: true, title: packname, body: dev, mediaUrl: null, description: null, previewType: "PHOTO", thumbnailUrl: icono, sourceUrl: redes, mediaType: 1, renderLargerThumbnail: false }, }, }}
