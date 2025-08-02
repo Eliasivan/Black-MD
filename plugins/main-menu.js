@@ -554,23 +554,23 @@ Crea un *Sub-Bot* con tu número utilizando *#qr* o *#code*
 > ✦ Crea una sala de juego. 
   `.trim()
 
-  await conn.sendMessage(m.chat, { 
+    await conn.sendMessage(m.chat, { 
     text: txt,
     contextInfo: {
-        mentionedJid: [m.sender, userId],
-        isForwarded: true,
-        forwardingScore: 999,
-        externalAdReply: {
-            title: botname,
-            body: textbot,
-            thumbnailUrl: banner,
-            sourceUrl: redes,
-            mediaType: 1,
-            showAdAttribution: true,
-            renderLargerThumbnail: true,
-        },
-    },
-}, { quoted: m })
+      mentionedJid: [userId],
+      externalAdReply: {                
+        title: botname,
+        body: textbot,
+        mediaType: 1,
+        showAdAttribution: true,
+        renderLargerThumbnail: true,
+        showAdAttribution: false,
+        containsAutoReply: true,
+        renderLargerThumbnail: true
+      }
+    }
+  }, { quoted: m })
+}
 
 handler.help = ['menu']
 handler.tags = ['main']
@@ -579,8 +579,8 @@ handler.command = ['menu', 'menú', 'help']
 export default handler
 
 function clockString(ms) {
-    let seconds = Math.floor((ms / 1000) % 60)
-    let minutes = Math.floor((ms / (1000 * 60)) % 60)
-    let hours = Math.floor((ms / (1000 * 60 * 60)) % 24)
-    return `${hours}h ${minutes}m ${seconds}s`
+  let seconds = Math.floor((ms / 1000) % 60)
+  let minutes = Math.floor((ms / (1000 * 60)) % 60)
+  let hours = Math.floor((ms / (1000 * 60 * 60)) % 24)
+  return `${hours}h ${minutes}m ${seconds}s`
 }
