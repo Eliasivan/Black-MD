@@ -66,8 +66,8 @@ global.avatar = 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/ma
 global.vs = '2.0.2'
 global.languaje = 'Es'
 global.nameqr = 'GokuBlack'
-global.sessions = 'Session/Black'
-global.jadi = 'Session/SubBot'
+global.sessions = 'Sessions'
+global.jadi = 'SubBot'
 
 global.gp4 = ''
 global.gp1 = ''
