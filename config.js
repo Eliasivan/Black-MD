@@ -13,10 +13,11 @@ global.owner = [
   ['5351524614'],
 //lid 
   ['70639914369141@lid', 'Sayan', true,
-  ['174560573964411@lid', 'Rayo', true]]
+  ['174560573964411@lid', 'Rayo', true]
+];
 
 global.mods = []
-global.suittag = []
+global.suittag = ['595972157130']
 global.prems = []
 
 global.packsticker = '𝐆𝐨𝐤𝐮-𝐁𝐥𝐚𝐜𝐤-𝐁𝐨𝐭-𝐌𝐃 𖧷'
