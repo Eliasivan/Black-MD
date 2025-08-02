@@ -7,12 +7,13 @@ import moment from 'moment-timezone';
 global.owner = [
 //whatsApp.net 
 ['595972157130', 'Creador 🧑‍💻', true],
-  ['18294868853', 'Asistente', true],
-  ['595992667005'],
-  ['595972314588', 'Asistencia',  true],
+  ['18294868853', 'Asistente - Dioneibi', true],
+  ['522431268546'],
+  ['212770245767', 'Asistencia',  true],
   ['5351524614'],
-//lid 
-  ['70639914369141@lid', 'Sayan', true],
+//lid
+  ['200141197844495@lid', 'Dioneibi', true],
+  ['24580450156657@lid', 'Tesis', true]
   ['174560573964411@lid', 'Rayo', true]
 ];
 
