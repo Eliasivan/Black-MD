@@ -13,8 +13,7 @@ global.owner = [
   ['5351524614'],
 //lid 
   ['70639914369141@lid', 'Sayan', true,
-  ['174560573964411@lid', 'Rayo', true]
-]
+  ['174560573964411@lid', 'Rayo', true]]
 
 global.mods = []
 global.suittag = []
