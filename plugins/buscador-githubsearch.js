@@ -1,41 +1,56 @@
 import fetch from 'node-fetch';
 
 let handler = async (m, { text, command, usedPrefix }) => {
-  if (!text) return conn.reply(m.chat, `🚩 Ingresa el término de búsqueda en GitHub usando Dark-Core API.\n\n*Ejemplo:*\n> ${usedPrefix + command} GataBot-MD`, m);
-
-  await m.react('⏳');
+  if (!text) return conn.reply(m.chat, '🚩 Ingresa el término de búsqueda en GitHub.\n\n`Ejemplo:`\n' + `> *${usedPrefix + command}* GataBot-MD`, m, rcanal);
+  
+  await m.react('🕓');
 
   try {
-    const url = `https://dark-core-api.vercel.app/api/search/github?key=api&text=${encodeURIComponent(text)}`;
-    const res = await fetch(url);
+    const res = await fetch(global.API('https://api.github.com', '/search/repositories', {
+      q: text
+    }));
+    
     const json = await res.json();
+    if (res.status !== 200) throw json;
 
-    if (!json || !json.data || json.data.length === 0) {
-      await m.react('❌');
-      return m.reply('❌ No se encontraron repositorios con ese nombre.', m);
+    if (json.items.length > 0) {
+      let txt = '`乂  G I T H U B  -  B Ú S Q U E D A`\n\n';
+      
+      json.items.forEach((repo, i) => {
+        txt += `    ✩  *Nro* : ${i + 1}\n`;
+        txt += `    ✩  *Nombre del Repositorio* : ${repo.full_name}\n`;
+        txt += `    ✩  *URL* : ${repo.html_url}\n`;
+        txt += `    ✩  *Creado en* : ${formatDate(repo.created_at)}\n`;
+        txt += `    ✩  *Última actualización* : ${formatDate(repo.updated_at)}\n`;
+        txt += `    ✩  *Watchers* : ${repo.watchers}\n`;
+        txt += `    ✩  *Forks* : ${repo.forks}\n`;
+        txt += `    ✩  *Estrellas* : ${repo.stargazers_count}\n`;
+        txt += `    ✩  *Issues Abiertos* : ${repo.open_issues}\n`;
+        txt += `    ✩  *Descripción* : ${repo.description || 'Sin descripción'}\n`;
+        txt += `    ✩  *Clone* : \`\`\`$ git clone ${repo.clone_url}\`\`\`\n\n`;
+      });
+      
+      await m.reply(txt);
+      await m.react('✅');
+    } else {
+      await m.react('✖️');
+      await m.reply('No se encontraron repositorios para esta búsqueda.', m);
     }
-
-    let txt = '```乂  R E S U L T A D O S   G I T H U B - S E A R C H```\n\n';
-
-    json.data.slice(0, 10).forEach((repo, i) => {
-      txt += `📦 *${i + 1}.* ${repo.name}\n`;
-      txt += `🔗 URL: ${repo.url}\n`;
-      txt += `📝 Descripción: ${repo.description || 'Sin descripción'}\n\n`;
-    });
-
-    await m.reply(txt.trim());
-    await m.react('✅');
-
   } catch (error) {
     console.error(error);
-    await m.react('⚠️');
-    await m.reply('⚠️ Ocurrió un error al contactar con la API de Dark-Core.', m);
+    await m.react('✖️');
+    await m.reply('Hubo un error al procesar la solicitud. Intenta de nuevo más tarde.', m);
   }
-};
+}
 
 handler.tags = ['internet'];
-handler.help = ['githubsearch <texto>'];
-handler.command = ['githubsearch', 'gokublacksearch'];
+handler.help = ['stalk *<búsqueda>*'];
+handler.command = ['stalk', 'stalkgit']
 handler.register = true;
 
 export default handler;
+
+function formatDate(dateString) {
+  const options = { year: 'numeric', month: 'short', day: 'numeric' };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+}
