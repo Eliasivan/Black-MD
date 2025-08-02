@@ -12,7 +12,7 @@ global.owner = [
   ['595972314588', 'Asistencia',  true],
   ['5351524614'],
 //lid 
-  ['70639914369141@lid', 'Sayan', true,
+  ['70639914369141@lid', 'Sayan', true],
   ['174560573964411@lid', 'Rayo', true]
 ];
 
