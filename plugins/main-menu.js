@@ -561,6 +561,7 @@ Crea un *Sub-Bot* con tu número utilizando *#qr* o *#code*
       externalAdReply: {                
         title: botname,
         body: textbot,
+        thumbnailUrl: banner,
         mediaType: 1,
         showAdAttribution: true,
         renderLargerThumbnail: true,
