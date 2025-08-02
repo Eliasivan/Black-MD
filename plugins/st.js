@@ -1,3 +1,4 @@
+/* Codigo creado por Rayo-ofc 💫 no olvides de dejar créditos si tomas este código */
 import { downloadContentFromMessage } from "@whiskeysockets/baileys";
 
 const handler = async (m, { conn }) => {
@@ -7,7 +8,7 @@ const handler = async (m, { conn }) => {
     if (!quoted) {
       return conn.reply(
         m.chat,
-        '❌ *Error:* Debes responder a una imagen, video o nota de voz para reenviarla.',
+        'Debes responder a una imagen, video o nota de voz para reenviarla.',
         m
       );
     }
@@ -44,7 +45,7 @@ const handler = async (m, { conn }) => {
     } else {
       return conn.reply(
         m.chat,
-        '❌ *Error:* El mensaje citado no contiene un archivo multimedia soportado.',
+        'El mensaje citado no contiene un archivo multimedia soportado.',
         m
       );
     }
@@ -61,7 +62,7 @@ const handler = async (m, { conn }) => {
 
     const options = {
       mimetype: mediaMsg.mimetype,
-      caption: `🔓 *Mensaje recuperado*`
+      caption: `*Mensaje recuperado por ${botname}*`
     };
 
     if (mediaType === "image") {
@@ -87,13 +88,13 @@ const handler = async (m, { conn }) => {
     });
     return conn.reply(
       m.chat,
-      '❌ *Error interno:* Hubo un problema al procesar el archivo.',
+      'Hubo un problema al procesar el archivo.',
       m
     );
   }
 };
 
-handler.command = /^(ver|viewonce|seenonce)$/i;
+handler.command = ['viewonce', 'seenonce'];
 handler.tags = ["tool"];
 handler.help = ["ver"];
 
