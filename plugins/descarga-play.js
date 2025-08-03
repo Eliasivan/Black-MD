@@ -1,4 +1,4 @@
-import yts from "yt-search";
+/*import yts from "yt-search";
 import fetch from "node-fetch";
 import { ogmp3 } from "../lib/youtubedl.js";
 
@@ -96,4 +96,4 @@ handler.command = ["play"];
 handler.register = true;
 handler.coin = 10;
 
-export default handler;
+export default handler;*/
