@@ -30,7 +30,7 @@
 "dependencies": {
 "@bochilteam/scraper": "^4.2.4",
 "@vitalets/google-translate-api": "^8.0.0",
-"@whiskeysockets/baileys": "^6.7.18",
+"@whiskeysockets/baileys": "npm:@baileys-md/stable",
 "acrcloud": "^1.4.0",
 "api-dylux": "^1.7.2",
 "aptoide-scraper": "github:DIEGO-OFC/dv-aptoide-scraper",
