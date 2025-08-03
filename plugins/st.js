@@ -1,5 +1,5 @@
 /* Codigo creado por Rayo-ofc 💫 no olvides de dejar créditos si tomas este código */
-import { downloadContentFromMessage } from "@whiskeysockets/baileys";
+/*import { downloadContentFromMessage } from "@whiskeysockets/baileys";
 
 const handler = async (m, { conn }) => {
   try {
@@ -98,4 +98,4 @@ handler.command = ['viewonce', 'seenonce'];
 handler.tags = ["tool"];
 handler.help = ["ver"];
 
-export default handler;
+export default handler;*/
