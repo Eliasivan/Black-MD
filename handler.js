@@ -126,6 +126,7 @@ export async function handler(chatUpdate = {}) {
   }
 
   m.exp += Math.ceil(Math.random() * 10)
+}
 
 let usedPrefix
 
