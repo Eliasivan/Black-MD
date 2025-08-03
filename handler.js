@@ -5,7 +5,6 @@ import path, { join } from 'path'
 import { unwatchFile, watchFile } from 'fs'
 import chalk from 'chalk'
 import fetch from 'node-fetch'
-import getMensajeSistema from './lib/msmwarning.js'
 
 
 const { proto } = (await import('@whiskeysockets/baileys')).default
